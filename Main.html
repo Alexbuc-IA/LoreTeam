@@ -27,18 +27,15 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
 .hd-title{font-family:'Cinzel',serif;font-size:1.6rem;font-weight:900;color:var(--gold);letter-spacing:2px}
 .hd-right{text-align:right}
 .hd-sub{font-size:13px;color:var(--text-dim);font-style:italic}
-/* TABS */
 #nav-tabs{display:flex;border-bottom:1px solid var(--border-gold);margin-bottom:20px}
 .nav-tab{background:none;border:none;border-bottom:2px solid transparent;color:var(--text-muted);font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;padding:10px 20px;cursor:pointer;text-transform:uppercase;transition:all .2s;position:relative;bottom:-1px}
 .nav-tab:hover{color:var(--text-dim)}
 .nav-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
-/* RES */
 #res-wrap{display:none;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--border);padding:10px 16px;margin-bottom:16px}
 .res-lbl{font-family:'Cinzel',serif;font-size:10px;letter-spacing:4px;color:var(--gold);white-space:nowrap}
 #res-track{flex:1;height:6px;background:#1a0000;border-radius:3px;overflow:hidden}
 #res-fill{height:100%;border-radius:3px;transition:width .5s ease,background .4s;background:linear-gradient(90deg,var(--blood),var(--blood-bright));box-shadow:0 0 6px var(--blood-glow)}
 #res-val{font-family:'Cinzel',serif;font-size:18px;font-weight:600;color:var(--blood-bright);min-width:52px;text-align:right}
-/* PICKER */
 .picker-section-lbl{font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;color:var(--text-muted);margin:12px 0 6px;text-transform:uppercase}
 .pick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .pick-btn{background:var(--panel);border:1px solid var(--border);color:var(--text-dim);font-family:'Cinzel',serif;font-size:10px;letter-spacing:1px;padding:14px 8px;cursor:pointer;transition:all .18s;text-align:center;line-height:1.5}
@@ -49,7 +46,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
 .pick-march{display:block;font-size:8px;letter-spacing:2px;color:var(--blood-bright);margin-top:3px;opacity:.8}
 .pick-crit .pick-march,.pick-surgical .pick-march{color:var(--critical)}
 .pick-psych .pick-march{color:#4d9fd6}
-/* PEACE HERB TRACKER */
 #peace-tracker{display:none;align-items:center;gap:10px;background:rgba(46,107,158,0.06);border:1px solid var(--blue-dim);padding:8px 16px;margin-bottom:1px}
 #peace-tracker.on{display:flex}
 .ph-lbl{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:#4d9fd6;white-space:nowrap}
@@ -59,7 +55,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
 .ph-dot.fatal{background:var(--critical);border-color:var(--critical);box-shadow:0 0 8px var(--critical-glow);animation:blink .4s infinite}
 .ph-warn{font-size:12px;color:#4d9fd6;font-style:italic;flex:1}
 .ph-warn.danger{color:var(--critical)}
-/* PATIENT REGISTER */
 #patient-reg{background:var(--panel);border:1px solid var(--border-gold);padding:18px 20px;margin-bottom:14px;display:none}
 .reg-lbl{font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;color:var(--gold);margin-bottom:12px}
 .reg-case-title{color:var(--text-dim);font-style:italic;font-family:'Crimson Text',serif;letter-spacing:0;font-size:15px}
@@ -72,17 +67,14 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
 .reg-btn{background:transparent;border:1px solid var(--gold-dim);color:var(--gold);font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;padding:8px 16px;cursor:pointer;transition:all .15s}
 .reg-btn:hover{background:var(--gold-faint)}
 .reg-btn.cancel{border-color:rgba(192,57,43,.4);color:var(--blood-bright)}
-/* CASE SUB-TABS (for shock complication) */
 #case-subtabs{display:none;flex;border-bottom:1px solid var(--border);margin-bottom:1px;background:var(--fog)}
 #case-subtabs.on{display:flex}
 .case-subtab{background:none;border:none;border-bottom:2px solid transparent;color:var(--text-muted);font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;padding:8px 16px;cursor:pointer;text-transform:uppercase;transition:all .2s;position:relative;bottom:-1px}
 .case-subtab.active{color:var(--gold);border-bottom-color:var(--gold)}
 .case-subtab.shock-tab{color:var(--critical)}
 .case-subtab.shock-tab.active{color:var(--critical);border-bottom-color:var(--critical)}
-/* ESCALATE BUTTON in consequences */
 .escalate-btn{background:rgba(192,57,43,0.1);border:1px solid rgba(192,57,43,0.5);color:var(--blood-bright);font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;padding:6px 12px;cursor:pointer;transition:all .15s;margin-top:6px;display:inline-block}
 .escalate-btn:hover{background:rgba(192,57,43,0.2)}
-/* MAIN PANEL */
 #main{display:none}
 #case-bar{display:flex;justify-content:space-between;align-items:center;background:var(--panel);border:1px solid var(--border-gold);padding:14px 18px;margin-bottom:1px}
 #case-name{font-family:'Cinzel',serif;font-size:1rem;color:var(--gold);letter-spacing:1px}
@@ -105,7 +97,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
 #sit-box{background:var(--panel);border:1px solid var(--border);border-top:none;padding:14px 18px;margin-bottom:1px}
 .sit-lbl{font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;color:var(--text-muted);margin-bottom:6px}
 #sit-txt{font-style:italic;font-size:16px;line-height:1.7}
-/* CONSEQUENCES */
 #consequences{display:none;flex-direction:column;gap:4px;margin-bottom:1px}
 #consequences.has-items{display:flex}
 #shock-consequences.has-items{display:flex !important;flex-direction:column;gap:4px;margin-bottom:1px}
@@ -122,18 +113,15 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
 .cq-death-timer{font-family:'Cinzel',serif;font-size:11px;color:var(--critical);margin-top:5px;padding:3px 8px;background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.3);display:inline-block}
 .fix-btn{background:transparent;border:1px solid var(--gold-dim);color:var(--gold);font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;padding:6px 12px;cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0;margin-top:2px}
 .fix-btn:hover{background:var(--gold-faint);border-color:var(--gold)}
-/* STEP */
 #step-hdr{display:flex;justify-content:space-between;align-items:center;padding:10px 18px;background:var(--fog);border:1px solid var(--border);border-top:none;margin-bottom:1px}
 .step-lbl{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:var(--text-muted)}
 #prog-track{flex:1;height:3px;background:var(--border);margin:0 14px;border-radius:2px;overflow:hidden}
 #prog-fill{height:100%;background:linear-gradient(90deg,var(--gold-dim),var(--gold));border-radius:2px;transition:width .4s ease}
 #step-count{font-family:'Cinzel',serif;font-size:10px;color:var(--gold-dim)}
-/* ACTION BUTTONS */
 #actions{background:var(--fog);border:1px solid var(--border);border-top:none;padding:14px 18px}
 .act-lbl{font-family:'Cinzel',serif;font-size:9px;letter-spacing:4px;color:var(--text-muted);margin-bottom:10px}
 #act-list{display:flex;flex-direction:column;gap:6px}
 .act-btn{display:flex;align-items:center;border:1px solid var(--border);color:var(--text);font-family:'Crimson Text',serif;font-size:16px;cursor:pointer;transition:all .15s;text-align:left;overflow:hidden;width:100%}
-/* COLOR CODING — visible before click */
 .act-btn.is-correct{background:var(--green-faint);border-color:var(--green-border)}
 .act-btn.is-correct .act-icon{color:var(--green-bright);border-right-color:var(--green-border)}
 .act-btn.is-wrong{background:var(--wrong-faint);border-color:var(--wrong-border)}
@@ -156,7 +144,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
 #next-wrap{display:none;padding:12px 18px;background:var(--fog);border:1px solid var(--border);border-top:none}
 #next-btn{background:transparent;border:1px solid var(--gold-dim);color:var(--gold);font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;padding:10px 20px;cursor:pointer;transition:all .18s}
 #next-btn:hover{background:var(--gold-faint);border-color:var(--gold)}
-/* DEATH / DONE */
 #death-screen,#done-screen{display:none;text-align:center;padding:60px 20px;animation:fadeIn .7s}
 #death-screen{border:1px solid var(--critical);background:rgba(0,0,0,.8)}
 #done-screen{border:1px solid var(--gold-dim);background:var(--gold-faint)}
@@ -174,7 +161,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
 #back-btn{background:none;border:none;color:var(--text-muted);font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;cursor:pointer;padding:6px 0;margin-bottom:12px;display:none}
 #back-btn:hover{color:var(--gold)}
 #back-btn::before{content:'← '}
-/* LOG */
 #log-view{display:none}
 .log-summary{display:flex;gap:16px;background:var(--panel);border:1px solid var(--border);padding:12px 18px;margin-bottom:12px;flex-wrap:wrap}
 .log-stat{display:flex;flex-direction:column;gap:2px}
@@ -221,7 +207,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
     <button class="nav-tab" onclick="showTab('log',this)">Patient Log <span id="log-badge" style="font-size:8px;color:var(--gold)"></span></button>
   </div>
 
-  <!-- ═══ CASES TAB ═══ -->
   <div id="cases-view">
     <div id="res-wrap">
       <div class="res-lbl">RES</div>
@@ -229,7 +214,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
       <div id="res-val">300</div>
     </div>
 
-    <!-- PATIENT REGISTER -->
     <div id="patient-reg">
       <div class="reg-lbl">Register Patient — <span id="reg-case-lbl" class="reg-case-title"></span></div>
       <div class="reg-row">
@@ -280,7 +264,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
       </div>
     </div>
 
-    <!-- REFEREE PANEL -->
     <div id="main">
       <button id="back-btn" onclick="goBack()">Back to cases</button>
       <div id="case-bar">
@@ -289,13 +272,11 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
           <div id="case-march-tag">—</div>
         </div>
       </div>
-      <!-- Patient info strip -->
       <div id="patient-strip" style="display:none;background:var(--fog);border:1px solid var(--border);border-top:none;padding:7px 18px;font-size:12px;color:var(--text-dim);display:flex;gap:18px;flex-wrap:wrap">
         <span>Patient: <strong id="ps-patient" style="color:var(--text)">—</strong></span>
         <span>Medic: <strong id="ps-medic-user" style="color:var(--text)">—</strong></span>
         <span>Lore: <em id="ps-medic-lore" style="color:var(--text-dim)">—</em></span>
       </div>
-      <!-- Peace Herb Tracker -->
       <div id="peace-tracker">
         <div class="ph-lbl">☽ PEACE HERB</div>
         <div class="ph-dots">
@@ -306,12 +287,10 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
         <div class="ph-warn" id="ph-warn">0 / 2 doses given</div>
         <button style="background:transparent;border:1px solid rgba(77,159,214,0.3);color:#4d9fd6;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;padding:4px 10px;cursor:pointer" onclick="addPeaceHerb()">+ Give Dose</button>
       </div>
-      <!-- Case sub-tabs (appears when shock complication triggers) -->
       <div id="case-subtabs">
         <button class="case-subtab active" id="subtab-main" onclick="switchSubtab('main',this)">Treatment</button>
         <button class="case-subtab shock-tab" id="subtab-shock" onclick="switchSubtab('shock',this)">⚠ SHOCK</button>
       </div>
-      <!-- SUB-PANEL: Main Treatment -->
       <div id="main-treatment-panel">
       <div id="vitals">
         <div class="vital"><div class="vdot" id="vd-pulse"></div><span class="vtxt" id="vt-pulse">—</span></div>
@@ -345,9 +324,8 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
       <div id="next-wrap">
         <button id="next-btn" onclick="advance()">Next Step →</button>
       </div>
-      </div><!-- end main-treatment-panel -->
+      </div>
 
-      <!-- SUB-PANEL: Shock Treatment -->
       <div id="shock-treatment-panel" style="display:none">
         <div style="background:rgba(231,76,60,0.07);border:1px solid rgba(231,76,60,0.4);padding:10px 18px;margin-bottom:1px">
           <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:var(--critical);margin-bottom:4px">⚠ SHOCK — SECONDARY PROTOCOL</div>
@@ -371,11 +349,10 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
         <div id="shock-next-wrap" style="display:none;padding:12px 18px;background:var(--fog);border:1px solid var(--border);border-top:none">
           <button id="shock-next-btn" onclick="advanceShock()" style="background:transparent;border:1px solid var(--critical);color:var(--critical);font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;padding:10px 20px;cursor:pointer">Next Step →</button>
         </div>
-      </div><!-- end shock-treatment-panel -->
+      </div>
 
-    </div><!-- end #main -->
+    </div>
 
-    <!-- DEATH -->
     <div id="death-screen">
       <div class="death-rune">☽</div>
       <div class="death-h">PATIENT DECEASED</div>
@@ -386,7 +363,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
       </div>
     </div>
 
-    <!-- COMPLETE -->
     <div id="done-screen">
       <div class="done-h">Treatment Complete</div>
       <div id="done-score">—</div>
@@ -398,7 +374,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
     </div>
   </div>
 
-  <!-- ═══ LOG TAB ═══ -->
   <div id="log-view">
     <div class="log-summary">
       <div class="log-stat"><div class="log-stat-val" id="ls-total">0</div><div class="log-stat-lbl">Total</div></div>
@@ -431,9 +406,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════════════════════
-// CASE DATABASE
-// ═══════════════════════════════════════════════════════════════════
 const DB = {
 
 ribs:{title:'Broken Ribs',march:'MARCH — R',critical:false,
@@ -1166,126 +1138,130 @@ amputation:{title:'Amputation',march:'MARCH — SURGICAL',critical:true,
 
 }; // end DB
 
-// ═══════════════════════════════════════════════════════════════
-// PATIENT LOG
-// ═══════════════════════════════════════════════════════════════
 let patientLog = [];
-try{ patientLog = JSON.parse(localStorage.getItem('dss_v3_log')||'[]'); }catch(e){}
+try { patientLog = JSON.parse(localStorage.getItem('dss_v3_log') || '[]'); } catch(e) {}
 
-function persistLog(){
-  try{ localStorage.setItem('dss_v3_log', JSON.stringify(patientLog)); }catch(e){}
-  const b=$('log-badge');
-  b.textContent = patientLog.length?'('+patientLog.length+')':'';
+function persistLog() {
+  try { localStorage.setItem('dss_v3_log', JSON.stringify(patientLog)); } catch(e) {}
+  $('log-badge').textContent = patientLog.length ? '(' + patientLog.length + ')' : '';
 }
 
-// ═══════════════════════════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════════════════════════
-let C=null, caseKey='', stepIdx=0, res=300, alive=true;
-let timerInt=null, timerSecs=0;
-let activeConsequences=[], consecId=0, stepDone=false;
-let peaceHerbCount=0;
-let curPatient='—', curMedicUser='—', curMedicLore='—', pendingKey='';
-// Shock complication state
-let shockActive=false, shockC=null, shockStep=0, shockConseq=[], shockDone=false, shockConId=0;
-let activeSubtab='main'; // 'main' or 'shock'
+let C = null, caseKey = '', stepIdx = 0, res = 300, alive = true;
+let timerInt = null, timerSecs = 0;
+let activeConsequences = [], consecId = 0, stepDone = false;
+let peaceHerbCount = 0;
+let curPatient = '—', curMedicUser = '—', curMedicLore = '—', pendingKey = '';
+let shockActive = false, shockC = null, shockStep = 0, shockConseq = [], shockDone = false, shockConId = 0;
+let activeSubtab = 'main';
 
-// ═══════════════════════════════════════════════════════════════
-// HELPERS
-// ═══════════════════════════════════════════════════════════════
-const $=id=>document.getElementById(id);
+const $ = id => document.getElementById(id);
 
-function setRes(v){
-  res=Math.max(0,v);
-  const p=(res/300)*100;
-  $('res-fill').style.width=p+'%';
-  $('res-val').textContent=res;
-  if(p<30) $('res-fill').style.background='linear-gradient(90deg,#4a0000,#8b0000)';
-  else if(p<60) $('res-fill').style.background='linear-gradient(90deg,var(--blood),var(--warn))';
-  else $('res-fill').style.background='linear-gradient(90deg,var(--blood),var(--blood-bright))';
-  if(res<=0) killPatient('RES reached zero. The patient did not survive the accumulation of treatment errors.');
+function setRes(v) {
+  res = Math.max(0, v);
+  const p = (res / 300) * 100;
+  $('res-fill').style.width = p + '%';
+  $('res-val').textContent = res;
+
+  if (p < 30) $('res-fill').style.background = 'linear-gradient(90deg,#4a0000,#8b0000)';
+  else if (p < 60) $('res-fill').style.background = 'linear-gradient(90deg,var(--blood),var(--warn))';
+  else $('res-fill').style.background = 'linear-gradient(90deg,var(--blood),var(--blood-bright))';
+
+  if (res <= 0) killPatient('RES reached zero. The patient did not survive the accumulation of treatment errors.');
 }
 
-function setVitals(p,b,s){
-  $('vt-pulse').textContent='Pulse: '+p;
-  $('vt-breath').textContent='Breathing: '+b;
-  $('vt-skin').textContent='Skin: '+s;
-  $('vd-pulse').className='vdot '+(p.includes('Weak')?'crit':p.includes('Fast')?'bad':'ok');
-  $('vd-breath').className='vdot '+(b.includes('Shallow')?'bad':'ok');
-  $('vd-skin').className='vdot '+((s.includes('Pale')||s.includes('Cold')||s.includes('Feverish'))?'crit':'ok');
+function setVitals(pulse, breath, skin) {
+  $('vt-pulse').textContent = 'Pulse: ' + pulse;
+  $('vt-breath').textContent = 'Breathing: ' + breath;
+  $('vt-skin').textContent = 'Skin: ' + skin;
+  $('vd-pulse').className = 'vdot ' + (pulse.includes('Weak') ? 'crit' : pulse.includes('Fast') ? 'bad' : 'ok');
+  $('vd-breath').className = 'vdot ' + (breath.includes('Shallow') ? 'bad' : 'ok');
+  $('vd-skin').className = 'vdot ' + ((skin.includes('Pale') || skin.includes('Cold') || skin.includes('Feverish')) ? 'crit' : 'ok');
 }
 
-function startTimer(secs,reason){
-  timerSecs=secs; $('treason').textContent=reason; $('timer-bar').classList.add('on');
+function startTimer(secs, reason) {
+  timerSecs = secs;
+  $('treason').textContent = reason;
+  $('timer-bar').classList.add('on');
   clearInterval(timerInt);
-  const tick=()=>{
+
+  const tick = () => {
     timerSecs--;
-    const m=Math.floor(timerSecs/60),s=timerSecs%60;
-    $('tclock').textContent=m+':'+(s<10?'0':'')+s;
-    if(timerSecs<=0){clearInterval(timerInt);killPatient('Critical timer expired. The patient crashed before treatment was completed.');}
+    const m = Math.floor(timerSecs / 60), s = timerSecs % 60;
+    $('tclock').textContent = m + ':' + (s < 10 ? '0' : '') + s;
+    if (timerSecs <= 0) {
+      clearInterval(timerInt);
+      killPatient('Critical timer expired. The patient crashed before treatment was completed.');
+    }
   };
-  timerInt=setInterval(tick,1000);
-  const m=Math.floor(secs/60),s=secs%60;
-  $('tclock').textContent=m+':'+(s<10?'0':'')+s;
-}
-function stopTimer(){clearInterval(timerInt);$('timer-bar').classList.remove('on');}
 
-function killPatient(reason){
-  alive=false; stopTimer();
-  activeConsequences.forEach(cq=>{if(cq.timerInt)clearInterval(cq.timerInt);});
-  shockConseq.forEach(cq=>{if(cq.timerInt)clearInterval(cq.timerInt);});
-  $('main').style.display='none';
-  $('picker-wrap').style.display='none';
-  $('patient-reg').style.display='none';
-  $('death-screen').style.display='block';
-  $('death-txt').textContent=reason;
+  timerInt = setInterval(tick, 1000);
+  const m = Math.floor(secs / 60), s = secs % 60;
+  $('tclock').textContent = m + ':' + (s < 10 ? '0' : '') + s;
 }
 
-// ─── PEACE HERB ─────────────────────────────────────────────
-function addPeaceHerb(){
-  if(!alive)return;
+function stopTimer() {
+  clearInterval(timerInt);
+  $('timer-bar').classList.remove('on');
+}
+
+function killPatient(reason) {
+  alive = false;
+  stopTimer();
+  activeConsequences.forEach(cq => { if (cq.timerInt) clearInterval(cq.timerInt); });
+  shockConseq.forEach(cq => { if (cq.timerInt) clearInterval(cq.timerInt); });
+  $('main').style.display = 'none';
+  $('picker-wrap').style.display = 'none';
+  $('patient-reg').style.display = 'none';
+  $('death-screen').style.display = 'block';
+  $('death-txt').textContent = reason;
+}
+
+function addPeaceHerb() {
+  if (!alive) return;
   peaceHerbCount++;
   updatePeaceHerbUI();
-  if(peaceHerbCount>=3){
-    killPatient('Third dose of Peace Herb administered. The patient did not wake up.');
-  }
-}
-function updatePeaceHerbUI(){
-  const d1=$('ph1'),d2=$('ph2'),d3=$('ph3'),warn=$('ph-warn');
-  d1.className='ph-dot'+(peaceHerbCount>=1?' used':'');
-  d2.className='ph-dot'+(peaceHerbCount>=2?' used':'');
-  d3.className='ph-dot'+(peaceHerbCount>=3?' fatal':'');
-  if(peaceHerbCount===0){warn.textContent='0 / 2 doses given';warn.className='ph-warn';}
-  else if(peaceHerbCount===1){warn.textContent='1 / 2 — one dose remaining';warn.className='ph-warn';}
-  else if(peaceHerbCount===2){warn.textContent='2 / 2 — MAXIMUM REACHED. Next dose = death.';warn.className='ph-warn danger';}
-  else{warn.textContent='3rd dose given — PATIENT DECEASED';warn.className='ph-warn danger';}
+  if (peaceHerbCount >= 3) killPatient('Third dose of Peace Herb administered. The patient did not wake up.');
 }
 
-// ─── CONSEQUENCE TIMERS ──────────────────────────────────────
-function startConsequenceTimer(cq){
-  if(!cq.dt||cq.dt===0)return;
-  cq.secsLeft=cq.dt*60;
-  cq.timerInt=setInterval(()=>{
-    if(!alive){clearInterval(cq.timerInt);return;}
+function updatePeaceHerbUI() {
+  const d1 = $('ph1'), d2 = $('ph2'), d3 = $('ph3'), warn = $('ph-warn');
+  d1.className = 'ph-dot' + (peaceHerbCount >= 1 ? ' used' : '');
+  d2.className = 'ph-dot' + (peaceHerbCount >= 2 ? ' used' : '');
+  d3.className = 'ph-dot' + (peaceHerbCount >= 3 ? ' fatal' : '');
+
+  if (peaceHerbCount === 0)      { warn.textContent = '0 / 2 doses given'; warn.className = 'ph-warn'; }
+  else if (peaceHerbCount === 1) { warn.textContent = '1 / 2 — one dose remaining'; warn.className = 'ph-warn'; }
+  else if (peaceHerbCount === 2) { warn.textContent = '2 / 2 — MAXIMUM REACHED. Next dose = death.'; warn.className = 'ph-warn danger'; }
+  else                           { warn.textContent = '3rd dose given — PATIENT DECEASED'; warn.className = 'ph-warn danger'; }
+}
+
+function startConsequenceTimer(cq) {
+  if (!cq.dt || cq.dt === 0) return;
+  cq.secsLeft = cq.dt * 60;
+  cq.timerInt = setInterval(() => {
+    if (!alive) { clearInterval(cq.timerInt); return; }
     cq.secsLeft--;
-    const el=document.getElementById('cqtimer-'+cq.id);
-    if(el){
-      const m=Math.floor(cq.secsLeft/60),s=cq.secsLeft%60;
-      el.textContent='⚠ UNTREATED — death in '+m+'m '+(s<10?'0':'')+s+'s';
+    const el = document.getElementById('cqtimer-' + cq.id);
+    if (el) {
+      const m = Math.floor(cq.secsLeft / 60), s = cq.secsLeft % 60;
+      el.textContent = '⚠ UNTREATED — death in ' + m + 'm ' + (s < 10 ? '0' : '') + s + 's';
     }
-    if(cq.secsLeft<=0){
+    if (cq.secsLeft <= 0) {
       clearInterval(cq.timerInt);
-      if(alive) killPatient('Untreated complication became fatal: '+cq.text);
+      if (alive) killPatient('Untreated complication became fatal: ' + cq.text);
     }
-  },1000);
+  }, 1000);
 }
 
-function buildConsequenceHTML(cq){
-  const lbl=cq.isOld?'<div class="cq-label old-lbl">⚠ ONGOING — NOT YET FIXED</div>':'<div class="cq-label">⚠ ACTIVE CONSEQUENCE</div>';
-  const penHtml=cq.pen>0?`<div class="cq-penalty">−${cq.pen} RES applied</div>`:'';
-  const timerHtml=cq.dt&&cq.dt>0?`<div class="cq-death-timer" id="cqtimer-${cq.id}">⚠ UNTREATED — death in ${Math.floor(cq.dt)}m 00s</div>`:'';
-  const escalateHtml=cq.pivot?`<button class="escalate-btn" onclick="escalateTo('${cq.pivot}')">⚠ Escalate → ${DB[cq.pivot]?DB[cq.pivot].title:cq.pivot}</button>`:'';
-  const shockHtml=cq.triggerShock?`<button class="escalate-btn" onclick="triggerShockTab()">⚠ Patient entered SHOCK — Open Shock Tab</button>`:'';
+function buildConsequenceHTML(cq) {
+  const lbl = cq.isOld
+    ? '<div class="cq-label old-lbl">⚠ ONGOING — NOT YET FIXED</div>'
+    : '<div class="cq-label">⚠ ACTIVE CONSEQUENCE</div>';
+  const penHtml = cq.pen > 0 ? `<div class="cq-penalty">−${cq.pen} RES applied</div>` : '';
+  const timerHtml = cq.dt && cq.dt > 0 ? `<div class="cq-death-timer" id="cqtimer-${cq.id}">⚠ UNTREATED — death in ${Math.floor(cq.dt)}m 00s</div>` : '';
+  const escalateHtml = cq.pivot ? `<button class="escalate-btn" onclick="escalateTo('${cq.pivot}')">⚠ Escalate → ${DB[cq.pivot] ? DB[cq.pivot].title : cq.pivot}</button>` : '';
+  const shockHtml = cq.triggerShock ? `<button class="escalate-btn" onclick="triggerShockTab()">⚠ Patient entered SHOCK — Open Shock Tab</button>` : '';
+
   return `<div class="cq-top"><div class="cq-left">
     ${lbl}
     <div class="cq-text">${cq.text}</div>
@@ -1296,387 +1272,451 @@ function buildConsequenceHTML(cq){
   <button class="fix-btn" onclick="clearConsequence(${cq.id},false)">✓ FIXED</button></div>`;
 }
 
-function renderConsequences(){
-  const box=$('consequences');
-  box.innerHTML='';
-  if(!activeConsequences.length){box.classList.remove('has-items');return;}
+function renderConsequences() {
+  const box = $('consequences');
+  box.innerHTML = '';
+  if (!activeConsequences.length) { box.classList.remove('has-items'); return; }
   box.classList.add('has-items');
-  activeConsequences.forEach(cq=>{
-    const d=document.createElement('div');
-    d.className='consequence-item'+(cq.isOld?' is-old':''); d.id='cq-'+cq.id;
-    d.innerHTML=buildConsequenceHTML(cq);
+  activeConsequences.forEach(cq => {
+    const d = document.createElement('div');
+    d.className = 'consequence-item' + (cq.isOld ? ' is-old' : '');
+    d.id = 'cq-' + cq.id;
+    d.innerHTML = buildConsequenceHTML(cq);
     box.appendChild(d);
   });
 }
 
-function clearConsequence(id, isShock){
-  const arr=isShock?shockConseq:activeConsequences;
-  const cq=arr.find(c=>c.id===id);
-  if(cq&&cq.timerInt)clearInterval(cq.timerInt);
-  if(isShock){
-    shockConseq=shockConseq.filter(c=>c.id!==id);
+function clearConsequence(id, isShock) {
+  const arr = isShock ? shockConseq : activeConsequences;
+  const cq = arr.find(c => c.id === id);
+  if (cq && cq.timerInt) clearInterval(cq.timerInt);
+
+  if (isShock) {
+    shockConseq = shockConseq.filter(c => c.id !== id);
     renderShockConsequences();
-    if(shockDone&&!shockConseq.length){$('shock-next-wrap').style.display='block';}
-  }else{
-    activeConsequences=activeConsequences.filter(c=>c.id!==id);
+    if (shockDone && !shockConseq.length) $('shock-next-wrap').style.display = 'block';
+  } else {
+    activeConsequences = activeConsequences.filter(c => c.id !== id);
     renderConsequences();
-    if(stepDone&&!activeConsequences.length){$('step-ok').style.display='none';showNextBtn();}
+    if (stepDone && !activeConsequences.length) { $('step-ok').style.display = 'none'; showNextBtn(); }
   }
 }
 
-function showNextBtn(){
-  $('next-wrap').style.display='block';
-  $('next-btn').textContent=(stepIdx+1>=C.steps.length)?'Complete Treatment →':'Next Step →';
-}
-function updateProgress(){
-  $('prog-fill').style.width=((stepIdx/C.steps.length)*100)+'%';
-  $('step-count').textContent=stepIdx+' / '+C.steps.length;
+function showNextBtn() {
+  $('next-wrap').style.display = 'block';
+  $('next-btn').textContent = (stepIdx + 1 >= C.steps.length) ? 'Complete Treatment →' : 'Next Step →';
 }
 
-// ─── ESCALATION ─────────────────────────────────────────────
-function escalateTo(newKey){
-  if(!DB[newKey])return;
-  // Keep res and patient, switch case
+function updateProgress() {
+  $('prog-fill').style.width = ((stepIdx / C.steps.length) * 100) + '%';
+  $('step-count').textContent = stepIdx + ' / ' + C.steps.length;
+}
+
+function escalateTo(newKey) {
+  if (!DB[newKey]) return;
   stopTimer();
-  activeConsequences.forEach(cq=>{if(cq.timerInt)clearInterval(cq.timerInt);});
-  activeConsequences=[]; consecId=0; stepDone=false;
-  C=DB[newKey]; caseKey=newKey;
-  stepIdx=0;
-  $('case-name').textContent=C.title;
-  $('case-march-tag').textContent=C.march;
-  $('sit-txt').textContent=C.intro;
-  setVitals(C.vitals.pulse,C.vitals.breath,C.vitals.skin);
-  if(C.timer) startTimer(C.timer.secs,C.timer.reason);
+  activeConsequences.forEach(cq => { if (cq.timerInt) clearInterval(cq.timerInt); });
+  activeConsequences = [];
+  consecId = 0;
+  stepDone = false;
+  C = DB[newKey];
+  caseKey = newKey;
+  stepIdx = 0;
+  $('case-name').textContent = C.title;
+  $('case-march-tag').textContent = C.march;
+  $('sit-txt').textContent = C.intro;
+  setVitals(C.vitals.pulse, C.vitals.breath, C.vitals.skin);
+  if (C.timer) startTimer(C.timer.secs, C.timer.reason);
   renderStep();
 }
 
-// ─── SHOCK TAB ───────────────────────────────────────────────
-function triggerShockTab(){
-  if(shockActive)return;
-  shockActive=true;
-  shockC=DB['shock'];
-  shockStep=0; shockConseq=[]; shockDone=false; shockConId=1000;
+function triggerShockTab() {
+  if (shockActive) return;
+  shockActive = true;
+  shockC = DB['shock'];
+  shockStep = 0;
+  shockConseq = [];
+  shockDone = false;
+  shockConId = 1000;
   $('case-subtabs').classList.add('on');
-  // Auto-switch to shock tab
   switchSubtab('shock', $('subtab-shock'));
 }
 
-function switchSubtab(tab, el){
-  activeSubtab=tab;
-  document.querySelectorAll('.case-subtab').forEach(t=>t.classList.remove('active'));
+function switchSubtab(tab, el) {
+  activeSubtab = tab;
+  document.querySelectorAll('.case-subtab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
-  $('main-treatment-panel').style.display=tab==='main'?'block':'none';
-  $('shock-treatment-panel').style.display=tab==='shock'?'block':'none';
-  if(tab==='shock'&&shockActive) renderShockStep();
+  $('main-treatment-panel').style.display = tab === 'main' ? 'block' : 'none';
+  $('shock-treatment-panel').style.display = tab === 'shock' ? 'block' : 'none';
+  if (tab === 'shock' && shockActive) renderShockStep();
 }
 
-function renderShockStep(){
-  if(!shockC||!alive)return;
-  shockDone=false;
-  $('shock-next-wrap').style.display='none';
-  $('shock-step-ok').style.display='none';
-  shockConseq.forEach(cq=>cq.isOld=true);
+function renderShockStep() {
+  if (!shockC || !alive) return;
+  shockDone = false;
+  $('shock-next-wrap').style.display = 'none';
+  $('shock-step-ok').style.display = 'none';
+  shockConseq.forEach(cq => cq.isOld = true);
   renderShockConsequences();
-  // progress
-  $('shock-prog-fill').style.width=((shockStep/shockC.steps.length)*100)+'%';
-  $('shock-step-count').textContent=shockStep+' / '+shockC.steps.length;
-  const step=shockC.steps[shockStep];
-  $('shock-sit-txt').textContent=step.sit;
-  const list=$('shock-act-list');
-  list.innerHTML='';
-  step.actions.forEach((a,i)=>{
-    const btn=document.createElement('button');
-    btn.className='act-btn '+(a.ok?'is-correct':'is-wrong');
-    btn.innerHTML=`<div class="act-icon">${a.ok?'✓':'·'}</div><div class="act-text">${a.t}</div>`;
-    btn.onclick=()=>{if(!btn.classList.contains('used-correct'))doShockAction(btn,a);};
+  $('shock-prog-fill').style.width = ((shockStep / shockC.steps.length) * 100) + '%';
+  $('shock-step-count').textContent = shockStep + ' / ' + shockC.steps.length;
+
+  const step = shockC.steps[shockStep];
+  $('shock-sit-txt').textContent = step.sit;
+  const list = $('shock-act-list');
+  list.innerHTML = '';
+  step.actions.forEach((a, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'act-btn ' + (a.ok ? 'is-correct' : 'is-wrong');
+    btn.innerHTML = `<div class="act-icon">${a.ok ? '✓' : '·'}</div><div class="act-text">${a.t}</div>`;
+    btn.onclick = () => { if (!btn.classList.contains('used-correct')) doShockAction(btn, a); };
     list.appendChild(btn);
   });
 }
 
-function doShockAction(btn,action){
-  if(!alive)return;
-  if(action.ok){
-    btn.classList.add('flash-correct','used-correct');
-    btn.querySelector('.act-icon').textContent='✓';
-    btn.onclick=null;
-    document.querySelectorAll('#shock-act-list .act-btn').forEach(b=>{
-      if(b!==btn){b.style.opacity='.3';b.style.pointerEvents='none';}
+function doShockAction(btn, action) {
+  if (!alive) return;
+
+  if (action.ok) {
+    btn.classList.add('flash-correct', 'used-correct');
+    btn.querySelector('.act-icon').textContent = '✓';
+    btn.onclick = null;
+    document.querySelectorAll('#shock-act-list .act-btn').forEach(b => {
+      if (b !== btn) { b.style.opacity = '.3'; b.style.pointerEvents = 'none'; }
     });
-    $('shock-sit-txt').textContent=action.fb;
-    shockDone=true;
-    if(!shockConseq.length){$('shock-next-wrap').style.display='block';$('shock-next-btn').textContent=(shockStep+1>=shockC.steps.length)?'Shock Resolved →':'Next Step →';}
-    else{$('shock-step-ok').textContent='✓ Correct — fix consequences to continue.';$('shock-step-ok').style.display='block';}
-  }else{
+    $('shock-sit-txt').textContent = action.fb;
+    shockDone = true;
+
+    if (!shockConseq.length) {
+      $('shock-next-wrap').style.display = 'block';
+      $('shock-next-btn').textContent = (shockStep + 1 >= shockC.steps.length) ? 'Shock Resolved →' : 'Next Step →';
+    } else {
+      $('shock-step-ok').textContent = '✓ Correct — fix consequences to continue.';
+      $('shock-step-ok').style.display = 'block';
+    }
+  } else {
     btn.classList.add('flash-wrong');
-    setTimeout(()=>btn.classList.remove('flash-wrong'),700);
-    if(action.pen>0) setRes(res-action.pen);
-    if(!alive)return;
-    const id=shockConId++;
-    const cq={id,text:action.cq,fix:action.fix,pen:action.pen||0,dt:action.dt||0,timerInt:null,secsLeft:0,isOld:false};
+    setTimeout(() => btn.classList.remove('flash-wrong'), 700);
+    if (action.pen > 0) setRes(res - action.pen);
+    if (!alive) return;
+
+    const id = shockConId++;
+    const cq = { id, text: action.cq, fix: action.fix, pen: action.pen || 0, dt: action.dt || 0, timerInt: null, secsLeft: 0, isOld: false };
     shockConseq.push(cq);
     renderShockConsequences();
     startConsequenceTimer(cq);
   }
 }
 
-function renderShockConsequences(){
-  const box=$('shock-consequences');
-  box.innerHTML='';
-  if(!shockConseq.length){box.classList.remove('has-items');return;}
+function renderShockConsequences() {
+  const box = $('shock-consequences');
+  box.innerHTML = '';
+  if (!shockConseq.length) { box.classList.remove('has-items'); return; }
   box.classList.add('has-items');
-  shockConseq.forEach(cq=>{
-    const d=document.createElement('div');
-    d.className='consequence-item'+(cq.isOld?' is-old':'');
-    d.innerHTML=buildConsequenceHTML(cq).replace(`clearConsequence(${cq.id},false)`,`clearConsequence(${cq.id},true)`);
+  shockConseq.forEach(cq => {
+    const d = document.createElement('div');
+    d.className = 'consequence-item' + (cq.isOld ? ' is-old' : '');
+    d.innerHTML = buildConsequenceHTML(cq).replace(`clearConsequence(${cq.id},false)`, `clearConsequence(${cq.id},true)`);
     box.appendChild(d);
   });
 }
 
-function advanceShock(){
+function advanceShock() {
   shockStep++;
-  if(shockStep>=shockC.steps.length){
-    shockActive=false;
+  if (shockStep >= shockC.steps.length) {
+    shockActive = false;
     $('case-subtabs').classList.remove('on');
-    switchSubtab('main',$('subtab-main'));
+    switchSubtab('main', $('subtab-main'));
     alert('Shock resolved. Return to main treatment.');
     return;
   }
-  $('shock-next-wrap').style.display='none';
-  shockConseq=[];
+  $('shock-next-wrap').style.display = 'none';
+  shockConseq = [];
   renderShockStep();
 }
 
-// ═══════════════════════════════════════════════════════════════
-// CASE FLOW
-// ═══════════════════════════════════════════════════════════════
-function openReg(key){
-  pendingKey=key;
-  $('reg-case-lbl').textContent=DB[key].title;
-  $('reg-patient').value=''; $('reg-user').value=''; $('reg-lore').value='';
-  $('picker-wrap').style.display='none';
-  $('patient-reg').style.display='block';
+function openReg(key) {
+  pendingKey = key;
+  $('reg-case-lbl').textContent = DB[key].title;
+  $('reg-patient').value = '';
+  $('reg-user').value = '';
+  $('reg-lore').value = '';
+  $('picker-wrap').style.display = 'none';
+  $('patient-reg').style.display = 'block';
 }
 
-function cancelReg(){
-  $('patient-reg').style.display='none';
-  $('picker-wrap').style.display='block';
+function cancelReg() {
+  $('patient-reg').style.display = 'none';
+  $('picker-wrap').style.display = 'block';
 }
 
-function confirmCase(){
-  curPatient=$('reg-patient').value.trim()||'—';
-  curMedicUser=$('reg-user').value.trim()||'—';
-  curMedicLore=$('reg-lore').value.trim()||'—';
-  $('patient-reg').style.display='none';
+function confirmCase() {
+  curPatient = $('reg-patient').value.trim() || '—';
+  curMedicUser = $('reg-user').value.trim() || '—';
+  curMedicLore = $('reg-lore').value.trim() || '—';
+  $('patient-reg').style.display = 'none';
   startCase(pendingKey);
 }
 
-function startCase(key){
-  caseKey=key; C=DB[key];
-  stepIdx=0; res=300; alive=true; activeConsequences=[]; consecId=0; stepDone=false;
-  peaceHerbCount=0; shockActive=false; shockC=null; shockStep=0; shockConseq=[]; shockDone=false; shockConId=1000;
-  activeSubtab='main';
+function startCase(key) {
+  caseKey = key;
+  C = DB[key];
+  stepIdx = 0;
+  res = 300;
+  alive = true;
+  activeConsequences = [];
+  consecId = 0;
+  stepDone = false;
+  peaceHerbCount = 0;
+  shockActive = false;
+  shockC = null;
+  shockStep = 0;
+  shockConseq = [];
+  shockDone = false;
+  shockConId = 1000;
+  activeSubtab = 'main';
+
   setRes(300);
   updatePeaceHerbUI();
-  $('res-wrap').style.display='flex';
+
+  $('res-wrap').style.display = 'flex';
   $('peace-tracker').classList.add('on');
-  $('picker-wrap').style.display='none';
-  $('patient-reg').style.display='none';
-  $('main').style.display='block';
-  $('back-btn').style.display='block';
-  $('death-screen').style.display='none';
-  $('done-screen').style.display='none';
+  $('picker-wrap').style.display = 'none';
+  $('patient-reg').style.display = 'none';
+  $('main').style.display = 'block';
+  $('back-btn').style.display = 'block';
+  $('death-screen').style.display = 'none';
+  $('done-screen').style.display = 'none';
   $('case-subtabs').classList.remove('on');
-  $('main-treatment-panel').style.display='block';
-  $('shock-treatment-panel').style.display='none';
-  // Patient strip
-  $('ps-patient').textContent=curPatient;
-  $('ps-medic-user').textContent=curMedicUser;
-  $('ps-medic-lore').textContent=curMedicLore;
-  $('patient-strip').style.display='flex';
-  $('case-name').textContent=C.title;
-  $('case-march-tag').textContent=C.march;
-  $('sit-txt').textContent=C.intro;
-  setVitals(C.vitals.pulse,C.vitals.breath,C.vitals.skin);
-  if(C.timer) startTimer(C.timer.secs,C.timer.reason);
+  $('main-treatment-panel').style.display = 'block';
+  $('shock-treatment-panel').style.display = 'none';
+
+  $('ps-patient').textContent = curPatient;
+  $('ps-medic-user').textContent = curMedicUser;
+  $('ps-medic-lore').textContent = curMedicLore;
+  $('patient-strip').style.display = 'flex';
+  $('case-name').textContent = C.title;
+  $('case-march-tag').textContent = C.march;
+  $('sit-txt').textContent = C.intro;
+  setVitals(C.vitals.pulse, C.vitals.breath, C.vitals.skin);
+  if (C.timer) startTimer(C.timer.secs, C.timer.reason);
   renderStep();
 }
 
-function renderStep(){
-  if(!alive)return;
-  stepDone=false;
-  $('next-wrap').style.display='none';
-  $('step-ok').style.display='none';
-  activeConsequences.forEach(cq=>cq.isOld=true);
+function renderStep() {
+  if (!alive) return;
+  stepDone = false;
+  $('next-wrap').style.display = 'none';
+  $('step-ok').style.display = 'none';
+  activeConsequences.forEach(cq => cq.isOld = true);
   renderConsequences();
   updateProgress();
-  const step=C.steps[stepIdx];
-  $('sit-txt').textContent=step.sit;
-  const list=$('act-list');
-  list.innerHTML='';
-  step.actions.forEach((a)=>{
-    const btn=document.createElement('button');
-    btn.className='act-btn '+(a.ok?'is-correct':'is-wrong');
-    btn.innerHTML=`<div class="act-icon">${a.ok?'✓':'·'}</div><div class="act-text">${a.t}</div>`;
-    btn.onclick=()=>{if(!btn.classList.contains('used-correct'))doAction(btn,a);};
+
+  const step = C.steps[stepIdx];
+  $('sit-txt').textContent = step.sit;
+  const list = $('act-list');
+  list.innerHTML = '';
+  step.actions.forEach(a => {
+    const btn = document.createElement('button');
+    btn.className = 'act-btn ' + (a.ok ? 'is-correct' : 'is-wrong');
+    btn.innerHTML = `<div class="act-icon">${a.ok ? '✓' : '·'}</div><div class="act-text">${a.t}</div>`;
+    btn.onclick = () => { if (!btn.classList.contains('used-correct')) doAction(btn, a); };
     list.appendChild(btn);
   });
 }
 
-function doAction(btn,action){
-  if(!alive)return;
-  if(action.ok){
-    btn.classList.add('flash-correct','used-correct');
-    btn.querySelector('.act-icon').textContent='✓';
-    btn.onclick=null;
-    document.querySelectorAll('#act-list .act-btn').forEach(b=>{
-      if(b!==btn){b.style.opacity='.3';b.style.pointerEvents='none';}
+function doAction(btn, action) {
+  if (!alive) return;
+
+  if (action.ok) {
+    btn.classList.add('flash-correct', 'used-correct');
+    btn.querySelector('.act-icon').textContent = '✓';
+    btn.onclick = null;
+    document.querySelectorAll('#act-list .act-btn').forEach(b => {
+      if (b !== btn) { b.style.opacity = '.3'; b.style.pointerEvents = 'none'; }
     });
-    $('sit-txt').textContent=action.fb;
-    stepDone=true;
-    if(!activeConsequences.length){showNextBtn();}
-    else{$('step-ok').textContent='✓ Correct action — fix active consequences above to continue.';$('step-ok').style.display='block';}
-  }else{
+    $('sit-txt').textContent = action.fb;
+    stepDone = true;
+
+    if (!activeConsequences.length) {
+      showNextBtn();
+    } else {
+      $('step-ok').textContent = '✓ Correct action — fix active consequences above to continue.';
+      $('step-ok').style.display = 'block';
+    }
+  } else {
     btn.classList.add('flash-wrong');
-    setTimeout(()=>btn.classList.remove('flash-wrong'),700);
-    if(action.pen>0) setRes(res-action.pen);
-    if(!alive)return;
-    const id=consecId++;
-    const cq={id,text:action.cq,fix:action.fix,pen:action.pen||0,dt:action.dt||0,
-              pivot:action.pivot||null,triggerShock:action.triggerShock||false,
-              timerInt:null,secsLeft:0,isOld:false};
+    setTimeout(() => btn.classList.remove('flash-wrong'), 700);
+    if (action.pen > 0) setRes(res - action.pen);
+    if (!alive) return;
+
+    const id = consecId++;
+    const cq = {
+      id, text: action.cq, fix: action.fix,
+      pen: action.pen || 0, dt: action.dt || 0,
+      pivot: action.pivot || null, triggerShock: action.triggerShock || false,
+      timerInt: null, secsLeft: 0, isOld: false
+    };
     activeConsequences.push(cq);
     renderConsequences();
     startConsequenceTimer(cq);
   }
 }
 
-function advance(){
+function advance() {
   stepIdx++;
-  if(stepIdx>=C.steps.length){completeCase();return;}
-  $('next-wrap').style.display='none';
-  activeConsequences=[];
+  if (stepIdx >= C.steps.length) { completeCase(); return; }
+  $('next-wrap').style.display = 'none';
+  activeConsequences = [];
   renderStep();
 }
 
-function completeCase(){
+function completeCase() {
   stopTimer();
-  activeConsequences.forEach(cq=>{if(cq.timerInt)clearInterval(cq.timerInt);});
-  shockConseq.forEach(cq=>{if(cq.timerInt)clearInterval(cq.timerInt);});
+  activeConsequences.forEach(cq => { if (cq.timerInt) clearInterval(cq.timerInt); });
+  shockConseq.forEach(cq => { if (cq.timerInt) clearInterval(cq.timerInt); });
   $('peace-tracker').classList.remove('on');
-  $('patient-strip').style.display='none';
-  $('main').style.display='none';
-  $('done-screen').style.display='block';
-  $('done-score').textContent=res+' / 300';
-  const g=res>=270?'EXEMPLARY — No critical errors':res>=200?'COMPETENT — Minor errors made':res>=100?'MARGINAL — Significant errors':'FAILING — Patient barely survived';
-  $('done-grade').textContent=g;
+  $('patient-strip').style.display = 'none';
+  $('main').style.display = 'none';
+  $('done-screen').style.display = 'block';
+  $('done-score').textContent = res + ' / 300';
+
+  const grade = res >= 270 ? 'EXEMPLARY — No critical errors'
+              : res >= 200 ? 'COMPETENT — Minor errors made'
+              : res >= 100 ? 'MARGINAL — Significant errors'
+              :              'FAILING — Patient barely survived';
+  $('done-grade').textContent = grade;
 }
 
-function exitMid(){
-  if(!C)return;
+function exitMid() {
+  if (!C) return;
   stopTimer();
-  activeConsequences.forEach(cq=>{if(cq.timerInt)clearInterval(cq.timerInt);});
-  shockConseq.forEach(cq=>{if(cq.timerInt)clearInterval(cq.timerInt);});
+  activeConsequences.forEach(cq => { if (cq.timerInt) clearInterval(cq.timerInt); });
+  shockConseq.forEach(cq => { if (cq.timerInt) clearInterval(cq.timerInt); });
   addLogEntry('exited');
   $('peace-tracker').classList.remove('on');
-  $('patient-strip').style.display='none';
-  $('main').style.display='none';
-  $('res-wrap').style.display='none';
-  $('picker-wrap').style.display='block';
-  $('back-btn').style.display='none';
+  $('patient-strip').style.display = 'none';
+  $('main').style.display = 'none';
+  $('res-wrap').style.display = 'none';
+  $('picker-wrap').style.display = 'block';
+  $('back-btn').style.display = 'none';
 }
 
-function saveLog(outcome){ addLogEntry(outcome); }
+function saveLog(outcome) { addLogEntry(outcome); }
 
-function addLogEntry(outcome){
-  if(!C)return;
-  const now=new Date();
+function addLogEntry(outcome) {
+  if (!C) return;
+  const now = new Date();
   patientLog.unshift({
-    id:Date.now(),
-    date:now.toLocaleDateString('es-MX',{day:'2-digit',month:'2-digit',year:'2-digit'})+' '+now.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}),
-    patient:curPatient, medicUser:curMedicUser, medicLore:curMedicLore,
-    caseTitle:C.title, caseKey,
-    res, outcome, critical:C.critical||false
+    id: Date.now(),
+    date: now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: '2-digit' }) + ' ' + now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
+    patient: curPatient, medicUser: curMedicUser, medicLore: curMedicLore,
+    caseTitle: C.title, caseKey,
+    res, outcome, critical: C.critical || false
   });
   persistLog();
   renderLog();
 }
 
-function goBack(){
-  stopTimer(); alive=true; C=null; caseKey=''; stepIdx=0; res=300;
-  activeConsequences.forEach(cq=>{if(cq.timerInt)clearInterval(cq.timerInt);});
-  shockConseq.forEach(cq=>{if(cq.timerInt)clearInterval(cq.timerInt);});
-  activeConsequences=[]; consecId=0; stepDone=false;
-  peaceHerbCount=0; shockActive=false;
+function goBack() {
+  stopTimer();
+  alive = true;
+  C = null;
+  caseKey = '';
+  stepIdx = 0;
+  res = 300;
+  activeConsequences.forEach(cq => { if (cq.timerInt) clearInterval(cq.timerInt); });
+  shockConseq.forEach(cq => { if (cq.timerInt) clearInterval(cq.timerInt); });
+  activeConsequences = [];
+  consecId = 0;
+  stepDone = false;
+  peaceHerbCount = 0;
+  shockActive = false;
   setRes(300);
-  $('res-wrap').style.display='none';
+  $('res-wrap').style.display = 'none';
   $('peace-tracker').classList.remove('on');
-  $('patient-strip').style.display='none';
-  $('main').style.display='none';
-  $('picker-wrap').style.display='block';
-  $('back-btn').style.display='none';
-  $('death-screen').style.display='none';
-  $('done-screen').style.display='none';
-  $('patient-reg').style.display='none';
+  $('patient-strip').style.display = 'none';
+  $('main').style.display = 'none';
+  $('picker-wrap').style.display = 'block';
+  $('back-btn').style.display = 'none';
+  $('death-screen').style.display = 'none';
+  $('done-screen').style.display = 'none';
+  $('patient-reg').style.display = 'none';
   $('case-subtabs').classList.remove('on');
 }
 
-// ═══════════════════════════════════════════════════════════════
-// TABS
-// ═══════════════════════════════════════════════════════════════
-function showTab(tab,el){
-  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+function showTab(tab, el) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
-  $('cases-view').style.display=tab==='cases'?'block':'none';
-  $('log-view').style.display=tab==='log'?'block':'none';
-  if(tab==='log')renderLog();
+  $('cases-view').style.display = tab === 'cases' ? 'block' : 'none';
+  $('log-view').style.display = tab === 'log' ? 'block' : 'none';
+  if (tab === 'log') renderLog();
 }
 
-// ═══════════════════════════════════════════════════════════════
-// LOG
-// ═══════════════════════════════════════════════════════════════
-function renderLog(){
-  const s=($('log-search').value||'').toLowerCase();
-  const f=$('log-filter').value;
-  let filtered=patientLog.filter(e=>{
-    const ms=!s||[e.caseTitle,e.patient,e.medicUser,e.medicLore].some(v=>(v||'').toLowerCase().includes(s));
-    return ms&&(!f||e.outcome===f);
+function renderLog() {
+  const search = ($('log-search').value || '').toLowerCase();
+  const filter = $('log-filter').value;
+
+  let filtered = patientLog.filter(e => {
+    const matchesSearch = !search || [e.caseTitle, e.patient, e.medicUser, e.medicLore].some(v => (v || '').toLowerCase().includes(search));
+    return matchesSearch && (!filter || e.outcome === filter);
   });
-  $('ls-total').textContent=patientLog.length;
-  $('ls-rec').textContent=patientLog.filter(e=>e.outcome==='recovered').length;
-  $('ls-dead').textContent=patientLog.filter(e=>e.outcome==='deceased').length;
-  $('ls-exit').textContent=patientLog.filter(e=>e.outcome==='exited').length;
-  const completed=patientLog.filter(e=>e.outcome!=='exited');
-  $('ls-avg').textContent=completed.length?Math.round(completed.reduce((a,e)=>a+e.res,0)/completed.length):'—';
-  if(!filtered.length){$('log-empty').style.display='block';$('log-tbl').style.display='none';return;}
-  $('log-empty').style.display='none'; $('log-tbl').style.display='table';
-  const tbody=$('log-tbody'); tbody.innerHTML='';
-  filtered.forEach((e,i)=>{
-    const oc=e.outcome==='recovered'?'log-ok':e.outcome==='deceased'?'log-dead':'log-exit';
-    const ol=e.outcome==='recovered'?'RECOVERED':e.outcome==='deceased'?'DECEASED':'EXITED MID';
-    const rc=e.outcome==='exited'?'var(--warn)':e.res>=200?'var(--green-bright)':e.res>=100?'var(--gold)':'var(--critical)';
-    const crit=e.critical?'<span class="log-crit">CRIT</span>':'';
-    const tr=document.createElement('tr');
-    tr.innerHTML=`
-      <td style="color:var(--text-muted);font-family:'Cinzel',serif;font-size:10px">${i+1}</td>
+
+  $('ls-total').textContent = patientLog.length;
+  $('ls-rec').textContent = patientLog.filter(e => e.outcome === 'recovered').length;
+  $('ls-dead').textContent = patientLog.filter(e => e.outcome === 'deceased').length;
+  $('ls-exit').textContent = patientLog.filter(e => e.outcome === 'exited').length;
+
+  const completed = patientLog.filter(e => e.outcome !== 'exited');
+  $('ls-avg').textContent = completed.length ? Math.round(completed.reduce((a, e) => a + e.res, 0) / completed.length) : '—';
+
+  if (!filtered.length) {
+    $('log-empty').style.display = 'block';
+    $('log-tbl').style.display = 'none';
+    return;
+  }
+
+  $('log-empty').style.display = 'none';
+  $('log-tbl').style.display = 'table';
+  const tbody = $('log-tbody');
+  tbody.innerHTML = '';
+
+  filtered.forEach((e, i) => {
+    const outcomeClass = e.outcome === 'recovered' ? 'log-ok' : e.outcome === 'deceased' ? 'log-dead' : 'log-exit';
+    const outcomeLabel = e.outcome === 'recovered' ? 'RECOVERED' : e.outcome === 'deceased' ? 'DECEASED' : 'EXITED MID';
+    const resColor = e.outcome === 'exited' ? 'var(--warn)' : e.res >= 200 ? 'var(--green-bright)' : e.res >= 100 ? 'var(--gold)' : 'var(--critical)';
+    const critBadge = e.critical ? '<span class="log-crit">CRIT</span>' : '';
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td style="color:var(--text-muted);font-family:'Cinzel',serif;font-size:10px">${i + 1}</td>
       <td style="color:var(--text-muted);font-size:12px;white-space:nowrap">${e.date}</td>
-      <td><strong style="color:var(--text)">${e.patient||'—'}</strong></td>
-      <td style="color:var(--text-dim)">${e.medicUser||'—'}</td>
-      <td style="color:var(--text-dim);font-style:italic">${e.medicLore||'—'}</td>
-      <td>${e.caseTitle}${crit}</td>
-      <td style="font-family:'Cinzel',serif;font-size:12px;color:${rc}">${e.outcome==='exited'?'—':e.res+'/300'}</td>
-      <td class="${oc}">${ol}</td>
+      <td><strong style="color:var(--text)">${e.patient || '—'}</strong></td>
+      <td style="color:var(--text-dim)">${e.medicUser || '—'}</td>
+      <td style="color:var(--text-dim);font-style:italic">${e.medicLore || '—'}</td>
+      <td>${e.caseTitle}${critBadge}</td>
+      <td style="font-family:'Cinzel',serif;font-size:12px;color:${resColor}">${e.outcome === 'exited' ? '—' : e.res + '/300'}</td>
+      <td class="${outcomeClass}">${outcomeLabel}</td>
       <td><button class="log-del" onclick="deleteEntry(${e.id})" title="Delete">✕</button></td>`;
     tbody.appendChild(tr);
   });
 }
 
-function deleteEntry(id){patientLog=patientLog.filter(e=>e.id!==id);persistLog();renderLog();}
-function clearAllLog(){
-  if(!patientLog.length)return;
-  if(confirm('Delete all log entries? This cannot be undone.')){patientLog=[];persistLog();renderLog();}
+function deleteEntry(id) {
+  patientLog = patientLog.filter(e => e.id !== id);
+  persistLog();
+  renderLog();
 }
 
-// INIT
+function clearAllLog() {
+  if (!patientLog.length) return;
+  if (confirm('Delete all log entries? This cannot be undone.')) {
+    patientLog = [];
+    persistLog();
+    renderLog();
+  }
+}
+
 persistLog();
 </script>
 </body>
