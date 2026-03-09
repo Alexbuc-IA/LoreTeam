@@ -20,7 +20,7 @@
 html{font-size:16px}
 body{background:var(--char);color:var(--text);font-family:'Crimson Text',Georgia,serif;min-height:100vh;overflow-x:hidden}
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 15% 50%,rgba(122,0,0,0.07) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 85% 10%,rgba(201,168,76,0.04) 0%,transparent 55%);pointer-events:none;z-index:0}
-#wrap{max-width:1100px;margin:0 auto;padding:16px 20px;position:relative;z-index:1}
+#wrap{max-width:1200px;margin:0 auto;padding:16px 20px;position:relative;z-index:1}
 header{display:flex;align-items:center;justify-content:space-between;padding:24px 0 20px;border-bottom:1px solid var(--border-gold);margin-bottom:20px}
 .hd-eyebrow{font-family:'Cinzel',serif;font-size:9px;letter-spacing:5px;color:var(--blood-bright);text-transform:uppercase;margin-bottom:6px}
 .hd-title{font-family:'Cinzel',serif;font-size:1.6rem;font-weight:900;color:var(--gold);letter-spacing:2px}
@@ -36,14 +36,14 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
 .btn.success{border-color:var(--green-border);color:var(--green-bright)}
 .btn.success:hover{background:var(--green-faint)}
 .btn:disabled{opacity:.3;cursor:default;pointer-events:none}
-.panel{background:var(--panel);border:1px solid var(--border);padding:18px 20px;margin-bottom:12px}
+.panel{background:var(--panel);border:1px solid var(--border);padding:18px 20px;margin-bottom:12px;border-radius:6px}
 .panel-title{font-family:'Cinzel',serif;font-size:9px;letter-spacing:4px;color:var(--gold);margin-bottom:14px;text-transform:uppercase}
 .section-lbl{font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;color:var(--text-muted);margin:12px 0 8px;text-transform:uppercase}
 
 /* Role Selection */
 #role-select{text-align:center;padding:60px 0}
 .role-cards{display:flex;gap:24px;justify-content:center;margin-top:40px;flex-wrap:wrap}
-.role-card{background:var(--panel);border:2px solid var(--border);padding:40px 36px;cursor:pointer;transition:all .25s;width:320px;text-align:center}
+.role-card{background:var(--panel);border:2px solid var(--border);padding:40px 36px;cursor:pointer;transition:all .25s;width:320px;text-align:center;border-radius:10px}
 .role-card:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 8px 32px rgba(0,0,0,0.4)}
 .role-icon{font-size:48px;margin-bottom:16px;display:block}
 .role-name{font-family:'Cinzel',serif;font-size:1.2rem;color:var(--gold);letter-spacing:2px;margin-bottom:10px}
@@ -57,24 +57,26 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
 .body-part.selected{fill:var(--gold);fill-opacity:.3;stroke:var(--gold);stroke-width:2.5}
 .body-part.injured{fill:var(--blood-bright);fill-opacity:.4;stroke:var(--blood-bright);stroke-width:2.5;animation:injPulse 1.5s infinite}
 .body-part.healed{fill:var(--green-bright);fill-opacity:.3;stroke:var(--green-bright);stroke-width:2}
+.body-part.examining{fill:var(--gold);fill-opacity:.5;stroke:var(--gold);stroke-width:3;animation:examPulse 1s infinite}
 @keyframes injPulse{0%,100%{fill-opacity:.4}50%{fill-opacity:.7}}
+@keyframes examPulse{0%,100%{fill-opacity:.3;stroke-width:2.5}50%{fill-opacity:.6;stroke-width:3.5}}
 
 /* Game Master */
 .gm-layout{display:grid;grid-template-columns:280px 1fr;gap:16px}
 .gm-sidebar{display:flex;flex-direction:column;gap:12px}
 .injury-pick{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.injury-btn{background:var(--raised);border:1px solid var(--border);color:var(--text-dim);font-family:'Cinzel',serif;font-size:9px;letter-spacing:1px;padding:10px 6px;cursor:pointer;transition:all .15s;text-align:center;line-height:1.4}
+.injury-btn{background:var(--raised);border:1px solid var(--border);color:var(--text-dim);font-family:'Cinzel',serif;font-size:9px;letter-spacing:1px;padding:10px 6px;cursor:pointer;transition:all .15s;text-align:center;line-height:1.4;border-radius:4px}
 .injury-btn:hover{border-color:var(--blood-bright);color:var(--blood-bright);background:rgba(122,0,0,0.08)}
 .injury-btn.active{border-color:var(--blood-bright);color:var(--blood-bright);background:rgba(122,0,0,0.15)}
-.injury-list-item{display:flex;justify-content:space-between;align-items:center;background:var(--raised);border:1px solid var(--border);padding:8px 12px;margin-bottom:4px}
+.injury-list-item{display:flex;justify-content:space-between;align-items:center;background:var(--raised);border:1px solid var(--border);padding:8px 12px;margin-bottom:4px;border-radius:4px}
 .injury-list-item .name{font-size:13px;color:var(--text)}
-.injury-list-item .march-tag{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;color:var(--blood-bright);background:rgba(122,0,0,0.2);border:1px solid rgba(122,0,0,0.4);padding:2px 6px}
+.injury-list-item .march-tag{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;color:var(--blood-bright);background:rgba(122,0,0,0.2);border:1px solid rgba(122,0,0,0.4);padding:2px 6px;border-radius:3px}
 .remove-injury{background:none;border:none;color:var(--text-muted);font-size:16px;cursor:pointer;padding:0 4px}
 .remove-injury:hover{color:var(--critical)}
 
 /* Timer config */
 .timer-config{display:flex;align-items:center;gap:10px;margin:10px 0}
-.timer-config input{background:var(--raised);border:1px solid var(--border);color:var(--text);font-family:'Crimson Text',serif;font-size:18px;padding:6px 10px;width:70px;text-align:center;outline:none}
+.timer-config input{background:var(--raised);border:1px solid var(--border);color:var(--text);font-family:'Crimson Text',serif;font-size:18px;padding:6px 10px;width:70px;text-align:center;outline:none;border-radius:4px}
 .timer-config input:focus{border-color:var(--gold-dim)}
 .timer-config label{font-size:13px;color:var(--text-dim)}
 
@@ -83,33 +85,77 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
 .gm-health-fill{height:100%;border-radius:4px;transition:width .6s ease;background:linear-gradient(90deg,var(--blood),var(--blood-bright))}
 .gm-hp-text{font-family:'Cinzel',serif;font-size:20px;color:var(--blood-bright);font-weight:700}
 
-/* Medic view */
-.medic-layout{display:grid;grid-template-columns:1fr 320px;gap:16px}
-.medic-main{display:flex;flex-direction:column;gap:12px}
-.medic-sidebar{display:flex;flex-direction:column;gap:12px}
+/* Medic view - redesigned */
+.medic-layout{display:grid;grid-template-columns:1fr;gap:16px}
+.medic-top-bar{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:start}
+.medic-body-area{display:flex;flex-direction:column;gap:12px}
+.medic-kits-area{display:flex;flex-direction:column;gap:12px}
+
+/* Patient Status Card */
+.patient-status{background:linear-gradient(135deg,var(--panel) 0%,rgba(26,26,29,0.95) 100%);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin-bottom:12px}
+.patient-status-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.patient-res-display{display:flex;align-items:center;gap:12px}
+.patient-res-bar{flex:1;height:12px;background:#1a0000;border-radius:6px;overflow:hidden;min-width:200px}
+.patient-res-fill{height:100%;border-radius:6px;transition:width .6s ease,background .6s ease}
+.patient-res-text{font-family:'Cinzel',serif;font-size:16px;font-weight:700;min-width:80px;text-align:right}
+.patient-condition{font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;padding:4px 12px;border-radius:4px;text-transform:uppercase}
+.condition-stable{color:var(--green-bright);background:var(--green-faint);border:1px solid var(--green-border)}
+.condition-warning{color:var(--warn);background:rgba(212,130,10,0.1);border:1px solid rgba(212,130,10,0.3)}
+.condition-critical{color:var(--critical);background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.3);animation:condPulse 1.5s infinite}
+@keyframes condPulse{0%,100%{opacity:1}50%{opacity:.7}}
+
+/* Action feedback toast */
+.action-toast{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-20px);padding:12px 24px;border-radius:8px;font-family:'Cinzel',serif;font-size:12px;letter-spacing:2px;z-index:1000;opacity:0;transition:all .3s ease;pointer-events:none}
+.action-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.action-toast.success{background:rgba(61,139,61,0.95);color:#fff;border:1px solid var(--green-bright)}
+.action-toast.error{background:rgba(192,57,43,0.95);color:#fff;border:1px solid var(--critical)}
+.action-toast.info{background:rgba(46,107,158,0.95);color:#fff;border:1px solid var(--blue)}
+
 #medic-timer{font-family:'Cinzel',serif;font-size:2.5rem;font-weight:700;color:var(--critical);text-shadow:0 0 16px var(--critical-glow);letter-spacing:3px;text-align:center;padding:12px 0}
 #medic-timer.safe{color:var(--green-bright);text-shadow:0 0 10px rgba(92,184,92,0.3)}
-.step-box{background:var(--raised);border:1px solid var(--border);padding:14px 16px;margin-bottom:6px}
+
+/* Examination overlay */
+.exam-overlay{position:relative;background:var(--panel);border:2px solid var(--gold);border-radius:8px;padding:20px;margin-bottom:12px;overflow:hidden}
+.exam-overlay::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold-dim),var(--gold),var(--gold-dim))}
+.exam-title{font-family:'Cinzel',serif;font-size:12px;letter-spacing:3px;color:var(--gold);margin-bottom:12px;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.exam-desc{font-size:14px;color:var(--text);line-height:1.6;margin-bottom:12px}
+.exam-btn{background:linear-gradient(135deg,rgba(201,168,76,0.15),rgba(201,168,76,0.05));border:1px solid var(--gold);color:var(--gold);font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;padding:10px 24px;cursor:pointer;transition:all .2s;text-transform:uppercase;border-radius:4px}
+.exam-btn:hover{background:linear-gradient(135deg,rgba(201,168,76,0.25),rgba(201,168,76,0.1));box-shadow:0 0 12px rgba(201,168,76,0.2)}
+.exam-result{background:rgba(122,0,0,0.08);border:1px solid rgba(192,57,43,0.3);border-radius:6px;padding:12px 16px;margin-top:10px}
+.exam-result-title{font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;color:var(--blood-bright);margin-bottom:6px}
+.exam-result-injury{font-size:16px;color:var(--text);font-weight:600}
+
+/* Step boxes - no hints version */
+.step-box{background:var(--raised);border:1px solid var(--border);padding:14px 16px;margin-bottom:6px;border-radius:6px;transition:all .3s}
 .step-num{font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;color:var(--text-muted);margin-bottom:4px}
 .step-text{font-size:15px;line-height:1.6;color:var(--text)}
+.step-action-type{display:inline-block;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;padding:2px 8px;border-radius:3px;margin-top:6px}
+.step-action-examine{color:var(--blue);background:var(--blue-dim);border:1px solid rgba(46,107,158,0.4)}
+.step-action-apply{color:var(--gold);background:var(--gold-faint);border:1px solid var(--border-gold)}
 .step-box.done{border-color:var(--green-border);background:var(--green-faint)}
 .step-box.done .step-text{color:var(--green-bright)}
-.step-box.current{border-color:var(--gold);border-width:2px}
+.step-box.current{border-color:var(--gold);border-width:2px;box-shadow:0 0 12px rgba(201,168,76,0.1)}
 .step-box.failed{border-color:rgba(192,57,43,0.5);background:rgba(122,0,0,0.08)}
 .step-box.failed .step-text{color:var(--blood-bright)}
 
-/* Inventory */
+/* Side by side kits */
+.kits-container{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.kit-panel{background:var(--panel);border:1px solid var(--border);padding:16px;border-radius:6px}
+.kit-panel .panel-title{margin-bottom:10px}
 .inv-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.inv-item{background:var(--raised);border:1px solid var(--border);color:var(--text-dim);font-size:11px;padding:10px 8px;cursor:pointer;transition:all .15s;text-align:center;line-height:1.3;font-family:'Cinzel',serif;letter-spacing:1px}
-.inv-item:hover{border-color:var(--gold-dim);color:var(--gold);background:var(--gold-faint)}
+.inv-item{background:var(--raised);border:1px solid var(--border);color:var(--text-dim);font-size:10px;padding:8px 6px;cursor:pointer;transition:all .15s;text-align:center;line-height:1.3;font-family:'Cinzel',serif;letter-spacing:1px;border-radius:4px;display:flex;flex-direction:column;align-items:center;gap:4px;min-height:70px;justify-content:center}
+.inv-item:hover{border-color:var(--gold-dim);color:var(--gold);background:var(--gold-faint);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.3)}
 .inv-item.selected{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,0.12);box-shadow:0 0 8px rgba(201,168,76,0.15)}
 .inv-item.used{border-color:var(--green-border);color:var(--green-bright);background:var(--green-faint)}
 .inv-item.wrong{border-color:rgba(192,57,43,0.5);color:var(--blood-bright);background:rgba(122,0,0,0.08);animation:shake .3s}
+.inv-item .item-icon{font-size:22px;line-height:1;margin-bottom:2px}
+.inv-item .item-name{font-size:9px;line-height:1.2}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
 
-/* Apply button */
-.apply-area{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
-.apply-btn{flex:1;min-width:120px}
+/* Medic bottom area */
+.medic-bottom{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px}
+.medic-treatment-area{display:flex;flex-direction:column;gap:12px}
+.medic-info-area{display:flex;flex-direction:column;gap:12px}
 
 /* Result screen */
 .result-box{text-align:center;padding:40px 20px}
@@ -118,15 +164,15 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
 .result-title.success{color:var(--green-bright)}
 .result-title.failure{color:var(--critical)}
 .result-stats{display:flex;gap:20px;justify-content:center;margin:20px 0;flex-wrap:wrap}
-.stat-box{background:var(--raised);border:1px solid var(--border);padding:14px 20px;min-width:100px}
+.stat-box{background:var(--raised);border:1px solid var(--border);padding:14px 20px;min-width:100px;border-radius:6px}
 .stat-val{font-family:'Cinzel',serif;font-size:1.4rem;color:var(--gold);font-weight:700}
 .stat-lbl{font-size:11px;color:var(--text-dim);margin-top:4px}
 
 /* Vitals */
-.vitals-bar{display:flex;background:var(--fog);border:1px solid var(--border);margin-bottom:8px}
-.vital{flex:1;padding:8px 12px;border-right:1px solid var(--border);display:flex;align-items:center;gap:6px}
+.vitals-bar{display:flex;background:var(--fog);border:1px solid var(--border);margin-bottom:8px;border-radius:6px;overflow:hidden}
+.vital{flex:1;padding:10px 12px;border-right:1px solid var(--border);display:flex;align-items:center;gap:8px}
 .vital:last-child{border-right:none}
-.vdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;transition:all .4s}
+.vdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;transition:all .4s}
 .vdot.ok{background:var(--green-bright);box-shadow:0 0 5px var(--green-bright)}
 .vdot.bad{background:var(--warn);box-shadow:0 0 5px var(--warn)}
 .vdot.crit{background:var(--critical);box-shadow:0 0 7px var(--critical);animation:blink .5s infinite}
@@ -134,11 +180,11 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
 .vtxt{font-size:12px;color:var(--text-dim)}
 
 /* Consequence */
-.consequence{background:rgba(122,0,0,0.06);border:1px solid rgba(192,57,43,0.25);padding:8px 14px;margin-bottom:4px;font-size:13px;color:var(--blood-bright);font-style:italic}
+.consequence{background:rgba(122,0,0,0.06);border:1px solid rgba(192,57,43,0.25);padding:8px 14px;margin-bottom:4px;font-size:13px;color:var(--blood-bright);font-style:italic;border-radius:4px}
 .consequence .pen{font-family:'Cinzel',serif;font-size:10px;letter-spacing:1px;color:var(--critical);margin-left:8px}
 
 /* Peace herb tracker */
-.peace-tracker{display:flex;align-items:center;gap:8px;background:rgba(46,107,158,0.06);border:1px solid var(--blue-dim);padding:8px 14px;margin-bottom:8px}
+.peace-tracker{display:flex;align-items:center;gap:8px;background:rgba(46,107,158,0.06);border:1px solid var(--blue-dim);padding:8px 14px;margin-bottom:8px;border-radius:6px}
 .ph-lbl{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:#4d9fd6;white-space:nowrap}
 .ph-dots{display:flex;gap:6px}
 .ph-dot{width:14px;height:14px;border-radius:50%;border:2px solid rgba(77,159,214,0.4);background:transparent;transition:all .3s}
@@ -146,15 +192,25 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
 .ph-dot.fatal{background:var(--critical);border-color:var(--critical);box-shadow:0 0 8px var(--critical-glow)}
 
 /* Log */
-.log-entry{background:var(--raised);border:1px solid var(--border);padding:10px 14px;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center}
+.log-entry{background:var(--raised);border:1px solid var(--border);padding:10px 14px;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center;border-radius:4px}
 .log-entry .info{font-size:13px;color:var(--text)}
-.log-entry .tag{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;padding:2px 8px}
+.log-entry .tag{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;padding:2px 8px;border-radius:3px}
 .log-entry .tag.survived{color:var(--green-bright);border:1px solid var(--green-border);background:var(--green-faint)}
 .log-entry .tag.died{color:var(--critical);border:1px solid rgba(231,76,60,0.3);background:rgba(231,76,60,0.06)}
 
+/* Injury discovery panel */
+.injury-discovery{background:var(--panel);border:2px solid var(--blood-bright);border-radius:8px;padding:16px;margin-bottom:12px;animation:discoveryPulse 2s ease-out}
+@keyframes discoveryPulse{0%{border-color:var(--gold);box-shadow:0 0 20px rgba(201,168,76,0.3)}100%{border-color:var(--blood-bright);box-shadow:none}}
+.injury-discovery-title{font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;color:var(--blood-bright);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.injury-discovery-name{font-size:18px;color:var(--text);font-weight:600;margin-bottom:4px}
+.injury-discovery-march{font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--blood-bright);background:rgba(122,0,0,0.2);padding:2px 8px;border-radius:3px;display:inline-block}
+
 /* Responsive */
-@media(max-width:800px){
-  .gm-layout,.medic-layout{grid-template-columns:1fr}
+@media(max-width:900px){
+  .gm-layout{grid-template-columns:1fr}
+  .medic-bottom{grid-template-columns:1fr}
+  .kits-container{grid-template-columns:1fr}
+  .medic-top-bar{grid-template-columns:1fr}
   .role-cards{flex-direction:column;align-items:center}
 }
 </style>
@@ -172,6 +228,9 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
     </div>
   </header>
 
+  <!-- ACTION TOAST -->
+  <div class="action-toast" id="action-toast"></div>
+
   <!-- ROLE SELECT -->
   <div id="role-select" class="screen active">
     <div class="hd-eyebrow" style="font-size:11px;letter-spacing:6px">Choose Your Role</div>
@@ -184,7 +243,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
       <div class="role-card" onclick="selectRole('medic')">
         <span class="role-icon">&#9764;</span>
         <div class="role-name">Medic</div>
-        <div class="role-desc">Diagnose and treat the patient using MARCH protocol. Apply the right items in the right order to save lives.</div>
+        <div class="role-desc">Examine the patient, discover injuries, and treat them from memory. No instructions — you must know the procedures.</div>
       </div>
     </div>
   </div>
@@ -209,10 +268,17 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
           <div class="injury-pick" id="injury-pick"></div>
         </div>
         <div class="panel">
-          <div class="panel-title">Timer (seconds)</div>
+          <div class="panel-title">Operation Timer</div>
           <div class="timer-config">
-            <input type="number" id="timer-input" value="180" min="30" max="600" step="10">
+            <input type="number" id="timer-input" value="180" min="30" max="900" step="10">
             <label>seconds for medic</label>
+          </div>
+          <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+            <button class="btn" style="font-size:7px;padding:4px 8px" onclick="document.getElementById('timer-input').value=120">2 min</button>
+            <button class="btn" style="font-size:7px;padding:4px 8px" onclick="document.getElementById('timer-input').value=180">3 min</button>
+            <button class="btn" style="font-size:7px;padding:4px 8px" onclick="document.getElementById('timer-input').value=300">5 min</button>
+            <button class="btn" style="font-size:7px;padding:4px 8px" onclick="document.getElementById('timer-input').value=420">7 min</button>
+            <button class="btn" style="font-size:7px;padding:4px 8px" onclick="document.getElementById('timer-input').value=600">10 min</button>
           </div>
         </div>
         <div class="panel">
@@ -240,7 +306,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
             </svg>
           </div>
         </div>
-        <!-- Game Log -->
         <div class="panel">
           <div class="panel-title">Operation Log</div>
           <div id="gm-log">
@@ -270,71 +335,89 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
 
   <!-- MEDIC SCREEN: ACTIVE -->
   <div id="medic-screen" class="screen">
-    <div class="medic-layout">
-      <div class="medic-main">
-        <div id="medic-timer" class="safe">3:00</div>
-        <div class="vitals-bar" id="medic-vitals">
-          <div class="vital"><span class="vdot ok" id="v-pulse-dot"></span><span class="vtxt" id="v-pulse">Pulse: Stable</span></div>
-          <div class="vital"><span class="vdot ok" id="v-breath-dot"></span><span class="vtxt" id="v-breath">Breath: Normal</span></div>
-          <div class="vital"><span class="vdot ok" id="v-skin-dot"></span><span class="vtxt" id="v-skin">Skin: Warm</span></div>
+    <!-- Timer -->
+    <div id="medic-timer" class="safe">3:00</div>
+
+    <!-- Patient Status Card -->
+    <div class="patient-status" id="patient-status">
+      <div class="patient-status-header">
+        <div style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;color:var(--gold);text-transform:uppercase">Patient Status</div>
+        <div class="patient-condition condition-stable" id="patient-condition">Stable</div>
+      </div>
+      <div class="patient-res-display">
+        <span style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--text-muted)">RES</span>
+        <div class="patient-res-bar">
+          <div class="patient-res-fill" id="patient-res-fill" style="width:100%;background:linear-gradient(90deg,var(--green),var(--green-bright))"></div>
         </div>
-        <div class="peace-tracker" id="medic-peace" style="display:none">
-          <span class="ph-lbl">Peace Herb</span>
-          <div class="ph-dots">
-            <div class="ph-dot" id="ph1"></div>
-            <div class="ph-dot" id="ph2"></div>
-            <div class="ph-dot" id="ph3"></div>
-          </div>
+        <div class="patient-res-text" id="patient-res-text" style="color:var(--green-bright)">300/300</div>
+      </div>
+    </div>
+
+    <!-- Vitals bar -->
+    <div class="vitals-bar" id="medic-vitals">
+      <div class="vital"><span class="vdot ok" id="v-pulse-dot"></span><span class="vtxt" id="v-pulse">Pulse: Stable</span></div>
+      <div class="vital"><span class="vdot ok" id="v-breath-dot"></span><span class="vtxt" id="v-breath">Breath: Normal</span></div>
+      <div class="vital"><span class="vdot ok" id="v-skin-dot"></span><span class="vtxt" id="v-skin">Skin: Warm</span></div>
+      <div class="vital"><span class="vdot ok" id="v-consc-dot"></span><span class="vtxt" id="v-consc">Conscious: Yes</span></div>
+    </div>
+
+    <!-- Peace Herb tracker -->
+    <div class="peace-tracker" id="medic-peace" style="display:none">
+      <span class="ph-lbl">Peace Herb</span>
+      <div class="ph-dots">
+        <div class="ph-dot" id="ph1"></div>
+        <div class="ph-dot" id="ph2"></div>
+        <div class="ph-dot" id="ph3"></div>
+      </div>
+    </div>
+
+    <!-- Consequences -->
+    <div id="consequences-area"></div>
+
+    <!-- Examination / Treatment area -->
+    <div id="exam-area"></div>
+
+    <!-- Body + Kits side by side -->
+    <div class="medic-top-bar">
+      <div class="panel" style="text-align:center">
+        <div class="panel-title">Patient Body — Click to Examine</div>
+        <div class="body-container">
+          <svg class="body-svg" viewBox="0 0 220 400" id="medic-body">
+            <rect class="body-part" data-part="head" x="75" y="5" width="70" height="65" rx="20"/>
+            <rect class="body-part" data-part="neck" x="88" y="72" width="44" height="20" rx="6"/>
+            <rect class="body-part" data-part="chest" x="55" y="94" width="110" height="80" rx="8"/>
+            <rect class="body-part" data-part="left-arm" x="5" y="94" width="46" height="120" rx="10"/>
+            <rect class="body-part" data-part="right-arm" x="169" y="94" width="46" height="120" rx="10"/>
+            <rect class="body-part" data-part="left-leg" x="55" y="220" width="50" height="150" rx="10"/>
+            <rect class="body-part" data-part="right-leg" x="115" y="220" width="50" height="150" rx="10"/>
+            <circle class="body-part" data-part="left-eye" cx="95" cy="30" r="8"/>
+            <circle class="body-part" data-part="right-eye" cx="125" cy="30" r="8"/>
+          </svg>
         </div>
-        <div id="consequences-area"></div>
-        <div class="panel">
-          <div class="panel-title">Patient Body</div>
-          <div class="body-container">
-            <svg class="body-svg" viewBox="0 0 220 400" id="medic-body">
-              <rect class="body-part" data-part="head" x="75" y="5" width="70" height="65" rx="20"/>
-              <rect class="body-part" data-part="neck" x="88" y="72" width="44" height="20" rx="6"/>
-              <rect class="body-part" data-part="chest" x="55" y="94" width="110" height="80" rx="8"/>
-              <rect class="body-part" data-part="left-arm" x="5" y="94" width="46" height="120" rx="10"/>
-              <rect class="body-part" data-part="right-arm" x="169" y="94" width="46" height="120" rx="10"/>
-              <rect class="body-part" data-part="left-leg" x="55" y="220" width="50" height="150" rx="10"/>
-              <rect class="body-part" data-part="right-leg" x="115" y="220" width="50" height="150" rx="10"/>
-              <circle class="body-part" data-part="left-eye" cx="95" cy="30" r="8"/>
-              <circle class="body-part" data-part="right-eye" cx="125" cy="30" r="8"/>
-            </svg>
-          </div>
-        </div>
+        <div id="body-part-label" style="font-family:'Cinzel',serif;font-size:12px;color:var(--text-dim);margin-top:4px"></div>
+      </div>
+
+      <!-- Treatment Steps (center) -->
+      <div style="min-width:340px">
         <div class="panel" id="current-injury-panel">
-          <div class="panel-title" id="current-injury-title">Select an injured body part</div>
+          <div class="panel-title" id="current-injury-title">Examine a body part to begin</div>
           <div id="treatment-steps"></div>
         </div>
       </div>
-      <div class="medic-sidebar">
-        <div class="panel">
-          <div class="panel-title">MARCH Assessment</div>
-          <div id="march-display">
-            <div style="font-size:13px;color:var(--text-dim);line-height:1.8">
-              <span style="color:var(--blood-bright);font-weight:600">M</span> — Massive Bleeding<br>
-              <span style="color:var(--blood-bright);font-weight:600">A</span> — Airway<br>
-              <span style="color:var(--blood-bright);font-weight:600">R</span> — Respiration<br>
-              <span style="color:var(--blood-bright);font-weight:600">C</span> — Circulation<br>
-              <span style="color:var(--blood-bright);font-weight:600">H</span> — Head-to-Toe
-            </div>
+
+      <!-- Side by side kits -->
+      <div class="kits-container" style="grid-template-columns:1fr;gap:8px">
+        <div class="kit-panel">
+          <div class="panel-title" style="display:flex;align-items:center;gap:6px">
+            <span style="font-size:14px">&#9874;</span> Field Kit
           </div>
-        </div>
-        <div class="panel">
-          <div class="panel-title">Field Kit — Equipment</div>
           <div class="inv-grid" id="equip-grid"></div>
         </div>
-        <div class="panel">
-          <div class="panel-title">Field Kit — Herbs & Teas</div>
+        <div class="kit-panel">
+          <div class="panel-title" style="display:flex;align-items:center;gap:6px">
+            <span style="font-size:14px">&#127807;</span> Herbs & Teas
+          </div>
           <div class="inv-grid" id="herbs-grid"></div>
-        </div>
-        <div class="apply-area">
-          <button class="btn success apply-btn" id="apply-btn" onclick="applyItem()" disabled>Apply Selected Item</button>
-        </div>
-        <div class="panel" style="margin-top:4px">
-          <div class="panel-title">Selected Item</div>
-          <div id="selected-item-info" style="font-size:13px;color:var(--text-muted);font-style:italic">Nothing selected</div>
         </div>
       </div>
     </div>
@@ -347,6 +430,32 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
 </div>
 
 <script>
+// Item icons (SVG-based emoji representations)
+const ITEM_ICONS = {
+  'bandages': '&#129657;',
+  'splint': '&#129468;',
+  'sling': '&#129658;',
+  'tourniquet': '&#10060;',
+  'clean-water': '&#128167;',
+  'cold-stones': '&#129482;',
+  'pillows': '&#128716;',
+  'sutures': '&#129697;',
+  'forceps': '&#9986;',
+  'clamps': '&#128295;',
+  'hollow-needle': '&#128137;',
+  'chest-tube': '&#129659;',
+  'metal-rods': '&#128297;',
+  'probe': '&#128270;',
+  'mugwort': '&#127811;',
+  'puchuve': '&#9749;',
+  'peace-herb': '&#127812;',
+  'loquat': '&#127810;',
+  'chrysanthemum': '&#127804;',
+  'toki': '&#127861;',
+  'yuzu': '&#127819;',
+  'dream-root': '&#127793;'
+};
+
 const EQUIPMENT = [
   {id:'bandages',name:'Bandages',desc:'Stop bleeding, wrap wounds, secure splints'},
   {id:'splint',name:'Splint',desc:'Wood/bamboo to immobilize broken bones'},
@@ -390,233 +499,249 @@ const BODY_PARTS = {
 const INJURIES = {
   'broken-ribs':{
     name:'Broken Ribs',march:'R',category:'basic',damage:40,
+    examHint:'Patient winces when you press along the ribcage. You feel a give where ribs should be solid.',
     steps:[
       {text:'Feel along the ribs to locate the break',item:null,action:'examine'},
       {text:'Sit the patient upright',item:'pillows',action:'apply'},
-      {text:'Give Mugwort or Puchuve tea for pain',item:'mugwort',altItem:'puchuve',action:'apply'},
+      {text:'Give pain relief tea',item:'mugwort',altItem:'puchuve',action:'apply'},
       {text:'Give them something to hold against their chest',item:'pillows',action:'apply'},
       {text:'Make them do deep breaths to prevent pneumonia',item:null,action:'examine'},
       {text:'Place thin flat wood over the segment and secure with cloth',item:'splint',action:'apply'},
-      {text:'Wrap with bandage — firm but not tight',item:'bandages',action:'apply'},
+      {text:'Wrap firm but not tight',item:'bandages',action:'apply'},
       {text:'Monitor for worsening breathing or blue lips',item:null,action:'examine'}
     ]
   },
   'broken-arm-stable':{
     name:'Broken Arm (Stable)',march:'C',category:'basic',damage:35,
+    examHint:'The arm looks swollen and slightly deformed compared to the other. Patient cannot grip well.',
     steps:[
       {text:'Check the arm — compare to other arm for swelling and shape',item:null,action:'examine'},
       {text:'Test grip — have them squeeze your hand',item:null,action:'examine'},
       {text:'Check fingers for warmth and color',item:null,action:'examine'},
-      {text:'Give Puchuve tea for pain and wait for it to work',item:'puchuve',action:'apply'},
+      {text:'Give pain relief tea and wait for it to work',item:'puchuve',action:'apply'},
       {text:'If bone out of place, set it — pull into alignment',item:null,action:'examine'},
       {text:'Splint from shoulder down past fingers',item:'splint',action:'apply'},
       {text:'Sling it against their body',item:'sling',action:'apply'},
       {text:'Check finger color and warmth after — cold means too tight',item:null,action:'examine'},
-      {text:'Apply cold stones for swelling',item:'cold-stones',action:'apply'}
+      {text:'Apply cold treatment for swelling',item:'cold-stones',action:'apply'}
     ]
   },
   'broken-arm-open':{
     name:'Broken Arm (Open)',march:'C',category:'basic',damage:55,
+    examHint:'Bone is visibly protruding through the skin of the arm. Blood is seeping around the wound.',
     steps:[
       {text:'Visible bone through the wound — assess if one piece or shattered',item:null,action:'examine'},
       {text:'Check if blood is spurting with heartbeat (arterial)',item:null,action:'examine'},
-      {text:'Give Peace Herb to put them under',item:'peace-herb',action:'apply'},
-      {text:'Pour clean water over wound — wash out everything',item:'clean-water',action:'apply'},
+      {text:'Sedate the patient for the procedure',item:'peace-herb',action:'apply'},
+      {text:'Irrigate the wound thoroughly',item:'clean-water',action:'apply'},
       {text:'Gentle pressure to guide bone back under skin',item:null,action:'examine'},
-      {text:'Bandage the wound closed',item:'bandages',action:'apply'},
+      {text:'Close the wound',item:'bandages',action:'apply'},
       {text:'Splint with wood on both sides, tied away from wound',item:'splint',action:'apply'},
       {text:'Sling the arm',item:'sling',action:'apply'},
-      {text:'Apply Loquat Leaf compress for infection',item:'loquat',action:'apply'}
+      {text:'Apply infection prevention compress',item:'loquat',action:'apply'}
     ]
   },
   'broken-arm-comminuted':{
     name:'Broken Arm (Comminuted)',march:'C',category:'advanced',damage:80,
+    examHint:'The arm is severely deformed with multiple bumps under the skin. The bone is shattered into fragments.',
     steps:[
-      {text:'Administer 2 doses of Peace Herb Tea — wait for full sedation',item:'peace-herb',action:'apply'},
+      {text:'Administer full sedation — wait for it to take effect',item:'peace-herb',action:'apply'},
       {text:'Have assistant hold limb completely motionless',item:null,action:'examine'},
-      {text:'Irrigate heavily with clean water',item:'clean-water',action:'apply'},
-      {text:'Pack Mugwort around wound to control bleeding',item:'mugwort',action:'apply'},
+      {text:'Irrigate heavily',item:'clean-water',action:'apply'},
+      {text:'Pack wound to control bleeding',item:'mugwort',action:'apply'},
       {text:'Identify all fragments visually',item:null,action:'examine'},
-      {text:'Remove loose fragments with forceps',item:'forceps',action:'apply'},
-      {text:'Align major bone sections and hold with metal rods',item:'metal-rods',action:'apply'},
+      {text:'Remove loose fragments carefully',item:'forceps',action:'apply'},
+      {text:'Align major bone sections and stabilize',item:'metal-rods',action:'apply'},
       {text:'Close wound and apply cast/splint',item:'splint',action:'apply'},
-      {text:'Apply Loquat Leaf compress for infection prevention',item:'loquat',action:'apply'},
-      {text:'Give Toki tea for blood recovery',item:'toki',action:'apply'}
+      {text:'Apply infection prevention',item:'loquat',action:'apply'},
+      {text:'Give blood recovery tea',item:'toki',action:'apply'}
     ]
   },
   'broken-leg-stable':{
     name:'Broken Leg (Stable)',march:'C',category:'basic',damage:35,
+    examHint:'The leg is swollen and bent at an unnatural angle. Patient cries out when you touch it.',
     steps:[
       {text:'Check the leg — compare to other leg for swelling and shape',item:null,action:'examine'},
       {text:'Check foot pulse — warm foot is good, cold foot is bad',item:null,action:'examine'},
       {text:'Ask if they can feel you touching their toes',item:null,action:'examine'},
-      {text:'Give Puchuve tea for pain and wait',item:'puchuve',action:'apply'},
+      {text:'Give pain relief tea and wait',item:'puchuve',action:'apply'},
       {text:'If bone badly bent, set it — pull into alignment',item:null,action:'examine'},
       {text:'Rigid splint or bamboo cast — wrap firm but not too tight',item:'splint',action:'apply'},
       {text:'Check foot pulse after wrapping',item:null,action:'examine'},
-      {text:'Apply cold stones for swelling',item:'cold-stones',action:'apply'}
+      {text:'Apply cold treatment for swelling',item:'cold-stones',action:'apply'}
     ]
   },
   'broken-leg-open':{
     name:'Broken Leg (Open)',march:'C',category:'basic',damage:55,
+    examHint:'White bone juts out from the leg wound. Blood pools beneath. The patient is screaming.',
     steps:[
       {text:'Visible bone through wound — assess if one piece or shattered',item:null,action:'examine'},
       {text:'Check if blood is spurting with heartbeat (arterial)',item:null,action:'examine'},
-      {text:'Give Peace Herb to sedate',item:'peace-herb',action:'apply'},
-      {text:'Pour clean water over wound — wash out everything',item:'clean-water',action:'apply'},
+      {text:'Sedate the patient',item:'peace-herb',action:'apply'},
+      {text:'Irrigate the wound thoroughly',item:'clean-water',action:'apply'},
       {text:'Gentle pressure to guide bone back under skin',item:null,action:'examine'},
-      {text:'Bandage the wound closed',item:'bandages',action:'apply'},
+      {text:'Close the wound',item:'bandages',action:'apply'},
       {text:'Splint with wood on both sides, tied away from wound',item:'splint',action:'apply'},
-      {text:'Apply Loquat Leaf compress for infection',item:'loquat',action:'apply'}
+      {text:'Apply infection prevention compress',item:'loquat',action:'apply'}
     ]
   },
   'broken-leg-comminuted':{
     name:'Broken Leg (Comminuted)',march:'C',category:'advanced',damage:80,
+    examHint:'The leg is mangled — multiple fragments shifting under the skin. A complex fracture requiring advanced surgery.',
     steps:[
-      {text:'Administer 2 doses of Peace Herb Tea — wait for full sedation',item:'peace-herb',action:'apply'},
+      {text:'Administer full sedation — wait for it to take effect',item:'peace-herb',action:'apply'},
       {text:'Have assistant hold limb completely motionless',item:null,action:'examine'},
-      {text:'Irrigate heavily with clean water',item:'clean-water',action:'apply'},
-      {text:'Pack Mugwort around wound to control bleeding',item:'mugwort',action:'apply'},
+      {text:'Irrigate heavily',item:'clean-water',action:'apply'},
+      {text:'Pack wound to control bleeding',item:'mugwort',action:'apply'},
       {text:'Identify all fragments visually',item:null,action:'examine'},
-      {text:'Remove loose fragments with forceps',item:'forceps',action:'apply'},
-      {text:'Align major bone sections and hold with metal rods',item:'metal-rods',action:'apply'},
+      {text:'Remove loose fragments carefully',item:'forceps',action:'apply'},
+      {text:'Align major bone sections and stabilize',item:'metal-rods',action:'apply'},
       {text:'Close wound and apply cast/splint',item:'splint',action:'apply'},
-      {text:'Apply Loquat Leaf compress for infection prevention',item:'loquat',action:'apply'},
-      {text:'Give Toki tea for blood recovery',item:'toki',action:'apply'}
+      {text:'Apply infection prevention',item:'loquat',action:'apply'},
+      {text:'Give blood recovery tea',item:'toki',action:'apply'}
     ]
   },
   'deep-lac-arm':{
     name:'Deep Laceration (Arm)',march:'M',category:'basic',damage:50,
+    examHint:'A deep gash runs across the arm. Dark blood flows steadily — venous bleeding, not arterial.',
     steps:[
       {text:'Check if blood is spurting with heartbeat — arterial vs venous',item:null,action:'examine'},
-      {text:'Apply firm direct pressure with clean cloth — do not lift',item:'bandages',action:'apply'},
+      {text:'Apply firm direct pressure — do not lift',item:'bandages',action:'apply'},
       {text:'Elevate the arm above the heart',item:'pillows',action:'apply'},
-      {text:'Irrigate wound with clean saline water',item:'clean-water',action:'apply'},
-      {text:'Pack Mugwort into wound to slow remaining bleeding',item:'mugwort',action:'apply'},
-      {text:'Suture the wound closed — center outward',item:'sutures',action:'apply'},
-      {text:'Apply warm Loquat Leaf compress for infection prevention',item:'loquat',action:'apply'},
-      {text:'Bandage with clean cloth — firm but not tight',item:'bandages',action:'apply'},
+      {text:'Irrigate wound with clean solution',item:'clean-water',action:'apply'},
+      {text:'Pack wound to slow remaining bleeding',item:'mugwort',action:'apply'},
+      {text:'Close the wound — center outward',item:'sutures',action:'apply'},
+      {text:'Apply warm infection prevention compress',item:'loquat',action:'apply'},
+      {text:'Bandage firm but not tight',item:'bandages',action:'apply'},
       {text:'Check finger warmth and color — cold/blue = too tight',item:null,action:'examine'},
-      {text:'Give Toki tea for blood loss recovery',item:'toki',action:'apply'},
+      {text:'Give blood loss recovery tea',item:'toki',action:'apply'},
       {text:'Monitor for shock signs',item:null,action:'examine'}
     ]
   },
   'deep-lac-leg':{
     name:'Deep Laceration (Leg)',march:'M',category:'basic',damage:50,
+    examHint:'A long, deep cut across the thigh. Blood soaks through clothing rapidly.',
     steps:[
       {text:'Check if blood is spurting with heartbeat — arterial vs venous',item:null,action:'examine'},
-      {text:'Apply firm direct pressure with clean cloth — do not lift',item:'bandages',action:'apply'},
+      {text:'Apply firm direct pressure — do not lift',item:'bandages',action:'apply'},
       {text:'Lay patient down, elevate leg above heart',item:'pillows',action:'apply'},
-      {text:'Irrigate wound with clean saline water',item:'clean-water',action:'apply'},
-      {text:'Pack Mugwort into wound',item:'mugwort',action:'apply'},
-      {text:'Suture the wound closed — center outward',item:'sutures',action:'apply'},
-      {text:'Warm Loquat Leaf compress over closed wound',item:'loquat',action:'apply'},
-      {text:'Bandage with clean cloth — firm not tight',item:'bandages',action:'apply'},
+      {text:'Irrigate wound with clean solution',item:'clean-water',action:'apply'},
+      {text:'Pack wound to slow bleeding',item:'mugwort',action:'apply'},
+      {text:'Close the wound — center outward',item:'sutures',action:'apply'},
+      {text:'Apply warm infection prevention compress',item:'loquat',action:'apply'},
+      {text:'Bandage firm not tight',item:'bandages',action:'apply'},
       {text:'Check foot pulse and warmth — cold/blue = loosen',item:null,action:'examine'},
-      {text:'Give Toki tea if significant blood loss',item:'toki',action:'apply'},
+      {text:'Give blood recovery tea if significant loss',item:'toki',action:'apply'},
       {text:'Monitor for shock — thigh lacerations cause faster onset',item:null,action:'examine'}
     ]
   },
   'arterial-arm':{
     name:'Arterial Bleeding (Arm)',march:'M',category:'advanced',damage:90,
+    examHint:'Bright red blood SPURTS rhythmically from the arm with each heartbeat. Arterial. Life-threatening.',
     steps:[
-      {text:'Tourniquet immediately above the wound — tighten until spurting stops',item:'tourniquet',action:'apply'},
-      {text:'Administer Peace Herb Tea for sedation',item:'peace-herb',action:'apply'},
+      {text:'Stop the spurting immediately — above the wound',item:'tourniquet',action:'apply'},
+      {text:'Sedate the patient for surgery',item:'peace-herb',action:'apply'},
       {text:'Sterilize all tools',item:'clean-water',action:'apply'},
       {text:'Open skin above damaged artery — identify the vessel',item:null,action:'examine'},
-      {text:'Apply clamp above the wound (brachial pressure point)',item:'clamps',action:'apply'},
-      {text:'Apply second clamp below the damaged section',item:'clamps',action:'apply'},
-      {text:'Remove tourniquet — only after both clamps placed',item:'tourniquet',action:'apply'},
+      {text:'Clamp above the wound at pressure point',item:'clamps',action:'apply'},
+      {text:'Clamp below the damaged section',item:'clamps',action:'apply'},
+      {text:'Remove the tourniquet — only after both clamps placed',item:'tourniquet',action:'apply'},
       {text:'Sew the artery closed with thin thread and small stitches',item:'sutures',action:'apply'},
       {text:'Release lower clamp first — slowly — watch for leaking',item:'clamps',action:'apply'},
       {text:'Release upper clamp slowly — no blood escaping = success',item:'clamps',action:'apply'},
       {text:'Close the outer wound and bandage',item:'bandages',action:'apply'},
-      {text:'Give Toki tea — keep limb elevated on pillows',item:'toki',action:'apply'}
+      {text:'Give recovery tea — keep limb elevated',item:'toki',action:'apply'}
     ]
   },
   'arterial-leg':{
     name:'Arterial Bleeding (Leg)',march:'M',category:'advanced',damage:90,
+    examHint:'A fountain of bright red blood pulses from the leg wound. Arterial damage — seconds matter.',
     steps:[
-      {text:'Tourniquet immediately above the wound — tighten until spurting stops',item:'tourniquet',action:'apply'},
-      {text:'Administer Peace Herb Tea for sedation',item:'peace-herb',action:'apply'},
+      {text:'Stop the spurting immediately — above the wound',item:'tourniquet',action:'apply'},
+      {text:'Sedate the patient for surgery',item:'peace-herb',action:'apply'},
       {text:'Sterilize all tools',item:'clean-water',action:'apply'},
       {text:'Open skin above damaged artery — identify vessel',item:null,action:'examine'},
-      {text:'Apply clamp above wound (femoral pressure point)',item:'clamps',action:'apply'},
-      {text:'Apply second clamp below damaged section',item:'clamps',action:'apply'},
+      {text:'Clamp above wound at pressure point',item:'clamps',action:'apply'},
+      {text:'Clamp below damaged section',item:'clamps',action:'apply'},
       {text:'Remove tourniquet after both clamps placed',item:'tourniquet',action:'apply'},
       {text:'Sew artery closed with thin stitches',item:'sutures',action:'apply'},
       {text:'Release lower clamp first — slowly',item:'clamps',action:'apply'},
       {text:'Release upper clamp slowly',item:'clamps',action:'apply'},
       {text:'Close outer wound and bandage',item:'bandages',action:'apply'},
-      {text:'Give Toki tea — elevate limb on pillows',item:'toki',action:'apply'}
+      {text:'Give recovery tea — elevate limb',item:'toki',action:'apply'}
     ]
   },
   'arterial-neck':{
     name:'Arterial Bleeding (Neck)',march:'M',category:'advanced',damage:120,
+    examHint:'Blood sprays from the neck in rapid pulses. The patient is losing consciousness fast. Critical.',
     steps:[
-      {text:'Apply immediate firm direct pressure with clean cloth over wound',item:'bandages',action:'apply'},
-      {text:'Administer Peace Herb Tea immediately while maintaining pressure',item:'peace-herb',action:'apply'},
+      {text:'Apply immediate firm direct pressure over wound',item:'bandages',action:'apply'},
+      {text:'Sedate immediately while maintaining pressure',item:'peace-herb',action:'apply'},
       {text:'Sterilize tools — need second person holding pressure',item:'clean-water',action:'apply'},
       {text:'Expose wound carefully — identify damaged vessel',item:null,action:'examine'},
-      {text:'Apply clamp above damaged section',item:'clamps',action:'apply'},
-      {text:'Apply clamp below damaged section',item:'clamps',action:'apply'},
-      {text:'Sew vessel closed with thin thread — very small stitches — precision critical',item:'sutures',action:'apply'},
+      {text:'Clamp above damaged section',item:'clamps',action:'apply'},
+      {text:'Clamp below damaged section',item:'clamps',action:'apply'},
+      {text:'Sew vessel closed — very small stitches — precision critical',item:'sutures',action:'apply'},
       {text:'Release lower clamp first slowly — watch for leak',item:'clamps',action:'apply'},
       {text:'Release upper clamp slowly',item:'clamps',action:'apply'},
       {text:'Close wound — light bandage only — do NOT bind neck tightly',item:'bandages',action:'apply'},
-      {text:'Keep patient flat and still — give Toki tea when conscious',item:'toki',action:'apply'},
+      {text:'Keep patient flat and still — give recovery tea when conscious',item:'toki',action:'apply'},
       {text:'Monitor breathing closely',item:null,action:'examine'}
     ]
   },
   'collapsed-lung':{
     name:'Collapsed Lung',march:'R',category:'advanced',damage:100,
+    examHint:'One side of the chest barely moves. Listening closely, breath sounds are absent on the left. Trachea shifting.',
     steps:[
       {text:'Listen to both sides of chest — one side absent or muffled',item:null,action:'examine'},
-      {text:'Needle decompression — insert hollow needle into 2nd/3rd rib space on affected side',item:'hollow-needle',action:'apply'},
+      {text:'Needle decompression — insert into 2nd/3rd rib space on affected side',item:'hollow-needle',action:'apply'},
       {text:'Keep patient upright or at 45 degrees',item:'pillows',action:'apply'},
-      {text:'Administer Peace Herb Tea',item:'peace-herb',action:'apply'},
+      {text:'Sedate the patient',item:'peace-herb',action:'apply'},
       {text:'Insert chest tube at 4th/5th rib space — secure in place',item:'chest-tube',action:'apply'},
       {text:'Attach tube to sealed water trap — watch for air bubbles',item:null,action:'examine'},
       {text:'Monitor tube every 10 minutes — bubbles stopping = good',item:null,action:'examine'},
-      {text:'Confirm lung re-expanded — seal tube site with clean cloth',item:'bandages',action:'apply'},
-      {text:'Give Dream Root tea for lung fatigue recovery',item:'dream-root',action:'apply'},
+      {text:'Confirm lung re-expanded — seal tube site',item:'bandages',action:'apply'},
+      {text:'Give lung fatigue recovery tea',item:'dream-root',action:'apply'},
       {text:'Monitor breathing for 30 minutes after tube removal',item:null,action:'examine'}
     ]
   },
   'blind-eye-surface':{
     name:'Blind Eye (Surface Cut)',march:'H',category:'advanced',damage:45,
+    examHint:'The eye is bloodshot with a visible cut on the surface. The eye is firm — still intact inside.',
     steps:[
       {text:'Look directly at injured eye — check if firm and intact',item:null,action:'examine'},
       {text:'Assess if patient can distinguish light from dark',item:null,action:'examine'},
       {text:'Place patient flat on back — keep still',item:'pillows',action:'apply'},
-      {text:'Apply 1-2 tiny stitches on outer layer only — do NOT penetrate deeper',item:'sutures',action:'apply'},
+      {text:'Apply tiny stitches on outer layer only — do NOT penetrate deeper',item:'sutures',action:'apply'},
       {text:'Cover with dry soft cloth — no wet dressings',item:'bandages',action:'apply'},
       {text:'Elevate head slightly',item:'pillows',action:'apply'},
-      {text:'Give Chrysanthemum tea to reduce inflammation',item:'chrysanthemum',action:'apply'},
+      {text:'Give inflammation reduction tea',item:'chrysanthemum',action:'apply'},
       {text:'Keep patient resting — monitor for worsening',item:null,action:'examine'}
     ]
   },
   'blind-eye-puncture':{
     name:'Blind Eye (Puncture)',march:'H',category:'advanced',damage:60,
+    examHint:'The eye is soft and leaking fluid. A puncture wound. Do NOT stitch — it will force fluid out.',
     steps:[
       {text:'Look at injured eye — check if soft and leaking = puncture',item:null,action:'examine'},
       {text:'Do NOT stitch — stitching forces fluid out and guarantees blindness',item:null,action:'examine'},
       {text:'Do NOT apply any liquid compress or flush',item:null,action:'examine'},
-      {text:'Cover eye with dry rigid shield or clean dry cloth — nothing that presses',item:'bandages',action:'apply'},
+      {text:'Cover eye with dry rigid shield — nothing that presses',item:'bandages',action:'apply'},
       {text:'Elevate head slightly — keep patient completely still',item:'pillows',action:'apply'},
-      {text:'Give Chrysanthemum tea to reduce ocular inflammation',item:'chrysanthemum',action:'apply'},
+      {text:'Give inflammation reduction tea',item:'chrysanthemum',action:'apply'},
       {text:'Close monitoring — blindness is likely permanent regardless',item:null,action:'examine'}
     ]
   },
   'concussion':{
     name:'Concussion',march:'H',category:'basic',damage:30,
+    examHint:'Patient is confused, nauseous. One pupil is slightly larger than the other. Probable head trauma.',
     steps:[
       {text:'Check pupil response — are both eyes equal and reactive?',item:null,action:'examine'},
       {text:'Ask basic questions — name, where they are, what happened',item:null,action:'examine'},
       {text:'Check for nausea, dizziness, confusion',item:null,action:'examine'},
       {text:'Lay patient down with head slightly elevated',item:'pillows',action:'apply'},
-      {text:'Apply cold stones to head for swelling',item:'cold-stones',action:'apply'},
-      {text:'Give Mugwort tea for pain',item:'mugwort',action:'apply'},
+      {text:'Apply cold treatment to head for swelling',item:'cold-stones',action:'apply'},
+      {text:'Give pain relief tea',item:'mugwort',action:'apply'},
       {text:'Keep them awake — do not let them sleep for first hour',item:null,action:'examine'},
       {text:'Monitor for worsening — vomiting, seizures, one pupil larger',item:null,action:'examine'}
     ]
@@ -636,7 +761,7 @@ let state = {
   timerSeconds: 180,
   timerRemaining: 0,
   timerInterval: null,
-  currentInjuryIdx: 0,
+  currentInjuryIdx: -1,
   currentStepIdx: 0,
   selectedItem: null,
   peaceHerbUsed: 0,
@@ -647,11 +772,23 @@ let state = {
   totalSteps: 0,
   correctSteps: 0,
   gameActive: false,
-  shockActive: false
+  shockActive: false,
+  // New: examination state
+  examinedParts: {},   // {partId: true} - which parts have been examined
+  discoveredInjuries: {}, // {injuryIdx: true} - which injuries have been discovered
+  examiningPart: null  // currently being examined
 };
 
 function generateCode() {
   return Math.random().toString(36).substring(2, 8).toUpperCase();
+}
+
+function showToast(message, type) {
+  const toast = document.getElementById('action-toast');
+  toast.textContent = message;
+  toast.className = 'action-toast ' + type;
+  setTimeout(() => toast.classList.add('show'), 10);
+  setTimeout(() => toast.classList.remove('show'), 2500);
 }
 
 function selectRole(role) {
@@ -674,7 +811,7 @@ function selectRole(role) {
 
 function backToLobby() {
   if (state.timerInterval) clearInterval(state.timerInterval);
-  state = {role:null,gameCode:null,gmHP:300,gmMaxHP:300,assignedInjuries:[],selectedPart:null,timerSeconds:180,timerRemaining:0,timerInterval:null,currentInjuryIdx:0,currentStepIdx:0,selectedItem:null,peaceHerbUsed:0,patientRES:300,consequences:[],completedInjuries:[],wrongAttempts:0,totalSteps:0,correctSteps:0,gameActive:false,shockActive:false};
+  state = {role:null,gameCode:null,gmHP:300,gmMaxHP:300,assignedInjuries:[],selectedPart:null,timerSeconds:180,timerRemaining:0,timerInterval:null,currentInjuryIdx:-1,currentStepIdx:0,selectedItem:null,peaceHerbUsed:0,patientRES:300,consequences:[],completedInjuries:[],wrongAttempts:0,totalSteps:0,correctSteps:0,gameActive:false,shockActive:false,examinedParts:{},discoveredInjuries:{},examiningPart:null};
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('role-select').classList.add('active');
   document.getElementById('back-btn').style.display = 'none';
@@ -705,52 +842,44 @@ function showInjuryPicker(part) {
     const btn = document.createElement('button');
     btn.className = 'injury-btn';
     if (inj.category === 'advanced') btn.style.borderColor = 'rgba(192,57,43,0.6)';
-    btn.innerHTML = `${inj.name}<br><span style="font-size:7px;color:var(--blood-bright);letter-spacing:2px">MARCH: ${inj.march}</span>`;
-    if (inj.category === 'advanced') btn.innerHTML += `<br><span style="font-size:7px;color:var(--critical)">ADVANCED</span>`;
-    btn.onclick = () => addInjury(part, injId);
+    btn.innerHTML = inj.name + '<br><span style="font-size:7px;color:var(--blood-bright);letter-spacing:2px">MARCH: ' + inj.march + '</span>';
+    if (inj.category === 'advanced') btn.innerHTML += '<br><span style="font-size:7px;color:var(--critical)">ADVANCED</span>';
+    btn.onclick = function() { addInjury(part, injId); };
     grid.appendChild(btn);
   });
 }
 
 function addInjury(part, injId) {
-  const existing = state.assignedInjuries.find(i => i.part === part && i.injId === injId);
+  var existing = state.assignedInjuries.find(function(i) { return i.part === part && i.injId === injId; });
   if (existing) return;
-  state.assignedInjuries.push({part, injId, treated: false});
-  document.querySelectorAll(`#gm-body .body-part[data-part="${part}"]`).forEach(el => el.classList.add('injured'));
+  state.assignedInjuries.push({part: part, injId: injId, treated: false});
+  document.querySelectorAll('#gm-body .body-part[data-part="' + part + '"]').forEach(function(el) { el.classList.add('injured'); });
   renderActiveInjuries();
   document.getElementById('start-game-btn').disabled = state.assignedInjuries.length === 0;
 }
 
 function removeInjury(idx) {
-  const removed = state.assignedInjuries.splice(idx, 1)[0];
-  const stillHasInjury = state.assignedInjuries.some(i => i.part === removed.part);
+  var removed = state.assignedInjuries.splice(idx, 1)[0];
+  var stillHasInjury = state.assignedInjuries.some(function(i) { return i.part === removed.part; });
   if (!stillHasInjury) {
-    document.querySelectorAll(`#gm-body .body-part[data-part="${removed.part}"]`).forEach(el => el.classList.remove('injured'));
+    document.querySelectorAll('#gm-body .body-part[data-part="' + removed.part + '"]').forEach(function(el) { el.classList.remove('injured'); });
   }
   renderActiveInjuries();
   document.getElementById('start-game-btn').disabled = state.assignedInjuries.length === 0;
 }
 
 function renderActiveInjuries() {
-  const container = document.getElementById('active-injuries');
+  var container = document.getElementById('active-injuries');
   if (state.assignedInjuries.length === 0) {
     container.innerHTML = '<div style="font-size:13px;color:var(--text-muted);font-style:italic">No injuries assigned yet</div>';
     return;
   }
   container.innerHTML = '';
-  state.assignedInjuries.forEach((inj, idx) => {
-    const data = INJURIES[inj.injId];
-    const div = document.createElement('div');
+  state.assignedInjuries.forEach(function(inj, idx) {
+    var data = INJURIES[inj.injId];
+    var div = document.createElement('div');
     div.className = 'injury-list-item';
-    div.innerHTML = `
-      <div>
-        <span class="name">${data.name}</span>
-        <span style="font-size:11px;color:var(--text-muted)"> — ${BODY_PARTS[inj.part].name}</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <span class="march-tag">MARCH: ${data.march}</span>
-        <button class="remove-injury" onclick="removeInjury(${idx})">&times;</button>
-      </div>`;
+    div.innerHTML = '<div><span class="name">' + data.name + '</span><span style="font-size:11px;color:var(--text-muted)"> — ' + BODY_PARTS[inj.part].name + '</span></div><div style="display:flex;align-items:center;gap:8px"><span class="march-tag">MARCH: ' + data.march + '</span><button class="remove-injury" onclick="removeInjury(' + idx + ')">&times;</button></div>';
     container.appendChild(div);
   });
 }
@@ -759,7 +888,7 @@ function startGame() {
   if (state.assignedInjuries.length === 0) return;
   state.timerSeconds = parseInt(document.getElementById('timer-input').value) || 180;
   state.gameActive = true;
-  const gameData = {
+  var gameData = {
     code: state.gameCode,
     injuries: JSON.parse(JSON.stringify(state.assignedInjuries)),
     timer: state.timerSeconds
@@ -770,10 +899,10 @@ function startGame() {
 }
 
 function listenForGameStart() {
-  const checkInterval = setInterval(() => {
-    const data = localStorage.getItem('dss-medical-game');
+  var checkInterval = setInterval(function() {
+    var data = localStorage.getItem('dss-medical-game');
     if (data) {
-      const gameData = JSON.parse(data);
+      var gameData = JSON.parse(data);
       state.assignedInjuries = gameData.injuries;
       state.timerSeconds = gameData.timer;
       state.gameCode = gameData.code;
@@ -788,72 +917,220 @@ function startMedicGame() {
   document.getElementById('medic-screen').classList.add('active');
   state.gameActive = true;
   state.timerRemaining = state.timerSeconds;
-  state.currentInjuryIdx = 0;
+  state.currentInjuryIdx = -1;
   state.currentStepIdx = 0;
   state.peaceHerbUsed = 0;
   state.patientRES = 300;
+  state.examinedParts = {};
+  state.discoveredInjuries = {};
+  state.examiningPart = null;
   initMedicBody();
   initInventory();
   startTimer();
-  renderMedicView();
-}
-
-function initMedicBody() {
-  state.assignedInjuries.forEach(inj => {
-    document.querySelectorAll(`#medic-body .body-part[data-part="${inj.part}"]`).forEach(el => {
+  updatePatientStatus();
+  // Mark injured parts visually (they pulse red but player doesn't know what injury)
+  state.assignedInjuries.forEach(function(inj) {
+    document.querySelectorAll('#medic-body .body-part[data-part="' + inj.part + '"]').forEach(function(el) {
       el.classList.add('injured');
     });
   });
-  document.querySelectorAll('#medic-body .body-part').forEach(el => {
-    el.addEventListener('click', () => {
-      const part = el.dataset.part;
-      const injIdx = state.assignedInjuries.findIndex(i => i.part === part && !i.treated);
-      if (injIdx >= 0) {
-        state.currentInjuryIdx = injIdx;
-        state.currentStepIdx = 0;
-        renderMedicView();
-      }
+}
+
+function initMedicBody() {
+  document.querySelectorAll('#medic-body .body-part').forEach(function(el) {
+    el.addEventListener('click', function() {
+      var part = el.dataset.part;
+      handleBodyPartClick(part);
     });
   });
 }
 
+function handleBodyPartClick(part) {
+  if (!state.gameActive) return;
+  document.getElementById('body-part-label').textContent = BODY_PARTS[part] ? BODY_PARTS[part].name : part;
+
+  // Check if this part has any injuries
+  var injIndices = [];
+  state.assignedInjuries.forEach(function(inj, idx) {
+    if (inj.part === part) injIndices.push(idx);
+  });
+
+  if (injIndices.length === 0) {
+    // No injury here
+    showToast('No injuries found on ' + (BODY_PARTS[part] ? BODY_PARTS[part].name : part), 'info');
+    return;
+  }
+
+  // Check for unexamined injuries on this part
+  var unexamined = injIndices.filter(function(idx) { return !state.discoveredInjuries[idx]; });
+  var untreated = injIndices.filter(function(idx) { return !state.assignedInjuries[idx].treated; });
+
+  if (unexamined.length > 0) {
+    // Need to examine this body part first
+    startExamination(part, unexamined[0]);
+  } else if (untreated.length > 0) {
+    // Already examined, switch to treating this injury
+    state.currentInjuryIdx = untreated[0];
+    // Keep currentStepIdx if we're already on this injury, otherwise reset
+    if (state.currentInjuryIdx !== untreated[0]) {
+      state.currentStepIdx = 0;
+    }
+    renderMedicView();
+  } else {
+    showToast(BODY_PARTS[part].name + ' — fully treated', 'success');
+  }
+}
+
+function startExamination(part, injIdx) {
+  state.examiningPart = part;
+  var injury = state.assignedInjuries[injIdx];
+  var data = INJURIES[injury.injId];
+
+  // Highlight the body part being examined
+  document.querySelectorAll('#medic-body .body-part').forEach(function(el) { el.classList.remove('examining'); });
+  document.querySelectorAll('#medic-body .body-part[data-part="' + part + '"]').forEach(function(el) {
+    el.classList.add('examining');
+  });
+
+  var examArea = document.getElementById('exam-area');
+  examArea.innerHTML = '<div class="exam-overlay">' +
+    '<div class="exam-title"><span style="font-size:16px">&#128269;</span> Examining ' + BODY_PARTS[part].name + '</div>' +
+    '<div class="exam-desc">You carefully inspect the ' + BODY_PARTS[part].name.toLowerCase() + '...</div>' +
+    '<button class="exam-btn" onclick="completeExamination(' + injIdx + ')">Perform Examination</button>' +
+    '</div>';
+}
+
+function completeExamination(injIdx) {
+  var injury = state.assignedInjuries[injIdx];
+  var data = INJURIES[injury.injId];
+
+  state.discoveredInjuries[injIdx] = true;
+  state.examiningPart = null;
+
+  // Remove examining class
+  document.querySelectorAll('#medic-body .body-part').forEach(function(el) { el.classList.remove('examining'); });
+
+  // Show discovery result
+  var examArea = document.getElementById('exam-area');
+  examArea.innerHTML = '<div class="injury-discovery">' +
+    '<div class="injury-discovery-title"><span style="font-size:14px">&#9888;</span> Injury Discovered</div>' +
+    '<div class="injury-discovery-name">' + data.name + ' — ' + BODY_PARTS[injury.part].name + '</div>' +
+    '<div style="margin-top:6px"><span class="injury-discovery-march">MARCH: ' + data.march + '</span>' +
+    (data.category === 'advanced' ? ' <span style="font-family:\'Cinzel\',serif;font-size:9px;letter-spacing:2px;color:var(--critical);background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.3);padding:2px 8px;border-radius:3px">ADVANCED</span>' : '') +
+    '</div>' +
+    '<div style="margin-top:10px;font-size:14px;color:var(--text-dim);font-style:italic">' + data.examHint + '</div>' +
+    '<button class="btn success" style="margin-top:12px" onclick="beginTreatment(' + injIdx + ')">Begin Treatment</button>' +
+    '</div>';
+
+  showToast('Injury discovered: ' + data.name, 'info');
+  updatePatientStatus();
+}
+
+function beginTreatment(injIdx) {
+  state.currentInjuryIdx = injIdx;
+  state.currentStepIdx = 0;
+  document.getElementById('exam-area').innerHTML = '';
+  renderMedicView();
+}
+
 function initInventory() {
-  const equipGrid = document.getElementById('equip-grid');
-  const herbsGrid = document.getElementById('herbs-grid');
+  var equipGrid = document.getElementById('equip-grid');
+  var herbsGrid = document.getElementById('herbs-grid');
   equipGrid.innerHTML = '';
   herbsGrid.innerHTML = '';
-  EQUIPMENT.forEach(item => {
-    const div = document.createElement('div');
+  EQUIPMENT.forEach(function(item) {
+    var div = document.createElement('div');
     div.className = 'inv-item';
     div.id = 'inv-' + item.id;
-    div.textContent = item.name;
+    div.innerHTML = '<span class="item-icon">' + (ITEM_ICONS[item.id] || '&#9744;') + '</span><span class="item-name">' + item.name + '</span>';
     div.title = item.desc;
-    div.onclick = () => selectItem(item.id, item.name, item.desc);
+    div.onclick = function() { clickItem(item.id); };
     equipGrid.appendChild(div);
   });
-  HERBS.forEach(item => {
-    const div = document.createElement('div');
+  HERBS.forEach(function(item) {
+    var div = document.createElement('div');
     div.className = 'inv-item';
     div.id = 'inv-' + item.id;
-    div.textContent = item.name;
+    div.innerHTML = '<span class="item-icon">' + (ITEM_ICONS[item.id] || '&#127793;') + '</span><span class="item-name">' + item.name + '</span>';
     div.title = item.desc;
-    div.onclick = () => selectItem(item.id, item.name, item.desc);
+    div.onclick = function() { clickItem(item.id); };
     herbsGrid.appendChild(div);
   });
 }
 
+// Click-to-apply: clicking an item directly applies it
+function clickItem(id) {
+  if (!state.gameActive) return;
+  if (state.currentInjuryIdx < 0) {
+    showToast('Examine a body part first', 'info');
+    return;
+  }
+
+  var injury = state.assignedInjuries[state.currentInjuryIdx];
+  if (!injury || injury.treated) {
+    showToast('No active injury to treat', 'info');
+    return;
+  }
+
+  var data = INJURIES[injury.injId];
+  var step = data.steps[state.currentStepIdx];
+  if (!step) return;
+
+  if (!step.item) {
+    // This step requires examination, not an item
+    showToast('This step requires examination, not an item', 'error');
+    showWrongItem(id);
+    state.wrongAttempts++;
+    state.patientRES -= 15;
+    addConsequence('Applied item when examination was needed', -15);
+    if (state.patientRES <= 0) {
+      endGame(false, 'Too many mistakes — patient died from complications');
+    }
+    updateVitals();
+    updatePatientStatus();
+    return;
+  }
+
+  var isCorrect = (id === step.item) || (step.altItem && id === step.altItem);
+
+  if (isCorrect) {
+    if (id === 'peace-herb') {
+      state.peaceHerbUsed++;
+      if (state.peaceHerbUsed >= 3) {
+        endGame(false, 'Third dose of Peace Herb given — patient died');
+        return;
+      }
+      updatePeaceHerb();
+    }
+    var el = document.getElementById('inv-' + id);
+    if (el) {
+      el.classList.add('used');
+      setTimeout(function() { el.classList.remove('used'); }, 800);
+    }
+    state.correctSteps++;
+    showToast('Correct! ' + getItemName(id) + ' applied', 'success');
+    completeStep();
+  } else {
+    showWrongItem(id);
+    state.wrongAttempts++;
+    state.patientRES -= 25;
+    addConsequence('Wrong item: ' + getItemName(id) + '. Patient condition worsens.', -25);
+    showToast('Wrong item! Patient suffers (-25 RES)', 'error');
+    if (state.patientRES <= 0) {
+      endGame(false, 'Too many mistakes — patient died from complications');
+    }
+    updateVitals();
+    updatePatientStatus();
+  }
+}
+
 function selectItem(id, name, desc) {
-  document.querySelectorAll('.inv-item').forEach(el => el.classList.remove('selected'));
-  state.selectedItem = id;
-  const el = document.getElementById('inv-' + id);
-  if (el) el.classList.add('selected');
-  document.getElementById('selected-item-info').innerHTML = `<span style="color:var(--gold);font-style:normal">${name}</span><br><span style="font-size:12px">${desc}</span>`;
-  document.getElementById('apply-btn').disabled = false;
+  // Not used in click-to-apply mode, kept for compatibility
 }
 
 function startTimer() {
   updateTimerDisplay();
-  state.timerInterval = setInterval(() => {
+  state.timerInterval = setInterval(function() {
     state.timerRemaining--;
     updateTimerDisplay();
     if (state.timerRemaining <= 0) {
@@ -864,9 +1141,9 @@ function startTimer() {
 }
 
 function updateTimerDisplay() {
-  const el = document.getElementById('medic-timer');
-  const m = Math.floor(state.timerRemaining / 60);
-  const s = state.timerRemaining % 60;
+  var el = document.getElementById('medic-timer');
+  var m = Math.floor(state.timerRemaining / 60);
+  var s = state.timerRemaining % 60;
   el.textContent = m + ':' + (s < 10 ? '0' : '') + s;
   if (state.timerRemaining <= 30) {
     el.classList.remove('safe');
@@ -877,134 +1154,141 @@ function updateTimerDisplay() {
 }
 
 function renderMedicView() {
-  const injury = state.assignedInjuries[state.currentInjuryIdx];
+  if (state.currentInjuryIdx < 0) return;
+  var injury = state.assignedInjuries[state.currentInjuryIdx];
   if (!injury) return;
-  const data = INJURIES[injury.injId];
-  document.getElementById('current-injury-title').innerHTML = `
-    ${data.name} — ${BODY_PARTS[injury.part].name}
-    <span style="font-size:9px;letter-spacing:2px;color:var(--blood-bright);margin-left:10px">MARCH: ${data.march}</span>
-    ${data.category === 'advanced' ? '<span style="font-size:9px;letter-spacing:2px;color:var(--critical);margin-left:10px">ADVANCED</span>' : ''}
-  `;
-  if (data.steps.some(s => s.item === 'peace-herb')) {
+  var data = INJURIES[injury.injId];
+  document.getElementById('current-injury-title').innerHTML =
+    data.name + ' — ' + BODY_PARTS[injury.part].name +
+    ' <span style="font-size:9px;letter-spacing:2px;color:var(--blood-bright);margin-left:10px">MARCH: ' + data.march + '</span>' +
+    (data.category === 'advanced' ? ' <span style="font-size:9px;letter-spacing:2px;color:var(--critical);margin-left:10px">ADVANCED</span>' : '');
+
+  if (data.steps.some(function(s) { return s.item === 'peace-herb'; })) {
     document.getElementById('medic-peace').style.display = 'flex';
     updatePeaceHerb();
   }
   renderSteps(data);
+  updatePatientStatus();
 }
 
 function renderSteps(data) {
-  const container = document.getElementById('treatment-steps');
+  var container = document.getElementById('treatment-steps');
   container.innerHTML = '';
-  data.steps.forEach((step, idx) => {
-    const div = document.createElement('div');
+  data.steps.forEach(function(step, idx) {
+    var div = document.createElement('div');
     div.className = 'step-box';
     if (idx < state.currentStepIdx) div.classList.add('done');
     else if (idx === state.currentStepIdx) div.classList.add('current');
-    const actionLabel = step.item ? `<span style="font-size:10px;color:var(--gold);font-family:'Cinzel',serif;letter-spacing:1px"> [Apply: ${getItemName(step.item)}${step.altItem ? ' or ' + getItemName(step.altItem) : ''}]</span>` : '<span style="font-size:10px;color:var(--blue);font-family:\'Cinzel\',serif;letter-spacing:1px"> [Examine]</span>';
-    div.innerHTML = `
-      <div class="step-num">Step ${idx + 1} of ${data.steps.length}</div>
-      <div class="step-text">${step.text}${idx === state.currentStepIdx ? actionLabel : ''}</div>
-    `;
+
+    // NO item hints - player must remember
+    var actionType = '';
+    if (idx === state.currentStepIdx) {
+      if (step.item) {
+        actionType = '<span class="step-action-type step-action-apply">Apply Item</span>';
+      } else {
+        actionType = '<span class="step-action-type step-action-examine">Examine</span>';
+      }
+    }
+
+    div.innerHTML = '<div class="step-num">Step ' + (idx + 1) + ' of ' + data.steps.length + '</div>' +
+      '<div class="step-text">' + step.text + '</div>' +
+      (idx === state.currentStepIdx ? actionType : '');
+
+    // Examine button for examine steps
     if (idx === state.currentStepIdx && !step.item) {
-      const examBtn = document.createElement('button');
+      var examBtn = document.createElement('button');
       examBtn.className = 'btn';
       examBtn.style.cssText = 'margin-top:8px;font-size:8px;padding:6px 14px';
       examBtn.textContent = 'Perform Examination';
-      examBtn.onclick = () => completeStep();
+      examBtn.onclick = function() {
+        showToast('Examination complete', 'success');
+        state.correctSteps++;
+        completeStep();
+      };
       div.appendChild(examBtn);
     }
+
     container.appendChild(div);
   });
 }
 
 function getItemName(id) {
-  const eq = EQUIPMENT.find(e => e.id === id);
+  var eq = EQUIPMENT.find(function(e) { return e.id === id; });
   if (eq) return eq.name;
-  const herb = HERBS.find(h => h.id === id);
+  var herb = HERBS.find(function(h) { return h.id === id; });
   if (herb) return herb.name;
   return id;
 }
 
 function applyItem() {
-  if (!state.selectedItem || !state.gameActive) return;
-  const injury = state.assignedInjuries[state.currentInjuryIdx];
-  if (!injury) return;
-  const data = INJURIES[injury.injId];
-  const step = data.steps[state.currentStepIdx];
-  if (!step) return;
-  if (!step.item) {
-    showWrongItem();
-    return;
-  }
-  const isCorrect = state.selectedItem === step.item || (step.altItem && state.selectedItem === step.altItem);
-  if (isCorrect) {
-    if (state.selectedItem === 'peace-herb') {
-      state.peaceHerbUsed++;
-      if (state.peaceHerbUsed >= 3) {
-        endGame(false, 'Third dose of Peace Herb given — patient died');
-        return;
-      }
-      updatePeaceHerb();
-    }
-    const el = document.getElementById('inv-' + state.selectedItem);
-    if (el) {
-      el.classList.remove('selected');
-      el.classList.add('used');
-      setTimeout(() => el.classList.remove('used'), 800);
-    }
-    state.correctSteps++;
-    completeStep();
-  } else {
-    showWrongItem();
-    state.wrongAttempts++;
-    state.patientRES -= 25;
-    addConsequence(`Wrong item applied: ${getItemName(state.selectedItem)}. Needed: ${getItemName(step.item)}`, -25);
-    if (state.patientRES <= 0) {
-      endGame(false, 'Too many mistakes — patient died from complications');
-    }
-    updateVitals();
-  }
-  state.selectedItem = null;
-  document.querySelectorAll('.inv-item').forEach(el => el.classList.remove('selected'));
-  document.getElementById('selected-item-info').innerHTML = '<span style="font-style:italic">Nothing selected</span>';
-  document.getElementById('apply-btn').disabled = true;
+  // Legacy - not used in click-to-apply mode
 }
 
-function showWrongItem() {
-  const el = state.selectedItem ? document.getElementById('inv-' + state.selectedItem) : null;
+function showWrongItem(id) {
+  var itemId = id || state.selectedItem;
+  var el = itemId ? document.getElementById('inv-' + itemId) : null;
   if (el) {
     el.classList.add('wrong');
-    setTimeout(() => el.classList.remove('wrong'), 500);
+    setTimeout(function() { el.classList.remove('wrong'); }, 500);
   }
 }
 
 function completeStep() {
-  const injury = state.assignedInjuries[state.currentInjuryIdx];
-  const data = INJURIES[injury.injId];
+  var injury = state.assignedInjuries[state.currentInjuryIdx];
+  var data = INJURIES[injury.injId];
   state.currentStepIdx++;
   state.totalSteps++;
   if (state.currentStepIdx >= data.steps.length) {
     injury.treated = true;
     state.completedInjuries.push(injury);
-    document.querySelectorAll(`#medic-body .body-part[data-part="${injury.part}"]`).forEach(el => {
+    document.querySelectorAll('#medic-body .body-part[data-part="' + injury.part + '"]').forEach(function(el) {
       el.classList.remove('injured');
       el.classList.add('healed');
     });
     saveMedicProgress(injury);
-    const nextIdx = state.assignedInjuries.findIndex(i => !i.treated);
-    if (nextIdx < 0) {
+    showToast(data.name + ' — Treatment complete!', 'success');
+
+    var nextIdx = -1;
+    // Find next discovered but untreated injury
+    for (var i = 0; i < state.assignedInjuries.length; i++) {
+      if (!state.assignedInjuries[i].treated && state.discoveredInjuries[i]) {
+        nextIdx = i;
+        break;
+      }
+    }
+
+    // Check if all injuries are treated
+    var allTreated = state.assignedInjuries.every(function(inj) { return inj.treated; });
+    if (allTreated) {
       endGame(true, 'All injuries treated successfully!');
       return;
     }
-    state.currentInjuryIdx = nextIdx;
-    state.currentStepIdx = 0;
+
+    // Check if there are undiscovered injuries remaining
+    var hasUndiscovered = state.assignedInjuries.some(function(inj, idx) {
+      return !inj.treated && !state.discoveredInjuries[idx];
+    });
+
+    if (nextIdx >= 0) {
+      state.currentInjuryIdx = nextIdx;
+      state.currentStepIdx = 0;
+      renderMedicView();
+    } else if (hasUndiscovered) {
+      state.currentInjuryIdx = -1;
+      document.getElementById('current-injury-title').textContent = 'Examine remaining body parts for more injuries';
+      document.getElementById('treatment-steps').innerHTML = '<div style="font-size:14px;color:var(--text-dim);font-style:italic;padding:12px">Click on injured body parts (pulsing red) to examine them and discover remaining injuries.</div>';
+    } else {
+      endGame(true, 'All injuries treated successfully!');
+      return;
+    }
   }
   renderMedicView();
+  updatePatientStatus();
 }
 
 function updatePeaceHerb() {
-  for (let i = 1; i <= 3; i++) {
-    const dot = document.getElementById('ph' + i);
+  for (var i = 1; i <= 3; i++) {
+    var dot = document.getElementById('ph' + i);
     if (!dot) continue;
     dot.className = 'ph-dot';
     if (i <= state.peaceHerbUsed) dot.classList.add('used');
@@ -1013,40 +1297,84 @@ function updatePeaceHerb() {
 }
 
 function addConsequence(text, penalty) {
-  state.consequences.push({text, penalty});
-  const area = document.getElementById('consequences-area');
-  const div = document.createElement('div');
+  state.consequences.push({text: text, penalty: penalty});
+  var area = document.getElementById('consequences-area');
+  var div = document.createElement('div');
   div.className = 'consequence';
-  div.innerHTML = `${text}<span class="pen">${penalty} RES</span>`;
+  div.innerHTML = text + '<span class="pen">' + penalty + ' RES</span>';
   area.appendChild(div);
+  // Auto-remove consequences after 5 seconds to keep UI clean
+  setTimeout(function() {
+    if (div.parentNode) div.parentNode.removeChild(div);
+  }, 5000);
+}
+
+function updatePatientStatus() {
+  var ratio = state.patientRES / 300;
+  var fill = document.getElementById('patient-res-fill');
+  var text = document.getElementById('patient-res-text');
+  var condition = document.getElementById('patient-condition');
+
+  fill.style.width = (ratio * 100) + '%';
+  text.textContent = state.patientRES + '/300';
+
+  if (ratio > 0.6) {
+    fill.style.background = 'linear-gradient(90deg,var(--green),var(--green-bright))';
+    text.style.color = 'var(--green-bright)';
+    condition.className = 'patient-condition condition-stable';
+    condition.textContent = 'Stable';
+  } else if (ratio > 0.3) {
+    fill.style.background = 'linear-gradient(90deg,var(--warn),#e6a817)';
+    text.style.color = 'var(--warn)';
+    condition.className = 'patient-condition condition-warning';
+    condition.textContent = 'Deteriorating';
+  } else {
+    fill.style.background = 'linear-gradient(90deg,var(--blood),var(--critical))';
+    text.style.color = 'var(--critical)';
+    condition.className = 'patient-condition condition-critical';
+    condition.textContent = 'Critical';
+  }
+
+  // Progress info
+  var treated = state.completedInjuries.length;
+  var total = state.assignedInjuries.length;
+  var discovered = Object.keys(state.discoveredInjuries).length;
+
+  updateVitals();
 }
 
 function updateVitals() {
-  const ratio = state.patientRES / 300;
-  const pulseDot = document.getElementById('v-pulse-dot');
-  const pulseText = document.getElementById('v-pulse');
-  const breathDot = document.getElementById('v-breath-dot');
-  const breathText = document.getElementById('v-breath');
-  const skinDot = document.getElementById('v-skin-dot');
-  const skinText = document.getElementById('v-skin');
+  var ratio = state.patientRES / 300;
+  var pulseDot = document.getElementById('v-pulse-dot');
+  var pulseText = document.getElementById('v-pulse');
+  var breathDot = document.getElementById('v-breath-dot');
+  var breathText = document.getElementById('v-breath');
+  var skinDot = document.getElementById('v-skin-dot');
+  var skinText = document.getElementById('v-skin');
+  var conscDot = document.getElementById('v-consc-dot');
+  var conscText = document.getElementById('v-consc');
+
   if (ratio > 0.6) {
     pulseDot.className = 'vdot ok'; pulseText.textContent = 'Pulse: Stable';
     breathDot.className = 'vdot ok'; breathText.textContent = 'Breath: Normal';
     skinDot.className = 'vdot ok'; skinText.textContent = 'Skin: Warm';
+    conscDot.className = 'vdot ok'; conscText.textContent = 'Conscious: Yes';
   } else if (ratio > 0.3) {
     pulseDot.className = 'vdot bad'; pulseText.textContent = 'Pulse: Fast/Weak';
     breathDot.className = 'vdot bad'; breathText.textContent = 'Breath: Shallow';
     skinDot.className = 'vdot bad'; skinText.textContent = 'Skin: Pale';
+    conscDot.className = 'vdot bad'; conscText.textContent = 'Conscious: Fading';
   } else {
     pulseDot.className = 'vdot crit'; pulseText.textContent = 'Pulse: Critical';
     breathDot.className = 'vdot crit'; breathText.textContent = 'Breath: Gasping';
     skinDot.className = 'vdot crit'; skinText.textContent = 'Skin: Cold/Blue';
+    conscDot.className = 'vdot crit'; conscText.textContent = 'Conscious: No';
   }
 }
 
 function saveMedicProgress(injury) {
-  const data = INJURIES[injury.injId];
-  const progress = {
+  var data = INJURIES[injury.injId];
+  var progress = {
     treated: state.completedInjuries.length,
     total: state.assignedInjuries.length,
     lastInjury: data.name,
@@ -1057,16 +1385,14 @@ function saveMedicProgress(injury) {
 }
 
 function pollMedicProgress() {
-  const pollInterval = setInterval(() => {
-    const data = localStorage.getItem('dss-medic-progress');
+  var pollInterval = setInterval(function() {
+    var data = localStorage.getItem('dss-medic-progress');
     if (data) {
-      const progress = JSON.parse(data);
-      const logEl = document.getElementById('gm-log');
-      logEl.innerHTML = `
-        <div style="font-size:13px;color:var(--text);margin-bottom:4px">Treated: ${progress.treated}/${progress.total} injuries</div>
-        <div style="font-size:13px;color:var(--text-dim)">Last: ${progress.lastInjury}</div>
-        <div style="font-size:13px;color:var(--text-dim)">Patient RES: ${progress.res}/300</div>
-      `;
+      var progress = JSON.parse(data);
+      var logEl = document.getElementById('gm-log');
+      logEl.innerHTML = '<div style="font-size:13px;color:var(--text);margin-bottom:4px">Treated: ' + progress.treated + '/' + progress.total + ' injuries</div>' +
+        '<div style="font-size:13px;color:var(--text-dim)">Last: ' + progress.lastInjury + '</div>' +
+        '<div style="font-size:13px;color:var(--text-dim)">Patient RES: ' + progress.res + '/300</div>';
       if (progress.damage) {
         state.gmHP = Math.max(0, state.gmHP - progress.damage);
         document.getElementById('gm-hp-text').textContent = state.gmHP + ' / ' + state.gmMaxHP;
@@ -1074,20 +1400,20 @@ function pollMedicProgress() {
         localStorage.removeItem('dss-medic-progress');
       }
     }
-    const result = localStorage.getItem('dss-game-result');
+    var result = localStorage.getItem('dss-game-result');
     if (result) {
       clearInterval(pollInterval);
-      const res = JSON.parse(result);
-      const logEl = document.getElementById('gm-log');
+      var res = JSON.parse(result);
+      var logEl = document.getElementById('gm-log');
       if (res.success) {
         state.gmHP = Math.max(0, state.gmHP - 50);
         document.getElementById('gm-hp-text').textContent = state.gmHP + ' / ' + state.gmMaxHP;
         document.getElementById('gm-hp-fill').style.width = (state.gmHP / state.gmMaxHP * 100) + '%';
-        logEl.innerHTML += `<div style="font-size:15px;color:var(--green-bright);margin-top:12px;font-weight:600">Operation SUCCESS — Patient survived. You take damage!</div>`;
+        logEl.innerHTML += '<div style="font-size:15px;color:var(--green-bright);margin-top:12px;font-weight:600">Operation SUCCESS — Patient survived. You take damage!</div>';
       } else {
-        logEl.innerHTML += `<div style="font-size:15px;color:var(--critical);margin-top:12px;font-weight:600">Operation FAILED — ${res.reason}. You win!</div>`;
+        logEl.innerHTML += '<div style="font-size:15px;color:var(--critical);margin-top:12px;font-weight:600">Operation FAILED — ' + res.reason + '. You win!</div>';
       }
-      logEl.innerHTML += `<div style="margin-top:12px"><button class="btn" onclick="resetGame()">New Game</button></div>`;
+      logEl.innerHTML += '<div style="margin-top:12px"><button class="btn" onclick="resetGame()">New Game</button></div>';
     }
   }, 1000);
 }
@@ -1096,37 +1422,34 @@ function endGame(success, reason) {
   if (!state.gameActive) return;
   state.gameActive = false;
   if (state.timerInterval) clearInterval(state.timerInterval);
-  localStorage.setItem('dss-game-result', JSON.stringify({success, reason}));
+  localStorage.setItem('dss-game-result', JSON.stringify({success: success, reason: reason}));
   saveToLog(success, reason);
   document.getElementById('medic-screen').classList.remove('active');
   document.getElementById('result-screen').classList.add('active');
-  const box = document.getElementById('result-box');
-  const timeUsed = state.timerSeconds - state.timerRemaining;
-  const accuracy = state.totalSteps > 0 ? Math.round(state.correctSteps / state.totalSteps * 100) : 0;
-  box.innerHTML = `
-    <div class="result-icon">${success ? '&#9764;' : '&#9760;'}</div>
-    <div class="result-title ${success ? 'success' : 'failure'}">${success ? 'Patient Saved' : 'Patient Lost'}</div>
-    <div style="font-size:16px;color:var(--text-dim);margin-bottom:20px;font-style:italic">${reason}</div>
-    <div class="result-stats">
-      <div class="stat-box"><div class="stat-val">${state.completedInjuries.length}/${state.assignedInjuries.length}</div><div class="stat-lbl">Injuries Treated</div></div>
-      <div class="stat-box"><div class="stat-val">${state.patientRES}</div><div class="stat-lbl">Patient RES</div></div>
-      <div class="stat-box"><div class="stat-val">${accuracy}%</div><div class="stat-lbl">Accuracy</div></div>
-      <div class="stat-box"><div class="stat-val">${timeUsed}s</div><div class="stat-lbl">Time Used</div></div>
-      <div class="stat-box"><div class="stat-val">${state.wrongAttempts}</div><div class="stat-lbl">Wrong Items</div></div>
-    </div>
-    <div style="margin-top:24px">
-      <button class="btn" onclick="resetGame()">New Game</button>
-    </div>
-  `;
+  var box = document.getElementById('result-box');
+  var timeUsed = state.timerSeconds - state.timerRemaining;
+  var accuracy = state.totalSteps > 0 ? Math.round(state.correctSteps / state.totalSteps * 100) : 0;
+  box.innerHTML =
+    '<div class="result-icon">' + (success ? '&#9764;' : '&#9760;') + '</div>' +
+    '<div class="result-title ' + (success ? 'success' : 'failure') + '">' + (success ? 'Patient Saved' : 'Patient Lost') + '</div>' +
+    '<div style="font-size:16px;color:var(--text-dim);margin-bottom:20px;font-style:italic">' + reason + '</div>' +
+    '<div class="result-stats">' +
+      '<div class="stat-box"><div class="stat-val">' + state.completedInjuries.length + '/' + state.assignedInjuries.length + '</div><div class="stat-lbl">Injuries Treated</div></div>' +
+      '<div class="stat-box"><div class="stat-val">' + state.patientRES + '</div><div class="stat-lbl">Patient RES</div></div>' +
+      '<div class="stat-box"><div class="stat-val">' + accuracy + '%</div><div class="stat-lbl">Accuracy</div></div>' +
+      '<div class="stat-box"><div class="stat-val">' + timeUsed + 's</div><div class="stat-lbl">Time Used</div></div>' +
+      '<div class="stat-box"><div class="stat-val">' + state.wrongAttempts + '</div><div class="stat-lbl">Wrong Items</div></div>' +
+    '</div>' +
+    '<div style="margin-top:24px"><button class="btn" onclick="resetGame()">New Game</button></div>';
 }
 
 function saveToLog(success, reason) {
-  const logs = JSON.parse(localStorage.getItem('dss-med-logs') || '[]');
+  var logs = JSON.parse(localStorage.getItem('dss-med-logs') || '[]');
   logs.push({
     date: new Date().toISOString(),
-    injuries: state.assignedInjuries.map(i => INJURIES[i.injId].name),
-    success,
-    reason,
+    injuries: state.assignedInjuries.map(function(i) { return INJURIES[i.injId].name; }),
+    success: success,
+    reason: reason,
     res: state.patientRES,
     time: state.timerSeconds - state.timerRemaining,
     accuracy: state.totalSteps > 0 ? Math.round(state.correctSteps / state.totalSteps * 100) : 0
