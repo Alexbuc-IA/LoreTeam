@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DS:S — Medical Referee v3</title>
+<title>DS:S — Medical Minigame</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -13,7 +13,6 @@
   --char:#09090b;--fog:#141416;--panel:#1a1a1d;--raised:#222226;
   --text:#e2d9c0;--text-dim:#8a7f68;--text-muted:#4a4438;
   --green:#3d8b3d;--green-bright:#5cb85c;--green-faint:rgba(61,139,61,0.10);--green-border:rgba(92,184,92,0.32);
-  --wrong-faint:rgba(122,0,0,0.09);--wrong-border:rgba(192,57,43,0.28);
   --warn:#d4820a;--critical:#e74c3c;--critical-glow:rgba(231,76,60,0.2);
   --border:#2a2a2e;--border-gold:rgba(201,168,76,0.2);
   --blue:#2e6b9e;--blue-dim:rgba(46,107,158,0.3);
@@ -21,1703 +20,1126 @@
 html{font-size:16px}
 body{background:var(--char);color:var(--text);font-family:'Crimson Text',Georgia,serif;min-height:100vh;overflow-x:hidden}
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 15% 50%,rgba(122,0,0,0.07) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 85% 10%,rgba(201,168,76,0.04) 0%,transparent 55%);pointer-events:none;z-index:0}
-#wrap{max-width:980px;margin:0 auto;padding:16px 20px;position:relative;z-index:1}
+#wrap{max-width:1100px;margin:0 auto;padding:16px 20px;position:relative;z-index:1}
 header{display:flex;align-items:center;justify-content:space-between;padding:24px 0 20px;border-bottom:1px solid var(--border-gold);margin-bottom:20px}
 .hd-eyebrow{font-family:'Cinzel',serif;font-size:9px;letter-spacing:5px;color:var(--blood-bright);text-transform:uppercase;margin-bottom:6px}
 .hd-title{font-family:'Cinzel',serif;font-size:1.6rem;font-weight:900;color:var(--gold);letter-spacing:2px}
 .hd-right{text-align:right}
 .hd-sub{font-size:13px;color:var(--text-dim);font-style:italic}
-#nav-tabs{display:flex;border-bottom:1px solid var(--border-gold);margin-bottom:20px}
-.nav-tab{background:none;border:none;border-bottom:2px solid transparent;color:var(--text-muted);font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;padding:10px 20px;cursor:pointer;text-transform:uppercase;transition:all .2s;position:relative;bottom:-1px}
-.nav-tab:hover{color:var(--text-dim)}
-.nav-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
-#res-wrap{display:none;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--border);padding:10px 16px;margin-bottom:16px}
-.res-lbl{font-family:'Cinzel',serif;font-size:10px;letter-spacing:4px;color:var(--gold);white-space:nowrap}
-#res-track{flex:1;height:6px;background:#1a0000;border-radius:3px;overflow:hidden}
-#res-fill{height:100%;border-radius:3px;transition:width .5s ease,background .4s;background:linear-gradient(90deg,var(--blood),var(--blood-bright));box-shadow:0 0 6px var(--blood-glow)}
-#res-val{font-family:'Cinzel',serif;font-size:18px;font-weight:600;color:var(--blood-bright);min-width:52px;text-align:right}
-.picker-section-lbl{font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;color:var(--text-muted);margin:12px 0 6px;text-transform:uppercase}
-.pick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.pick-btn{background:var(--panel);border:1px solid var(--border);color:var(--text-dim);font-family:'Cinzel',serif;font-size:10px;letter-spacing:1px;padding:14px 8px;cursor:pointer;transition:all .18s;text-align:center;line-height:1.5}
-.pick-btn:hover{border-color:var(--gold-dim);color:var(--gold);background:var(--gold-faint)}
-.pick-crit{border-color:rgba(122,0,0,0.5)}
-.pick-psych{border-color:var(--blue-dim)}
-.pick-surgical{border-color:rgba(192,57,43,0.6);background:rgba(122,0,0,0.04)}
-.pick-march{display:block;font-size:8px;letter-spacing:2px;color:var(--blood-bright);margin-top:3px;opacity:.8}
-.pick-crit .pick-march,.pick-surgical .pick-march{color:var(--critical)}
-.pick-psych .pick-march{color:#4d9fd6}
-#peace-tracker{display:none;align-items:center;gap:10px;background:rgba(46,107,158,0.06);border:1px solid var(--blue-dim);padding:8px 16px;margin-bottom:1px}
-#peace-tracker.on{display:flex}
-.ph-lbl{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:#4d9fd6;white-space:nowrap}
-.ph-dots{display:flex;gap:6px;align-items:center}
-.ph-dot{width:14px;height:14px;border-radius:50%;border:2px solid rgba(77,159,214,0.4);background:transparent;transition:all .3s}
-.ph-dot.used{background:#4d9fd6;border-color:#4d9fd6;box-shadow:0 0 6px rgba(77,159,214,0.5)}
-.ph-dot.fatal{background:var(--critical);border-color:var(--critical);box-shadow:0 0 8px var(--critical-glow);animation:blink .4s infinite}
-.ph-warn{font-size:12px;color:#4d9fd6;font-style:italic;flex:1}
-.ph-warn.danger{color:var(--critical)}
-#patient-reg{background:var(--panel);border:1px solid var(--border-gold);padding:18px 20px;margin-bottom:14px;display:none}
-.reg-lbl{font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;color:var(--gold);margin-bottom:12px}
-.reg-case-title{color:var(--text-dim);font-style:italic;font-family:'Crimson Text',serif;letter-spacing:0;font-size:15px}
-.reg-row{display:flex;gap:10px;flex-wrap:wrap}
-.reg-field{display:flex;flex-direction:column;gap:4px;flex:1;min-width:150px}
-.reg-field label{font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;color:var(--text-muted)}
-.reg-field input{background:var(--raised);border:1px solid var(--border);color:var(--text);font-family:'Crimson Text',serif;font-size:15px;padding:7px 10px;outline:none;transition:border .15s}
-.reg-field input:focus{border-color:var(--gold-dim)}
-.reg-actions{display:flex;gap:10px;margin-top:12px}
-.reg-btn{background:transparent;border:1px solid var(--gold-dim);color:var(--gold);font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;padding:8px 16px;cursor:pointer;transition:all .15s}
-.reg-btn:hover{background:var(--gold-faint)}
-.reg-btn.cancel{border-color:rgba(192,57,43,.4);color:var(--blood-bright)}
-#case-subtabs{display:none;flex;border-bottom:1px solid var(--border);margin-bottom:1px;background:var(--fog)}
-#case-subtabs.on{display:flex}
-.case-subtab{background:none;border:none;border-bottom:2px solid transparent;color:var(--text-muted);font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;padding:8px 16px;cursor:pointer;text-transform:uppercase;transition:all .2s;position:relative;bottom:-1px}
-.case-subtab.active{color:var(--gold);border-bottom-color:var(--gold)}
-.case-subtab.shock-tab{color:var(--critical)}
-.case-subtab.shock-tab.active{color:var(--critical);border-bottom-color:var(--critical)}
-.escalate-btn{background:rgba(192,57,43,0.1);border:1px solid rgba(192,57,43,0.5);color:var(--blood-bright);font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;padding:6px 12px;cursor:pointer;transition:all .15s;margin-top:6px;display:inline-block}
-.escalate-btn:hover{background:rgba(192,57,43,0.2)}
-#main{display:none}
-#case-bar{display:flex;justify-content:space-between;align-items:center;background:var(--panel);border:1px solid var(--border-gold);padding:14px 18px;margin-bottom:1px}
-#case-name{font-family:'Cinzel',serif;font-size:1rem;color:var(--gold);letter-spacing:1px}
-.case-bar-right{display:flex;align-items:center;gap:12px}
-#case-march-tag{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:var(--blood-bright);background:rgba(122,0,0,0.2);border:1px solid rgba(122,0,0,0.4);padding:3px 8px}
-#vitals{display:flex;background:var(--fog);border:1px solid var(--border);border-top:none;margin-bottom:1px}
-.vital{flex:1;padding:8px 14px;border-right:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.cin{font-family:'Cinzel',serif}
+.screen{display:none}
+.screen.active{display:block}
+.btn{background:transparent;border:1px solid var(--gold-dim);color:var(--gold);font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;padding:10px 20px;cursor:pointer;transition:all .15s;text-transform:uppercase}
+.btn:hover{background:var(--gold-faint);border-color:var(--gold)}
+.btn.danger{border-color:rgba(192,57,43,.5);color:var(--blood-bright)}
+.btn.danger:hover{background:rgba(192,57,43,0.1)}
+.btn.success{border-color:var(--green-border);color:var(--green-bright)}
+.btn.success:hover{background:var(--green-faint)}
+.btn:disabled{opacity:.3;cursor:default;pointer-events:none}
+.panel{background:var(--panel);border:1px solid var(--border);padding:18px 20px;margin-bottom:12px}
+.panel-title{font-family:'Cinzel',serif;font-size:9px;letter-spacing:4px;color:var(--gold);margin-bottom:14px;text-transform:uppercase}
+.section-lbl{font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;color:var(--text-muted);margin:12px 0 8px;text-transform:uppercase}
+
+/* Role Selection */
+#role-select{text-align:center;padding:60px 0}
+.role-cards{display:flex;gap:24px;justify-content:center;margin-top:40px;flex-wrap:wrap}
+.role-card{background:var(--panel);border:2px solid var(--border);padding:40px 36px;cursor:pointer;transition:all .25s;width:320px;text-align:center}
+.role-card:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 8px 32px rgba(0,0,0,0.4)}
+.role-icon{font-size:48px;margin-bottom:16px;display:block}
+.role-name{font-family:'Cinzel',serif;font-size:1.2rem;color:var(--gold);letter-spacing:2px;margin-bottom:10px}
+.role-desc{font-size:14px;color:var(--text-dim);line-height:1.6}
+
+/* Body SVG */
+.body-container{display:flex;justify-content:center;align-items:center;padding:20px}
+.body-svg{width:220px;height:400px}
+.body-part{fill:#d0d0d0;stroke:#999;stroke-width:1.5;cursor:pointer;transition:all .2s}
+.body-part:hover{fill:#e8e8e8;stroke:var(--gold);stroke-width:2}
+.body-part.selected{fill:var(--gold);fill-opacity:.3;stroke:var(--gold);stroke-width:2.5}
+.body-part.injured{fill:var(--blood-bright);fill-opacity:.4;stroke:var(--blood-bright);stroke-width:2.5;animation:injPulse 1.5s infinite}
+.body-part.healed{fill:var(--green-bright);fill-opacity:.3;stroke:var(--green-bright);stroke-width:2}
+@keyframes injPulse{0%,100%{fill-opacity:.4}50%{fill-opacity:.7}}
+
+/* Game Master */
+.gm-layout{display:grid;grid-template-columns:280px 1fr;gap:16px}
+.gm-sidebar{display:flex;flex-direction:column;gap:12px}
+.injury-pick{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.injury-btn{background:var(--raised);border:1px solid var(--border);color:var(--text-dim);font-family:'Cinzel',serif;font-size:9px;letter-spacing:1px;padding:10px 6px;cursor:pointer;transition:all .15s;text-align:center;line-height:1.4}
+.injury-btn:hover{border-color:var(--blood-bright);color:var(--blood-bright);background:rgba(122,0,0,0.08)}
+.injury-btn.active{border-color:var(--blood-bright);color:var(--blood-bright);background:rgba(122,0,0,0.15)}
+.injury-list-item{display:flex;justify-content:space-between;align-items:center;background:var(--raised);border:1px solid var(--border);padding:8px 12px;margin-bottom:4px}
+.injury-list-item .name{font-size:13px;color:var(--text)}
+.injury-list-item .march-tag{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;color:var(--blood-bright);background:rgba(122,0,0,0.2);border:1px solid rgba(122,0,0,0.4);padding:2px 6px}
+.remove-injury{background:none;border:none;color:var(--text-muted);font-size:16px;cursor:pointer;padding:0 4px}
+.remove-injury:hover{color:var(--critical)}
+
+/* Timer config */
+.timer-config{display:flex;align-items:center;gap:10px;margin:10px 0}
+.timer-config input{background:var(--raised);border:1px solid var(--border);color:var(--text);font-family:'Crimson Text',serif;font-size:18px;padding:6px 10px;width:70px;text-align:center;outline:none}
+.timer-config input:focus{border-color:var(--gold-dim)}
+.timer-config label{font-size:13px;color:var(--text-dim)}
+
+/* GM Damage */
+.gm-health-bar{height:8px;background:#1a0000;border-radius:4px;overflow:hidden;margin:8px 0}
+.gm-health-fill{height:100%;border-radius:4px;transition:width .6s ease;background:linear-gradient(90deg,var(--blood),var(--blood-bright))}
+.gm-hp-text{font-family:'Cinzel',serif;font-size:20px;color:var(--blood-bright);font-weight:700}
+
+/* Medic view */
+.medic-layout{display:grid;grid-template-columns:1fr 320px;gap:16px}
+.medic-main{display:flex;flex-direction:column;gap:12px}
+.medic-sidebar{display:flex;flex-direction:column;gap:12px}
+#medic-timer{font-family:'Cinzel',serif;font-size:2.5rem;font-weight:700;color:var(--critical);text-shadow:0 0 16px var(--critical-glow);letter-spacing:3px;text-align:center;padding:12px 0}
+#medic-timer.safe{color:var(--green-bright);text-shadow:0 0 10px rgba(92,184,92,0.3)}
+.step-box{background:var(--raised);border:1px solid var(--border);padding:14px 16px;margin-bottom:6px}
+.step-num{font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;color:var(--text-muted);margin-bottom:4px}
+.step-text{font-size:15px;line-height:1.6;color:var(--text)}
+.step-box.done{border-color:var(--green-border);background:var(--green-faint)}
+.step-box.done .step-text{color:var(--green-bright)}
+.step-box.current{border-color:var(--gold);border-width:2px}
+.step-box.failed{border-color:rgba(192,57,43,0.5);background:rgba(122,0,0,0.08)}
+.step-box.failed .step-text{color:var(--blood-bright)}
+
+/* Inventory */
+.inv-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.inv-item{background:var(--raised);border:1px solid var(--border);color:var(--text-dim);font-size:11px;padding:10px 8px;cursor:pointer;transition:all .15s;text-align:center;line-height:1.3;font-family:'Cinzel',serif;letter-spacing:1px}
+.inv-item:hover{border-color:var(--gold-dim);color:var(--gold);background:var(--gold-faint)}
+.inv-item.selected{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,0.12);box-shadow:0 0 8px rgba(201,168,76,0.15)}
+.inv-item.used{border-color:var(--green-border);color:var(--green-bright);background:var(--green-faint)}
+.inv-item.wrong{border-color:rgba(192,57,43,0.5);color:var(--blood-bright);background:rgba(122,0,0,0.08);animation:shake .3s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+
+/* Apply button */
+.apply-area{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.apply-btn{flex:1;min-width:120px}
+
+/* Result screen */
+.result-box{text-align:center;padding:40px 20px}
+.result-icon{font-size:64px;margin-bottom:16px}
+.result-title{font-family:'Cinzel',serif;font-size:1.8rem;letter-spacing:3px;margin-bottom:12px}
+.result-title.success{color:var(--green-bright)}
+.result-title.failure{color:var(--critical)}
+.result-stats{display:flex;gap:20px;justify-content:center;margin:20px 0;flex-wrap:wrap}
+.stat-box{background:var(--raised);border:1px solid var(--border);padding:14px 20px;min-width:100px}
+.stat-val{font-family:'Cinzel',serif;font-size:1.4rem;color:var(--gold);font-weight:700}
+.stat-lbl{font-size:11px;color:var(--text-dim);margin-top:4px}
+
+/* Vitals */
+.vitals-bar{display:flex;background:var(--fog);border:1px solid var(--border);margin-bottom:8px}
+.vital{flex:1;padding:8px 12px;border-right:1px solid var(--border);display:flex;align-items:center;gap:6px}
 .vital:last-child{border-right:none}
 .vdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;transition:all .4s}
-.vdot.ok{background:var(--green-bright);box-shadow:0 0 5px var(--green-bright);animation:blink 2s infinite}
+.vdot.ok{background:var(--green-bright);box-shadow:0 0 5px var(--green-bright)}
 .vdot.bad{background:var(--warn);box-shadow:0 0 5px var(--warn)}
 .vdot.crit{background:var(--critical);box-shadow:0 0 7px var(--critical);animation:blink .5s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
 .vtxt{font-size:12px;color:var(--text-dim)}
-#timer-bar{display:none;align-items:center;gap:12px;background:rgba(231,76,60,0.06);border:1px solid rgba(231,76,60,0.35);border-top:none;padding:8px 18px;margin-bottom:1px}
-#timer-bar.on{display:flex}
-.tlbl{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:var(--critical)}
-#tclock{font-family:'Cinzel',serif;font-size:1.5rem;font-weight:700;color:var(--critical);text-shadow:0 0 12px var(--critical-glow);letter-spacing:2px;min-width:55px}
-#treason{font-size:13px;color:var(--text-dim);font-style:italic;flex:1}
-#sit-box{background:var(--panel);border:1px solid var(--border);border-top:none;padding:14px 18px;margin-bottom:1px}
-.sit-lbl{font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;color:var(--text-muted);margin-bottom:6px}
-#sit-txt{font-style:italic;font-size:16px;line-height:1.7}
-#consequences{display:none;flex-direction:column;gap:4px;margin-bottom:1px}
-#consequences.has-items{display:flex}
-#shock-consequences.has-items{display:flex !important;flex-direction:column;gap:4px;margin-bottom:1px}
-.consequence-item{background:rgba(122,0,0,0.12);border:1px solid rgba(192,57,43,0.35);border-left:3px solid var(--blood-bright);padding:10px 14px;animation:cqIn .25s ease}
-.consequence-item.is-old{border-left-color:var(--warn);background:rgba(180,100,0,0.08);border-color:rgba(212,130,10,0.3)}
-@keyframes cqIn{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
-.cq-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-.cq-left{flex:1}
-.cq-label{font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;color:var(--blood-bright);margin-bottom:4px}
-.cq-label.old-lbl{color:var(--warn)}
-.cq-text{font-size:14px;line-height:1.5}
-.cq-penalty{display:inline-block;font-family:'Cinzel',serif;font-size:11px;color:var(--blood-bright);background:rgba(192,57,43,0.15);border:1px solid rgba(192,57,43,0.3);padding:1px 7px;margin-top:4px}
-.cq-fix{font-size:13px;color:var(--text-dim);margin-top:5px;font-style:italic;border-top:1px solid rgba(255,255,255,0.05);padding-top:5px}
-.cq-death-timer{font-family:'Cinzel',serif;font-size:11px;color:var(--critical);margin-top:5px;padding:3px 8px;background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.3);display:inline-block}
-.fix-btn{background:transparent;border:1px solid var(--gold-dim);color:var(--gold);font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;padding:6px 12px;cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0;margin-top:2px}
-.fix-btn:hover{background:var(--gold-faint);border-color:var(--gold)}
-#step-hdr{display:flex;justify-content:space-between;align-items:center;padding:10px 18px;background:var(--fog);border:1px solid var(--border);border-top:none;margin-bottom:1px}
-.step-lbl{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:var(--text-muted)}
-#prog-track{flex:1;height:3px;background:var(--border);margin:0 14px;border-radius:2px;overflow:hidden}
-#prog-fill{height:100%;background:linear-gradient(90deg,var(--gold-dim),var(--gold));border-radius:2px;transition:width .4s ease}
-#step-count{font-family:'Cinzel',serif;font-size:10px;color:var(--gold-dim)}
-#actions{background:var(--fog);border:1px solid var(--border);border-top:none;padding:14px 18px}
-.act-lbl{font-family:'Cinzel',serif;font-size:9px;letter-spacing:4px;color:var(--text-muted);margin-bottom:10px}
-#act-list{display:flex;flex-direction:column;gap:6px}
-.act-btn{display:flex;align-items:center;border:1px solid var(--border);color:var(--text);font-family:'Crimson Text',serif;font-size:16px;cursor:pointer;transition:all .15s;text-align:left;overflow:hidden;width:100%}
-.act-btn.is-correct{background:var(--green-faint);border-color:var(--green-border)}
-.act-btn.is-correct .act-icon{color:var(--green-bright);border-right-color:var(--green-border)}
-.act-btn.is-wrong{background:var(--wrong-faint);border-color:var(--wrong-border)}
-.act-btn.is-wrong .act-icon{color:rgba(192,57,43,0.45);border-right-color:var(--wrong-border)}
-.act-btn:hover{border-color:var(--gold-dim) !important;background:rgba(37,37,41,0.95) !important}
-.act-btn:hover .act-icon{color:var(--gold) !important;border-right-color:var(--gold-dim) !important}
-.act-icon{width:40px;min-width:40px;display:flex;align-items:center;justify-content:center;font-size:14px;padding:14px 0;border-right:1px solid var(--border);color:var(--text-muted);transition:all .15s;flex-shrink:0}
-.act-text{padding:14px 16px;flex:1;line-height:1.45}
-.act-btn.flash-correct{border-color:var(--green-bright)!important;background:rgba(60,120,60,0.22)!important;animation:flashC .6s ease forwards}
-@keyframes flashC{0%{box-shadow:0 0 0 0 rgba(92,184,92,0.5)}50%{box-shadow:0 0 0 6px rgba(92,184,92,0)}100%{box-shadow:none}}
-.act-btn.flash-correct .act-icon{color:var(--green-bright)!important}
-.act-btn.flash-wrong{border-color:var(--blood-bright)!important;background:rgba(122,0,0,0.25)!important;animation:flashW .6s ease forwards}
-@keyframes flashW{0%{box-shadow:0 0 0 0 rgba(192,57,43,0.5)}50%{box-shadow:0 0 0 6px rgba(192,57,43,0)}100%{box-shadow:none}}
-.act-btn.flash-wrong .act-icon{color:var(--blood-bright)!important}
-#step-ok{display:none;background:rgba(45,90,39,.18);border:1px solid rgba(92,184,92,.3);border-top:none;padding:10px 18px;color:var(--green-bright);font-style:italic;font-size:15px}
-#mid-exit-bar{background:var(--fog);border:1px solid var(--border);border-top:none;padding:8px 18px;display:flex;align-items:center;gap:10px}
-.mex-lbl{font-size:12px;color:var(--text-muted);font-style:italic;flex:1}
-#mid-exit-btn{background:transparent;border:1px solid rgba(201,168,76,0.25);color:var(--text-muted);font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;padding:6px 14px;cursor:pointer;transition:all .15s}
-#mid-exit-btn:hover{border-color:var(--gold-dim);color:var(--gold)}
-#next-wrap{display:none;padding:12px 18px;background:var(--fog);border:1px solid var(--border);border-top:none}
-#next-btn{background:transparent;border:1px solid var(--gold-dim);color:var(--gold);font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;padding:10px 20px;cursor:pointer;transition:all .18s}
-#next-btn:hover{background:var(--gold-faint);border-color:var(--gold)}
-#death-screen,#done-screen{display:none;text-align:center;padding:60px 20px;animation:fadeIn .7s}
-#death-screen{border:1px solid var(--critical);background:rgba(0,0,0,.8)}
-#done-screen{border:1px solid var(--gold-dim);background:var(--gold-faint)}
-.death-rune{font-size:2.5rem;margin-bottom:16px;opacity:.6;animation:blink 3s infinite}
-.death-h{font-family:'Cinzel',serif;font-size:1.8rem;color:var(--critical);letter-spacing:4px;margin-bottom:12px;text-shadow:0 0 20px var(--critical-glow)}
-#death-txt{font-style:italic;color:var(--text-dim);font-size:16px;line-height:1.7;margin-bottom:24px}
-.done-h{font-family:'Cinzel',serif;font-size:1.6rem;color:var(--gold);letter-spacing:3px;margin-bottom:8px}
-#done-score{font-family:'Cinzel',serif;font-size:2.8rem;color:var(--blood-bright);margin:16px 0}
-#done-grade{font-family:'Cinzel',serif;font-size:.9rem;letter-spacing:4px;color:var(--gold-dim);margin-bottom:24px}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.ghost-btn{background:transparent;border:1px solid var(--blood-bright);color:var(--blood-bright);font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;padding:10px 20px;cursor:pointer;transition:all .15s;margin:0 5px}
-.ghost-btn:hover{background:rgba(192,57,43,.1)}
-.ghost-gold{border-color:var(--gold);color:var(--gold)}
-.ghost-gold:hover{background:var(--gold-faint)}
-#back-btn{background:none;border:none;color:var(--text-muted);font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;cursor:pointer;padding:6px 0;margin-bottom:12px;display:none}
-#back-btn:hover{color:var(--gold)}
-#back-btn::before{content:'← '}
-#log-view{display:none}
-.log-summary{display:flex;gap:16px;background:var(--panel);border:1px solid var(--border);padding:12px 18px;margin-bottom:12px;flex-wrap:wrap}
-.log-stat{display:flex;flex-direction:column;gap:2px}
-.log-stat-val{font-family:'Cinzel',serif;font-size:1.3rem;color:var(--gold)}
-.log-stat-lbl{font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;color:var(--text-muted)}
-.log-controls{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
-.log-search{background:var(--raised);border:1px solid var(--border);color:var(--text);font-family:'Crimson Text',serif;font-size:15px;padding:8px 12px;flex:1;min-width:180px;outline:none;transition:border .15s}
-.log-search:focus{border-color:var(--gold-dim)}
-.log-filter{background:var(--raised);border:1px solid var(--border);color:var(--text-dim);font-family:'Cinzel',serif;font-size:9px;letter-spacing:1px;padding:8px 12px;cursor:pointer;outline:none}
-.log-btn{background:transparent;border:1px solid var(--gold-dim);color:var(--gold);font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;padding:8px 16px;cursor:pointer;transition:all .15s}
-.log-btn:hover{background:var(--gold-faint)}
-.log-btn.danger{border-color:rgba(192,57,43,.5);color:var(--blood-bright)}
-.log-btn.danger:hover{background:rgba(122,0,0,.15)}
-#log-empty{text-align:center;padding:40px;color:var(--text-muted);font-style:italic;font-size:15px;border:1px solid var(--border);background:var(--panel)}
-#log-table-wrap{overflow-x:auto}
-.log-tbl{width:100%;border-collapse:collapse;font-size:14px}
-.log-tbl th{font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;color:var(--gold);padding:10px 12px;border-bottom:1px solid var(--border-gold);text-align:left;background:var(--panel);white-space:nowrap}
-.log-tbl td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
-.log-tbl tr:hover td{background:rgba(201,168,76,.03)}
-.log-ok{color:var(--green-bright);font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px}
-.log-dead{color:var(--critical);font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px}
-.log-exit{color:var(--warn);font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px}
-.log-crit{display:inline-block;background:rgba(231,76,60,.15);border:1px solid rgba(231,76,60,.35);color:var(--critical);font-family:'Cinzel',serif;font-size:7px;letter-spacing:2px;padding:1px 5px;margin-left:4px;vertical-align:middle}
-.log-del{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:12px;padding:2px 5px;transition:color .15s}
-.log-del:hover{color:var(--critical)}
-@media(max-width:700px){.pick-grid{grid-template-columns:repeat(2,1fr)}.hd-title{font-size:1.2rem}.log-summary{gap:10px}}
+
+/* Consequence */
+.consequence{background:rgba(122,0,0,0.06);border:1px solid rgba(192,57,43,0.25);padding:8px 14px;margin-bottom:4px;font-size:13px;color:var(--blood-bright);font-style:italic}
+.consequence .pen{font-family:'Cinzel',serif;font-size:10px;letter-spacing:1px;color:var(--critical);margin-left:8px}
+
+/* Peace herb tracker */
+.peace-tracker{display:flex;align-items:center;gap:8px;background:rgba(46,107,158,0.06);border:1px solid var(--blue-dim);padding:8px 14px;margin-bottom:8px}
+.ph-lbl{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:#4d9fd6;white-space:nowrap}
+.ph-dots{display:flex;gap:6px}
+.ph-dot{width:14px;height:14px;border-radius:50%;border:2px solid rgba(77,159,214,0.4);background:transparent;transition:all .3s}
+.ph-dot.used{background:#4d9fd6;border-color:#4d9fd6;box-shadow:0 0 6px rgba(77,159,214,0.5)}
+.ph-dot.fatal{background:var(--critical);border-color:var(--critical);box-shadow:0 0 8px var(--critical-glow)}
+
+/* Log */
+.log-entry{background:var(--raised);border:1px solid var(--border);padding:10px 14px;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center}
+.log-entry .info{font-size:13px;color:var(--text)}
+.log-entry .tag{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;padding:2px 8px}
+.log-entry .tag.survived{color:var(--green-bright);border:1px solid var(--green-border);background:var(--green-faint)}
+.log-entry .tag.died{color:var(--critical);border:1px solid rgba(231,76,60,0.3);background:rgba(231,76,60,0.06)}
+
+/* Responsive */
+@media(max-width:800px){
+  .gm-layout,.medic-layout{grid-template-columns:1fr}
+  .role-cards{flex-direction:column;align-items:center}
+}
 </style>
 </head>
 <body>
 <div id="wrap">
   <header>
-    <div class="hd-left">
+    <div>
       <div class="hd-eyebrow">Demon Slayer: Severance</div>
-      <div class="hd-title">Medical Referee</div>
+      <div class="hd-title">Medical Minigame</div>
     </div>
     <div class="hd-right">
-      <div class="hd-sub">Lore Team Arbiter Tool</div>
-      <div style="margin-top:4px;font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:var(--text-muted)">MARCH PROTOCOL v3</div>
+      <div class="hd-sub" id="role-display"></div>
+      <button class="btn danger" id="back-btn" style="display:none;margin-top:6px;font-size:8px;padding:6px 12px" onclick="backToLobby()">Leave</button>
     </div>
   </header>
 
-  <div id="nav-tabs">
-    <button class="nav-tab active" onclick="showTab('cases',this)">Cases</button>
-    <button class="nav-tab" onclick="showTab('log',this)">Patient Log <span id="log-badge" style="font-size:8px;color:var(--gold)"></span></button>
-  </div>
-
-  <div id="cases-view">
-    <div id="res-wrap">
-      <div class="res-lbl">RES</div>
-      <div id="res-track"><div id="res-fill" style="width:100%"></div></div>
-      <div id="res-val">300</div>
-    </div>
-
-    <div id="patient-reg">
-      <div class="reg-lbl">Register Patient — <span id="reg-case-lbl" class="reg-case-title"></span></div>
-      <div class="reg-row">
-        <div class="reg-field"><label>Patient Name (Lore)</label><input id="reg-patient" type="text" placeholder="e.g. Tsuki Hanabi" autocomplete="off"></div>
-        <div class="reg-field"><label>Medic Username</label><input id="reg-user" type="text" placeholder="e.g. stardust_blade" autocomplete="off"></div>
-        <div class="reg-field"><label>Medic Lore Name</label><input id="reg-lore" type="text" placeholder="e.g. Kakushi Ryouta" autocomplete="off"></div>
+  <!-- ROLE SELECT -->
+  <div id="role-select" class="screen active">
+    <div class="hd-eyebrow" style="font-size:11px;letter-spacing:6px">Choose Your Role</div>
+    <div class="role-cards">
+      <div class="role-card" onclick="selectRole('gm')">
+        <span class="role-icon">&#9876;</span>
+        <div class="role-name">Game Master</div>
+        <div class="role-desc">Select body parts, assign injuries, and control the scenario. The medic must save the patient or you win.</div>
       </div>
-      <div class="reg-actions">
-        <button class="reg-btn" onclick="confirmCase()">Begin Treatment →</button>
-        <button class="reg-btn cancel" onclick="cancelReg()">Cancel</button>
-      </div>
-    </div>
-
-    <div id="picker-wrap">
-      <div class="picker-section-lbl">Trauma &amp; Fractures</div>
-      <div class="pick-grid">
-        <button class="pick-btn" onclick="openReg('ribs')">Broken Ribs<span class="pick-march">MARCH — R</span></button>
-        <button class="pick-btn" onclick="openReg('arm_stable')">Arm — Stable<span class="pick-march">MARCH — C</span></button>
-        <button class="pick-btn" onclick="openReg('arm_open')">Arm — Open Fracture<span class="pick-march">MARCH — C</span></button>
-        <button class="pick-btn" onclick="openReg('leg_stable')">Leg — Stable<span class="pick-march">MARCH — C</span></button>
-      </div>
-      <div class="picker-section-lbl" style="margin-top:14px">Bleeding</div>
-      <div class="pick-grid">
-        <button class="pick-btn pick-crit" onclick="openReg('lac_arm')">Laceration — Arm<span class="pick-march">MARCH — M ⚠</span></button>
-        <button class="pick-btn pick-crit" onclick="openReg('lac_leg')">Laceration — Leg<span class="pick-march">MARCH — M ⚠</span></button>
-        <button class="pick-btn" onclick="openReg('venous')">Venous Bleeding<span class="pick-march">MARCH — M</span></button>
-        <button class="pick-btn pick-crit" onclick="openReg('shock')">Shock<span class="pick-march">SECONDARY ⚠ TIMER</span></button>
-      </div>
-      <div class="picker-section-lbl" style="margin-top:14px">Infection &amp; Disease</div>
-      <div class="pick-grid">
-        <button class="pick-btn pick-crit" onclick="openReg('infection')">Infection<span class="pick-march">MARCH — H ⚠</span></button>
-        <button class="pick-btn pick-crit" onclick="openReg('demonic_inf')">Demonic Infection<span class="pick-march">MARCH — H ⚠ TIMER</span></button>
-      </div>
-      <div class="picker-section-lbl" style="margin-top:14px">Pulmonary &amp; Neurological</div>
-      <div class="pick-grid">
-        <button class="pick-btn pick-crit" onclick="openReg('lung')">Damaged Lung<span class="pick-march">MARCH — R ⚠</span></button>
-        <button class="pick-btn pick-crit" onclick="openReg('collapsed_lung')">Collapsed Lung<span class="pick-march">MARCH — R ⚠ TIMER</span></button>
-        <button class="pick-btn pick-psych" onclick="openReg('concussion')">Concussion<span class="pick-march">MARCH — D</span></button>
-        <button class="pick-btn pick-psych" onclick="openReg('mental_trauma')">Mental Trauma<span class="pick-march">MARCH — D</span></button>
-      </div>
-      <div class="picker-section-lbl" style="margin-top:14px">Surgical Operations</div>
-      <div class="pick-grid">
-        <button class="pick-btn pick-surgical" onclick="openReg('art_neck')">Arterial Bleed — Neck<span class="pick-march">SURGICAL ⚠ ADVANCED</span></button>
-        <button class="pick-btn pick-surgical" onclick="openReg('art_limb')">Arterial Bleed — Limb<span class="pick-march">SURGICAL ⚠ ADVANCED</span></button>
-        <button class="pick-btn pick-surgical" onclick="openReg('mass_hem')">Massive Hemorrhage<span class="pick-march">SURGICAL ⚠ MULTI-PERSON</span></button>
-        <button class="pick-btn pick-surgical" onclick="openReg('shrapnel')">Shrapnel Removal<span class="pick-march">SURGICAL ⚠ TEAM</span></button>
-        <button class="pick-btn pick-surgical" onclick="openReg('amputation')">Amputation<span class="pick-march">SURGICAL ⚠</span></button>
-      </div>
-    </div>
-
-    <div id="main">
-      <button id="back-btn" onclick="goBack()">Back to cases</button>
-      <div id="case-bar">
-        <div id="case-name">—</div>
-        <div class="case-bar-right">
-          <div id="case-march-tag">—</div>
-        </div>
-      </div>
-      <div id="patient-strip" style="display:none;background:var(--fog);border:1px solid var(--border);border-top:none;padding:7px 18px;font-size:12px;color:var(--text-dim);display:flex;gap:18px;flex-wrap:wrap">
-        <span>Patient: <strong id="ps-patient" style="color:var(--text)">—</strong></span>
-        <span>Medic: <strong id="ps-medic-user" style="color:var(--text)">—</strong></span>
-        <span>Lore: <em id="ps-medic-lore" style="color:var(--text-dim)">—</em></span>
-      </div>
-      <div id="peace-tracker">
-        <div class="ph-lbl">☽ PEACE HERB</div>
-        <div class="ph-dots">
-          <div class="ph-dot" id="ph1"></div>
-          <div class="ph-dot" id="ph2"></div>
-          <div class="ph-dot" id="ph3" style="border-color:rgba(231,76,60,0.3)"></div>
-        </div>
-        <div class="ph-warn" id="ph-warn">0 / 2 doses given</div>
-        <button style="background:transparent;border:1px solid rgba(77,159,214,0.3);color:#4d9fd6;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;padding:4px 10px;cursor:pointer" onclick="addPeaceHerb()">+ Give Dose</button>
-      </div>
-      <div id="case-subtabs">
-        <button class="case-subtab active" id="subtab-main" onclick="switchSubtab('main',this)">Treatment</button>
-        <button class="case-subtab shock-tab" id="subtab-shock" onclick="switchSubtab('shock',this)">⚠ SHOCK</button>
-      </div>
-      <div id="main-treatment-panel">
-      <div id="vitals">
-        <div class="vital"><div class="vdot" id="vd-pulse"></div><span class="vtxt" id="vt-pulse">—</span></div>
-        <div class="vital"><div class="vdot" id="vd-breath"></div><span class="vtxt" id="vt-breath">—</span></div>
-        <div class="vital"><div class="vdot" id="vd-skin"></div><span class="vtxt" id="vt-skin">—</span></div>
-      </div>
-      <div id="timer-bar">
-        <div class="tlbl">⚠ CRITICAL TIMER</div>
-        <div id="tclock">2:00</div>
-        <div id="treason">—</div>
-      </div>
-      <div id="sit-box">
-        <div class="sit-lbl">Current Situation</div>
-        <div id="sit-txt">—</div>
-      </div>
-      <div id="consequences"></div>
-      <div id="step-hdr">
-        <span class="step-lbl">STEP</span>
-        <div id="prog-track"><div id="prog-fill" style="width:0%"></div></div>
-        <span id="step-count">0 / 0</span>
-      </div>
-      <div id="actions">
-        <div class="act-lbl">Player did —</div>
-        <div id="act-list"></div>
-      </div>
-      <div id="step-ok"></div>
-      <div id="mid-exit-bar">
-        <div class="mex-lbl">Player needs to leave mid-treatment?</div>
-        <button id="mid-exit-btn" onclick="exitMid()">↷ Exit &amp; Save Progress</button>
-      </div>
-      <div id="next-wrap">
-        <button id="next-btn" onclick="advance()">Next Step →</button>
-      </div>
-      </div>
-
-      <div id="shock-treatment-panel" style="display:none">
-        <div style="background:rgba(231,76,60,0.07);border:1px solid rgba(231,76,60,0.4);padding:10px 18px;margin-bottom:1px">
-          <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:var(--critical);margin-bottom:4px">⚠ SHOCK — SECONDARY PROTOCOL</div>
-          <div style="font-size:13px;color:var(--text-dim);font-style:italic">Treat shock simultaneously with the primary case. Timer running from onset.</div>
-        </div>
-        <div id="shock-consequences" style="display:none;flex-direction:column;gap:4px;margin-bottom:1px" class=""></div>
-        <div id="shock-sit-box" style="background:var(--panel);border:1px solid var(--border);border-top:none;padding:14px 18px;margin-bottom:1px">
-          <div style="font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;color:var(--text-muted);margin-bottom:6px">SITUATION</div>
-          <div id="shock-sit-txt" style="font-style:italic;font-size:16px;line-height:1.7">—</div>
-        </div>
-        <div id="shock-step-hdr" style="display:flex;justify-content:space-between;align-items:center;padding:10px 18px;background:var(--fog);border:1px solid var(--border);border-top:none;margin-bottom:1px">
-          <span style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:var(--text-muted)">STEP</span>
-          <div id="shock-prog-track" style="flex:1;height:3px;background:var(--border);margin:0 14px;border-radius:2px;overflow:hidden"><div id="shock-prog-fill" style="height:100%;background:linear-gradient(90deg,var(--critical),var(--warn));border-radius:2px;transition:width .4s ease;width:0%"></div></div>
-          <span id="shock-step-count" style="font-family:'Cinzel',serif;font-size:10px;color:var(--gold-dim)">0 / 0</span>
-        </div>
-        <div id="shock-actions" style="background:var(--fog);border:1px solid var(--border);border-top:none;padding:14px 18px">
-          <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:4px;color:var(--text-muted);margin-bottom:10px">Player did —</div>
-          <div id="shock-act-list" style="display:flex;flex-direction:column;gap:6px"></div>
-        </div>
-        <div id="shock-step-ok" style="display:none;background:rgba(45,90,39,.18);border:1px solid rgba(92,184,92,.3);border-top:none;padding:10px 18px;color:var(--green-bright);font-style:italic;font-size:15px"></div>
-        <div id="shock-next-wrap" style="display:none;padding:12px 18px;background:var(--fog);border:1px solid var(--border);border-top:none">
-          <button id="shock-next-btn" onclick="advanceShock()" style="background:transparent;border:1px solid var(--critical);color:var(--critical);font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;padding:10px 20px;cursor:pointer">Next Step →</button>
-        </div>
-      </div>
-
-    </div>
-
-    <div id="death-screen">
-      <div class="death-rune">☽</div>
-      <div class="death-h">PATIENT DECEASED</div>
-      <div id="death-txt">—</div>
-      <div>
-        <button class="ghost-btn ghost-gold" onclick="saveLog('deceased');goBack()">Save to Log &amp; Return</button>
-        <button class="ghost-btn" onclick="goBack()">Return Without Saving</button>
-      </div>
-    </div>
-
-    <div id="done-screen">
-      <div class="done-h">Treatment Complete</div>
-      <div id="done-score">—</div>
-      <div id="done-grade">—</div>
-      <div>
-        <button class="ghost-btn ghost-gold" onclick="saveLog('recovered');goBack()">Save to Log &amp; Return</button>
-        <button class="ghost-btn ghost-gold" onclick="goBack()">Return Without Saving</button>
+      <div class="role-card" onclick="selectRole('medic')">
+        <span class="role-icon">&#9764;</span>
+        <div class="role-name">Medic</div>
+        <div class="role-desc">Diagnose and treat the patient using MARCH protocol. Apply the right items in the right order to save lives.</div>
       </div>
     </div>
   </div>
 
-  <div id="log-view">
-    <div class="log-summary">
-      <div class="log-stat"><div class="log-stat-val" id="ls-total">0</div><div class="log-stat-lbl">Total</div></div>
-      <div class="log-stat"><div class="log-stat-val" style="color:var(--green-bright)" id="ls-rec">0</div><div class="log-stat-lbl">Recovered</div></div>
-      <div class="log-stat"><div class="log-stat-val" style="color:var(--critical)" id="ls-dead">0</div><div class="log-stat-lbl">Deceased</div></div>
-      <div class="log-stat"><div class="log-stat-val" style="color:var(--warn)" id="ls-exit">0</div><div class="log-stat-lbl">Exited Mid</div></div>
-      <div class="log-stat"><div class="log-stat-val" style="color:var(--gold)" id="ls-avg">—</div><div class="log-stat-lbl">Avg RES</div></div>
+  <!-- GAME MASTER SCREEN -->
+  <div id="gm-screen" class="screen">
+    <div class="gm-layout">
+      <div class="gm-sidebar">
+        <div class="panel">
+          <div class="panel-title">Game Master Health</div>
+          <div class="gm-hp-text" id="gm-hp-text">300 / 300</div>
+          <div class="gm-health-bar"><div class="gm-health-fill" id="gm-hp-fill" style="width:100%"></div></div>
+          <div style="font-size:12px;color:var(--text-dim);margin-top:4px">You take damage when the medic succeeds</div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Select Body Part</div>
+          <div style="font-size:12px;color:var(--text-dim);margin-bottom:8px">Click a body part on the figure</div>
+          <div id="gm-selected-part" style="font-family:'Cinzel',serif;font-size:14px;color:var(--gold);margin-bottom:8px">None selected</div>
+        </div>
+        <div class="panel" id="gm-injury-panel" style="display:none">
+          <div class="panel-title">Select Injury</div>
+          <div class="injury-pick" id="injury-pick"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Timer (seconds)</div>
+          <div class="timer-config">
+            <input type="number" id="timer-input" value="180" min="30" max="600" step="10">
+            <label>seconds for medic</label>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Active Injuries</div>
+          <div id="active-injuries">
+            <div style="font-size:13px;color:var(--text-muted);font-style:italic">No injuries assigned yet</div>
+          </div>
+          <button class="btn success" id="start-game-btn" style="margin-top:12px;width:100%" onclick="startGame()" disabled>Start Operation</button>
+        </div>
+      </div>
+      <div>
+        <div class="panel">
+          <div class="panel-title">Patient Body</div>
+          <div class="body-container">
+            <svg class="body-svg" viewBox="0 0 220 400" id="gm-body">
+              <rect class="body-part" data-part="head" x="75" y="5" width="70" height="65" rx="20"/>
+              <rect class="body-part" data-part="neck" x="88" y="72" width="44" height="20" rx="6"/>
+              <rect class="body-part" data-part="chest" x="55" y="94" width="110" height="80" rx="8"/>
+              <rect class="body-part" data-part="left-arm" x="5" y="94" width="46" height="120" rx="10"/>
+              <rect class="body-part" data-part="right-arm" x="169" y="94" width="46" height="120" rx="10"/>
+              <rect class="body-part" data-part="left-leg" x="55" y="220" width="50" height="150" rx="10"/>
+              <rect class="body-part" data-part="right-leg" x="115" y="220" width="50" height="150" rx="10"/>
+              <circle class="body-part" data-part="left-eye" cx="95" cy="30" r="8"/>
+              <circle class="body-part" data-part="right-eye" cx="125" cy="30" r="8"/>
+            </svg>
+          </div>
+        </div>
+        <!-- Game Log -->
+        <div class="panel">
+          <div class="panel-title">Operation Log</div>
+          <div id="gm-log">
+            <div style="font-size:13px;color:var(--text-muted);font-style:italic">Waiting for game to start...</div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="log-controls">
-      <input class="log-search" id="log-search" type="text" placeholder="Search patient, medic, case..." oninput="renderLog()">
-      <select class="log-filter" id="log-filter" onchange="renderLog()">
-        <option value="">All Outcomes</option>
-        <option value="recovered">Recovered</option>
-        <option value="deceased">Deceased</option>
-        <option value="exited">Exited Mid</option>
-      </select>
-      <button class="log-btn danger" onclick="clearAllLog()">🗑 Delete All Logs</button>
+  </div>
+
+  <!-- MEDIC SCREEN: WAITING -->
+  <div id="medic-wait" class="screen">
+    <div style="text-align:center;padding:80px 20px">
+      <div class="hd-eyebrow" style="font-size:11px;letter-spacing:6px;margin-bottom:20px">Medic Station</div>
+      <div style="font-family:'Cinzel',serif;font-size:1.4rem;color:var(--gold);margin-bottom:16px">Waiting for Game Master...</div>
+      <div style="font-size:15px;color:var(--text-dim);line-height:1.8;max-width:500px;margin:0 auto">
+        The Game Master is selecting injuries for the patient.<br>
+        Prepare your field kit and review MARCH protocol.<br>
+        The operation will begin when injuries are assigned.
+      </div>
+      <div id="medic-code-display" style="margin-top:30px">
+        <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:4px;color:var(--text-muted);margin-bottom:8px">GAME CODE</div>
+        <div style="font-family:'Cinzel',serif;font-size:2rem;color:var(--gold);letter-spacing:8px" id="game-code-text"></div>
+      </div>
     </div>
-    <div id="log-table-wrap">
-      <div id="log-empty">No cases logged yet. Complete or save a treatment to see records here.</div>
-      <table class="log-tbl" id="log-tbl" style="display:none">
-        <thead><tr>
-          <th>#</th><th>Date / Time</th><th>Patient</th><th>Medic (User)</th><th>Medic (Lore)</th><th>Case</th>
-          <th>RES</th><th>Outcome</th><th></th>
-        </tr></thead>
-        <tbody id="log-tbody"></tbody>
-      </table>
+  </div>
+
+  <!-- MEDIC SCREEN: ACTIVE -->
+  <div id="medic-screen" class="screen">
+    <div class="medic-layout">
+      <div class="medic-main">
+        <div id="medic-timer" class="safe">3:00</div>
+        <div class="vitals-bar" id="medic-vitals">
+          <div class="vital"><span class="vdot ok" id="v-pulse-dot"></span><span class="vtxt" id="v-pulse">Pulse: Stable</span></div>
+          <div class="vital"><span class="vdot ok" id="v-breath-dot"></span><span class="vtxt" id="v-breath">Breath: Normal</span></div>
+          <div class="vital"><span class="vdot ok" id="v-skin-dot"></span><span class="vtxt" id="v-skin">Skin: Warm</span></div>
+        </div>
+        <div class="peace-tracker" id="medic-peace" style="display:none">
+          <span class="ph-lbl">Peace Herb</span>
+          <div class="ph-dots">
+            <div class="ph-dot" id="ph1"></div>
+            <div class="ph-dot" id="ph2"></div>
+            <div class="ph-dot" id="ph3"></div>
+          </div>
+        </div>
+        <div id="consequences-area"></div>
+        <div class="panel">
+          <div class="panel-title">Patient Body</div>
+          <div class="body-container">
+            <svg class="body-svg" viewBox="0 0 220 400" id="medic-body">
+              <rect class="body-part" data-part="head" x="75" y="5" width="70" height="65" rx="20"/>
+              <rect class="body-part" data-part="neck" x="88" y="72" width="44" height="20" rx="6"/>
+              <rect class="body-part" data-part="chest" x="55" y="94" width="110" height="80" rx="8"/>
+              <rect class="body-part" data-part="left-arm" x="5" y="94" width="46" height="120" rx="10"/>
+              <rect class="body-part" data-part="right-arm" x="169" y="94" width="46" height="120" rx="10"/>
+              <rect class="body-part" data-part="left-leg" x="55" y="220" width="50" height="150" rx="10"/>
+              <rect class="body-part" data-part="right-leg" x="115" y="220" width="50" height="150" rx="10"/>
+              <circle class="body-part" data-part="left-eye" cx="95" cy="30" r="8"/>
+              <circle class="body-part" data-part="right-eye" cx="125" cy="30" r="8"/>
+            </svg>
+          </div>
+        </div>
+        <div class="panel" id="current-injury-panel">
+          <div class="panel-title" id="current-injury-title">Select an injured body part</div>
+          <div id="treatment-steps"></div>
+        </div>
+      </div>
+      <div class="medic-sidebar">
+        <div class="panel">
+          <div class="panel-title">MARCH Assessment</div>
+          <div id="march-display">
+            <div style="font-size:13px;color:var(--text-dim);line-height:1.8">
+              <span style="color:var(--blood-bright);font-weight:600">M</span> — Massive Bleeding<br>
+              <span style="color:var(--blood-bright);font-weight:600">A</span> — Airway<br>
+              <span style="color:var(--blood-bright);font-weight:600">R</span> — Respiration<br>
+              <span style="color:var(--blood-bright);font-weight:600">C</span> — Circulation<br>
+              <span style="color:var(--blood-bright);font-weight:600">H</span> — Head-to-Toe
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Field Kit — Equipment</div>
+          <div class="inv-grid" id="equip-grid"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Field Kit — Herbs & Teas</div>
+          <div class="inv-grid" id="herbs-grid"></div>
+        </div>
+        <div class="apply-area">
+          <button class="btn success apply-btn" id="apply-btn" onclick="applyItem()" disabled>Apply Selected Item</button>
+        </div>
+        <div class="panel" style="margin-top:4px">
+          <div class="panel-title">Selected Item</div>
+          <div id="selected-item-info" style="font-size:13px;color:var(--text-muted);font-style:italic">Nothing selected</div>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-box" id="result-box"></div>
   </div>
 </div>
 
 <script>
-const DB = {
+const EQUIPMENT = [
+  {id:'bandages',name:'Bandages',desc:'Stop bleeding, wrap wounds, secure splints'},
+  {id:'splint',name:'Splint',desc:'Wood/bamboo to immobilize broken bones'},
+  {id:'sling',name:'Sling',desc:'Holds broken arm against body'},
+  {id:'tourniquet',name:'Tourniquet',desc:'Stops heavy arterial limb bleeding'},
+  {id:'clean-water',name:'Clean Water',desc:'Saline solution to wash wounds'},
+  {id:'cold-stones',name:'Cold Stones',desc:'Reduce swelling at injury sites'},
+  {id:'pillows',name:'Pillows/Cloth',desc:'Elevate limbs, hold against chest'},
+  {id:'sutures',name:'Sutures',desc:'Needle and thread to close wounds'},
+  {id:'forceps',name:'Forceps',desc:'Extract shrapnel, clots, bone fragments'},
+  {id:'clamps',name:'Arterial Clamps',desc:'Isolate damaged artery sections'},
+  {id:'hollow-needle',name:'Hollow Needle',desc:'Needle decompression for collapsed lung'},
+  {id:'chest-tube',name:'Chest Tube',desc:'Re-expand collapsed lung'},
+  {id:'metal-rods',name:'Metal Rods',desc:'Hold comminuted fracture fragments'},
+  {id:'probe',name:'Probe',desc:'Map internal fragment locations'}
+];
 
-ribs:{title:'Broken Ribs',march:'MARCH — R',critical:false,
-  intro:'Slayer brought in after blunt trauma to the chest. Breathing shallow, holding their side. Conscious and in pain.',
-  timer:null,vitals:{pulse:'Fast',breath:'Shallow',skin:'Pale'},
-  steps:[
-    {sit:'The patient winces with every breath. Locate the damage.',actions:[
-      {t:'Palpates along the ribs — feeling for pain, grinding, deformity',ok:true,fb:'Break located. Midway down the side — grinding under the fingers, patient reacts. Good.'},
-      {t:'Wraps or binds the chest with bandages',ok:false,pen:150,cq:'Binding the chest prevents lung expansion. Breathing worsens immediately.',fix:'Remove the binding NOW. Sit patient upright.',dt:10},
-      {t:'Skips assessment and moves to treatment',ok:false,pen:25,cq:'Fracture location unknown. Treatment may be applied to the wrong area.',fix:'Redo full palpation before continuing.'},
-    ]},
-    {sit:'Break found. Now observe breathing pattern.',actions:[
-      {t:'Watches chest for 30 seconds — notes rate, depth, symmetry',ok:true,fb:'Short guarded breaths. Not reaching full depth. One side rises slightly less. Concerning but not flail.'},
-      {t:'Skips breathing observation — moves straight to treatment',ok:false,pen:0,cq:'Missed severity indicator. Cannot properly assess without watching breathing.',fix:'Observe 30 seconds of breathing before continuing.'},
-    ]},
-    {sit:'One side rises slightly less. Check for flail segment.',actions:[
-      {t:'Watches for any chest section moving INWARD on inhale (paradoxical movement)',ok:true,fb:'No paradoxical movement. Chest rises and falls together. No flail. Treatable at Basic cert.'},
-      {t:"Assumes it's fine and skips flail check",ok:false,pen:100,cq:'Flail segment missed. Internal damage continues unchecked. Above Basic cert.',fix:'Sit patient upright, do NOT touch chest. Call a surgeon. Death timer: 20 min.',dt:20},
-    ]},
-    {sit:'No flail confirmed. Check skin integrity over the fracture.',actions:[
-      {t:'Confirms skin is intact — no breach, no visible bone',ok:true,fb:'Skin intact. Closed fracture confirmed. Clear to treat.'},
-      {t:'Skips skin check and proceeds to treatment',ok:false,pen:50,cq:"May be treating a closed fracture when it's actually open. Wrong protocol.",fix:'Strip clothing. Inspect. If open: switch to Open Fracture protocol.'},
-    ]},
-    {sit:'Closed fracture confirmed. Position the patient and give pain relief.',actions:[
-      {t:'Sits patient upright and gives Mugwort or Puchuve tea for pain',ok:true,fb:"Patient upright, pain relief given. They can breathe slightly easier. Waiting for it to work."},
-      {t:'Lays the patient flat to examine the break',ok:false,pen:50,cq:'Lying flat compresses broken ribs. Breathing worsens. Aspiration risk.',fix:'Sit upright immediately. Never lay flat with rib injuries.'},
-      {t:'Skips pain medication and moves to stabilization',ok:false,pen:25,cq:'Patient in full pain — will resist breathing exercises. Pneumonia risk increases.',fix:'Give pain tea before attempting breathing exercises.'},
-    ]},
-    {sit:'Pain relief working. Stabilize the flail area.',actions:[
-      {t:'Places a thin flat piece of wood over the segment, secured gently with cloth',ok:true,fb:'Wood placed over the affected segment. Secured firmly but not tight. Chest can still expand fully.'},
-      {t:'Tightly wraps a board against the chest to hold it firmly',ok:false,pen:75,cq:'Tight binding restricts breathing. Pneumonia guaranteed within hours.',fix:'Loosen immediately. The securing cloth must allow full chest expansion.',dt:12},
-    ]},
-    {sit:'Stabilized. Enforce deep breathing exercises — critical step.',actions:[
-      {t:"Makes the patient take full deep breaths — explains pneumonia risk if they don't",ok:true,fb:"Patient complies through the pain. Each breath fuller than the last. Pneumonia averted."},
-      {t:'Lets the patient breathe shallowly because it hurts less',ok:false,pen:100,cq:'Shallow breathing is a guaranteed path to pneumonia. Within 12 hours.',fix:'Insist on deep breaths. Pain medication exists to make this possible.',dt:12*60},
-    ]},
-    {sit:'Breathing exercises done. Watch for sudden worsening.',actions:[
-      {t:'Monitors for blue lips, sudden labored breathing, or altered chest movement',ok:true,fb:'Watching. Lips pink. Breathing strained but consistent. No sudden changes. Case stable.'},
-      {t:'Declares treatment done and discharges patient without monitoring',ok:false,pen:50,cq:'Missed window to catch tension pneumothorax. Patient may collapse after discharge.',fix:'Observe minimum 20 minutes post-treatment. Blue lips = collapsed lung emergency.'},
-    ]}
-  ]
-},
+const HERBS = [
+  {id:'mugwort',name:'Mugwort',desc:'Pack wounds to slow bleeding / general pain tea'},
+  {id:'puchuve',name:'Puchuve Tea',desc:'Pain relief for bone injuries'},
+  {id:'peace-herb',name:'Peace Herb',desc:'Sedation for surgery. MAX 2 doses. 3rd = death'},
+  {id:'loquat',name:'Loquat Leaf',desc:'Warm compress for infection prevention'},
+  {id:'chrysanthemum',name:'Chrysanthemum Tea',desc:'Reduces fever and ocular inflammation'},
+  {id:'toki',name:'Toki Tea',desc:'Blood loss recovery when conscious'},
+  {id:'yuzu',name:'Yuzu Tea + Honey',desc:'Shock treatment. Small sips if conscious'},
+  {id:'dream-root',name:'Dream Root Tea',desc:'Lung fatigue recovery'}
+];
 
-arm_stable:{title:'Broken Arm — Stable',march:'MARCH — C',critical:false,
-  intro:'Fighter brought in after a fall. Arm visibly swollen. Shape looks mostly intact. Skin intact. In pain but conscious.',
-  timer:null,vitals:{pulse:'Normal',breath:'Normal',skin:'Normal'},
-  steps:[
-    {sit:'Assess the fracture before touching it.',actions:[
-      {t:'Compares both arms — looks for swelling, deformity. Tests grip strength.',ok:true,fb:'Left arm more swollen below the elbow. Grip weak but present. Shape mostly intact. Stable fracture.'},
-      {t:'Immediately attempts to set the bone without assessing first',ok:false,pen:50,cq:'Setting without assessing risks misidentifying fracture type.',fix:'Assess first: compare arms, check grip, confirm skin intact.'},
-    ]},
-    {sit:'Stable fracture confirmed. Check circulation before any treatment.',actions:[
-      {t:'Checks finger color and warmth — pink and warm is good',ok:true,fb:'Fingers pink, warm to touch. Good circulation. Safe to proceed.'},
-      {t:'Skips circulation check and moves to splinting',ok:false,pen:50,cq:'Circulation compromised fractures need different priority.',fix:'Always check circulation before and after any splinting.'},
-    ]},
-    {sit:'Circulation confirmed. Prepare the patient for bone-setting.',actions:[
-      {t:"Gives Puchuve tea for pain — waits for it to work before touching the bone",ok:true,fb:"Tea given. Waiting. Patient's tension eases over the next few minutes."},
-      {t:'Sets the bone immediately before giving any pain relief',ok:false,pen:75,cq:'Patient goes into pain shock. Loses consciousness.',fix:'Give Puchuve tea. Wait for it to work. Only then set the bone.'},
-    ]},
-    {sit:'Pain relief working. Set the bone.',actions:[
-      {t:'Gently pulls the arm into alignment — firm steady traction',ok:true,fb:'Steady pull applied. Bone guides into position. Alignment looks correct.'},
-      {t:'Asks the patient to flex or test the arm to confirm it set',ok:false,pen:75,cq:'Moving a freshly set fracture dislodges the bone.',fix:'Set then splint. Never ask the patient to move before immobilizing.'},
-    ]},
-    {sit:'Bone set. Splint the arm.',actions:[
-      {t:'Splints from shoulder to past the fingers — two sticks, secured away from wound',ok:true,fb:'Wood on both sides, cloth ties not over the fracture site. Arm immobilized.'},
-      {t:'Wraps very tightly to make sure the bone cannot move at all',ok:false,pen:75,cq:'Circulation cut off. Limb turns cold and blue. Gangrene risk within hours.',fix:'Loosen wrap. Must be able to slide one finger under the wrap.',dt:8*60},
-    ]},
-    {sit:'Splinted. Now sling and check circulation.',actions:[
-      {t:'Slings the arm against the body, then rechecks finger warmth and color',ok:true,fb:'Sling applied. Fingers warm and pink. Circulation intact. Treatment complete.'},
-      {t:'Skips post-splint circulation check',ok:false,pen:50,cq:'Missed tight wrap causing circulation loss. Gangrene develops silently.',fix:'Always recheck finger color and warmth after splinting.'},
-    ]}
-  ]
-},
+const BODY_PARTS = {
+  'head':{name:'Head',injuries:['concussion']},
+  'neck':{name:'Neck',injuries:['arterial-neck']},
+  'chest':{name:'Chest',injuries:['broken-ribs','collapsed-lung']},
+  'left-arm':{name:'Left Arm',injuries:['broken-arm-stable','broken-arm-open','broken-arm-comminuted','deep-lac-arm','arterial-arm']},
+  'right-arm':{name:'Right Arm',injuries:['broken-arm-stable','broken-arm-open','broken-arm-comminuted','deep-lac-arm','arterial-arm']},
+  'left-leg':{name:'Left Leg',injuries:['broken-leg-stable','broken-leg-open','broken-leg-comminuted','deep-lac-leg','arterial-leg']},
+  'right-leg':{name:'Right Leg',injuries:['broken-leg-stable','broken-leg-open','broken-leg-comminuted','deep-lac-leg','arterial-leg']},
+  'left-eye':{name:'Left Eye',injuries:['blind-eye-surface','blind-eye-puncture']},
+  'right-eye':{name:'Right Eye',injuries:['blind-eye-surface','blind-eye-puncture']}
+};
 
-arm_open:{title:'Broken Arm — Open Fracture',march:'MARCH — C',critical:true,
-  intro:'Slayer brought in with bone visible through the skin. Blood at the wound edges. Muscle partially exposed. Bone appears to be one piece.',
-  timer:null,vitals:{pulse:'Fast',breath:'Shallow',skin:'Pale'},
-  steps:[
-    {sit:'Visible bone. First: check for arterial bleeding.',actions:[
-      {t:'Checks if blood is spurting rhythmically with the heartbeat',ok:true,fb:'Blood is flowing steadily — not spurting. Venous. No arterial emergency. Proceed.'},
-      {t:'Immediately tries to push the bone back under the skin',ok:false,pen:100,cq:'Bone pushed without checking for arterial bleed first. If artery was nicked, patient bleeds out.',fix:'Always check for spurting blood first. Tourniquet above if arterial, then proceed.',dt:5},
-    ]},
-    {sit:'No arterial bleed. Sedate the patient.',actions:[
-      {t:'Administers Peace Herb — puts the patient under before handling open fracture',ok:true,fb:'Peace Herb administered. Patient goes under. One dose used.'},
-      {t:'Attempts open fracture procedure while patient is fully awake',ok:false,pen:75,cq:'Patient convulses from pain mid-procedure. Disrupts bone alignment.',fix:'Sedate before attempting any open fracture work.'},
-    ]},
-    {sit:'Patient sedated. Irrigate the wound.',actions:[
-      {t:'Pours large amounts of clean saline water through the wound — washes out all debris',ok:true,fb:'Water runs through the wound, carrying grit and old blood. The exposed bone surface looks cleaner.'},
-      {t:'Closes the wound with the debris still inside',ok:false,pen:100,cq:'Infection sealed inside wound. Severe sepsis within hours.',fix:'Reopen. Irrigate thoroughly. Restart from here.',dt:6*60},
-    ]},
-    {sit:'Irrigated. Reduce the bone.',actions:[
-      {t:'Applies gentle steady pressure to guide the bone back under the skin',ok:true,fb:'Gentle pressure applied. Bone slides back into place. One piece — no fragments detected.'},
-      {t:'Forces the bone hard when it offers resistance',ok:false,pen:100,cq:'Cracking sound. Bone fragments. Stable fracture becomes comminuted. Surgeon required immediately.',fix:'STOP. Stabilize arm as-is. Call surgeon. Do not attempt further reduction.',dt:15},
-    ]},
-    {sit:'Bone reduced. Close, splint, and apply infection prevention.',actions:[
-      {t:'Bandages the wound, splints with wood on both sides (ties away from wound), applies warm Loquat Leaf compress',ok:true,fb:'Wound closed. Splint on. Warm Loquat Leaf compress applied. Arm slung.'},
-      {t:'Applies cold Loquat Leaf compress',ok:false,pen:50,cq:'Cold Loquat Leaf has no medicinal effect.',fix:'Must be warm. Reheat leaf and reapply.'},
-      {t:'Skips the Loquat Leaf compress entirely',ok:false,pen:75,cq:'No infection prevention on an open fracture wound. Fever and infection within the day.',fix:'Apply warm Loquat Leaf compress immediately.',dt:24*60},
-    ]}
-  ]
-},
+const INJURIES = {
+  'broken-ribs':{
+    name:'Broken Ribs',march:'R',category:'basic',damage:40,
+    steps:[
+      {text:'Feel along the ribs to locate the break',item:null,action:'examine'},
+      {text:'Sit the patient upright',item:'pillows',action:'apply'},
+      {text:'Give Mugwort or Puchuve tea for pain',item:'mugwort',altItem:'puchuve',action:'apply'},
+      {text:'Give them something to hold against their chest',item:'pillows',action:'apply'},
+      {text:'Make them do deep breaths to prevent pneumonia',item:null,action:'examine'},
+      {text:'Place thin flat wood over the segment and secure with cloth',item:'splint',action:'apply'},
+      {text:'Wrap with bandage — firm but not tight',item:'bandages',action:'apply'},
+      {text:'Monitor for worsening breathing or blue lips',item:null,action:'examine'}
+    ]
+  },
+  'broken-arm-stable':{
+    name:'Broken Arm (Stable)',march:'C',category:'basic',damage:35,
+    steps:[
+      {text:'Check the arm — compare to other arm for swelling and shape',item:null,action:'examine'},
+      {text:'Test grip — have them squeeze your hand',item:null,action:'examine'},
+      {text:'Check fingers for warmth and color',item:null,action:'examine'},
+      {text:'Give Puchuve tea for pain and wait for it to work',item:'puchuve',action:'apply'},
+      {text:'If bone out of place, set it — pull into alignment',item:null,action:'examine'},
+      {text:'Splint from shoulder down past fingers',item:'splint',action:'apply'},
+      {text:'Sling it against their body',item:'sling',action:'apply'},
+      {text:'Check finger color and warmth after — cold means too tight',item:null,action:'examine'},
+      {text:'Apply cold stones for swelling',item:'cold-stones',action:'apply'}
+    ]
+  },
+  'broken-arm-open':{
+    name:'Broken Arm (Open)',march:'C',category:'basic',damage:55,
+    steps:[
+      {text:'Visible bone through the wound — assess if one piece or shattered',item:null,action:'examine'},
+      {text:'Check if blood is spurting with heartbeat (arterial)',item:null,action:'examine'},
+      {text:'Give Peace Herb to put them under',item:'peace-herb',action:'apply'},
+      {text:'Pour clean water over wound — wash out everything',item:'clean-water',action:'apply'},
+      {text:'Gentle pressure to guide bone back under skin',item:null,action:'examine'},
+      {text:'Bandage the wound closed',item:'bandages',action:'apply'},
+      {text:'Splint with wood on both sides, tied away from wound',item:'splint',action:'apply'},
+      {text:'Sling the arm',item:'sling',action:'apply'},
+      {text:'Apply Loquat Leaf compress for infection',item:'loquat',action:'apply'}
+    ]
+  },
+  'broken-arm-comminuted':{
+    name:'Broken Arm (Comminuted)',march:'C',category:'advanced',damage:80,
+    steps:[
+      {text:'Administer 2 doses of Peace Herb Tea — wait for full sedation',item:'peace-herb',action:'apply'},
+      {text:'Have assistant hold limb completely motionless',item:null,action:'examine'},
+      {text:'Irrigate heavily with clean water',item:'clean-water',action:'apply'},
+      {text:'Pack Mugwort around wound to control bleeding',item:'mugwort',action:'apply'},
+      {text:'Identify all fragments visually',item:null,action:'examine'},
+      {text:'Remove loose fragments with forceps',item:'forceps',action:'apply'},
+      {text:'Align major bone sections and hold with metal rods',item:'metal-rods',action:'apply'},
+      {text:'Close wound and apply cast/splint',item:'splint',action:'apply'},
+      {text:'Apply Loquat Leaf compress for infection prevention',item:'loquat',action:'apply'},
+      {text:'Give Toki tea for blood recovery',item:'toki',action:'apply'}
+    ]
+  },
+  'broken-leg-stable':{
+    name:'Broken Leg (Stable)',march:'C',category:'basic',damage:35,
+    steps:[
+      {text:'Check the leg — compare to other leg for swelling and shape',item:null,action:'examine'},
+      {text:'Check foot pulse — warm foot is good, cold foot is bad',item:null,action:'examine'},
+      {text:'Ask if they can feel you touching their toes',item:null,action:'examine'},
+      {text:'Give Puchuve tea for pain and wait',item:'puchuve',action:'apply'},
+      {text:'If bone badly bent, set it — pull into alignment',item:null,action:'examine'},
+      {text:'Rigid splint or bamboo cast — wrap firm but not too tight',item:'splint',action:'apply'},
+      {text:'Check foot pulse after wrapping',item:null,action:'examine'},
+      {text:'Apply cold stones for swelling',item:'cold-stones',action:'apply'}
+    ]
+  },
+  'broken-leg-open':{
+    name:'Broken Leg (Open)',march:'C',category:'basic',damage:55,
+    steps:[
+      {text:'Visible bone through wound — assess if one piece or shattered',item:null,action:'examine'},
+      {text:'Check if blood is spurting with heartbeat (arterial)',item:null,action:'examine'},
+      {text:'Give Peace Herb to sedate',item:'peace-herb',action:'apply'},
+      {text:'Pour clean water over wound — wash out everything',item:'clean-water',action:'apply'},
+      {text:'Gentle pressure to guide bone back under skin',item:null,action:'examine'},
+      {text:'Bandage the wound closed',item:'bandages',action:'apply'},
+      {text:'Splint with wood on both sides, tied away from wound',item:'splint',action:'apply'},
+      {text:'Apply Loquat Leaf compress for infection',item:'loquat',action:'apply'}
+    ]
+  },
+  'broken-leg-comminuted':{
+    name:'Broken Leg (Comminuted)',march:'C',category:'advanced',damage:80,
+    steps:[
+      {text:'Administer 2 doses of Peace Herb Tea — wait for full sedation',item:'peace-herb',action:'apply'},
+      {text:'Have assistant hold limb completely motionless',item:null,action:'examine'},
+      {text:'Irrigate heavily with clean water',item:'clean-water',action:'apply'},
+      {text:'Pack Mugwort around wound to control bleeding',item:'mugwort',action:'apply'},
+      {text:'Identify all fragments visually',item:null,action:'examine'},
+      {text:'Remove loose fragments with forceps',item:'forceps',action:'apply'},
+      {text:'Align major bone sections and hold with metal rods',item:'metal-rods',action:'apply'},
+      {text:'Close wound and apply cast/splint',item:'splint',action:'apply'},
+      {text:'Apply Loquat Leaf compress for infection prevention',item:'loquat',action:'apply'},
+      {text:'Give Toki tea for blood recovery',item:'toki',action:'apply'}
+    ]
+  },
+  'deep-lac-arm':{
+    name:'Deep Laceration (Arm)',march:'M',category:'basic',damage:50,
+    steps:[
+      {text:'Check if blood is spurting with heartbeat — arterial vs venous',item:null,action:'examine'},
+      {text:'Apply firm direct pressure with clean cloth — do not lift',item:'bandages',action:'apply'},
+      {text:'Elevate the arm above the heart',item:'pillows',action:'apply'},
+      {text:'Irrigate wound with clean saline water',item:'clean-water',action:'apply'},
+      {text:'Pack Mugwort into wound to slow remaining bleeding',item:'mugwort',action:'apply'},
+      {text:'Suture the wound closed — center outward',item:'sutures',action:'apply'},
+      {text:'Apply warm Loquat Leaf compress for infection prevention',item:'loquat',action:'apply'},
+      {text:'Bandage with clean cloth — firm but not tight',item:'bandages',action:'apply'},
+      {text:'Check finger warmth and color — cold/blue = too tight',item:null,action:'examine'},
+      {text:'Give Toki tea for blood loss recovery',item:'toki',action:'apply'},
+      {text:'Monitor for shock signs',item:null,action:'examine'}
+    ]
+  },
+  'deep-lac-leg':{
+    name:'Deep Laceration (Leg)',march:'M',category:'basic',damage:50,
+    steps:[
+      {text:'Check if blood is spurting with heartbeat — arterial vs venous',item:null,action:'examine'},
+      {text:'Apply firm direct pressure with clean cloth — do not lift',item:'bandages',action:'apply'},
+      {text:'Lay patient down, elevate leg above heart',item:'pillows',action:'apply'},
+      {text:'Irrigate wound with clean saline water',item:'clean-water',action:'apply'},
+      {text:'Pack Mugwort into wound',item:'mugwort',action:'apply'},
+      {text:'Suture the wound closed — center outward',item:'sutures',action:'apply'},
+      {text:'Warm Loquat Leaf compress over closed wound',item:'loquat',action:'apply'},
+      {text:'Bandage with clean cloth — firm not tight',item:'bandages',action:'apply'},
+      {text:'Check foot pulse and warmth — cold/blue = loosen',item:null,action:'examine'},
+      {text:'Give Toki tea if significant blood loss',item:'toki',action:'apply'},
+      {text:'Monitor for shock — thigh lacerations cause faster onset',item:null,action:'examine'}
+    ]
+  },
+  'arterial-arm':{
+    name:'Arterial Bleeding (Arm)',march:'M',category:'advanced',damage:90,
+    steps:[
+      {text:'Tourniquet immediately above the wound — tighten until spurting stops',item:'tourniquet',action:'apply'},
+      {text:'Administer Peace Herb Tea for sedation',item:'peace-herb',action:'apply'},
+      {text:'Sterilize all tools',item:'clean-water',action:'apply'},
+      {text:'Open skin above damaged artery — identify the vessel',item:null,action:'examine'},
+      {text:'Apply clamp above the wound (brachial pressure point)',item:'clamps',action:'apply'},
+      {text:'Apply second clamp below the damaged section',item:'clamps',action:'apply'},
+      {text:'Remove tourniquet — only after both clamps placed',item:'tourniquet',action:'apply'},
+      {text:'Sew the artery closed with thin thread and small stitches',item:'sutures',action:'apply'},
+      {text:'Release lower clamp first — slowly — watch for leaking',item:'clamps',action:'apply'},
+      {text:'Release upper clamp slowly — no blood escaping = success',item:'clamps',action:'apply'},
+      {text:'Close the outer wound and bandage',item:'bandages',action:'apply'},
+      {text:'Give Toki tea — keep limb elevated on pillows',item:'toki',action:'apply'}
+    ]
+  },
+  'arterial-leg':{
+    name:'Arterial Bleeding (Leg)',march:'M',category:'advanced',damage:90,
+    steps:[
+      {text:'Tourniquet immediately above the wound — tighten until spurting stops',item:'tourniquet',action:'apply'},
+      {text:'Administer Peace Herb Tea for sedation',item:'peace-herb',action:'apply'},
+      {text:'Sterilize all tools',item:'clean-water',action:'apply'},
+      {text:'Open skin above damaged artery — identify vessel',item:null,action:'examine'},
+      {text:'Apply clamp above wound (femoral pressure point)',item:'clamps',action:'apply'},
+      {text:'Apply second clamp below damaged section',item:'clamps',action:'apply'},
+      {text:'Remove tourniquet after both clamps placed',item:'tourniquet',action:'apply'},
+      {text:'Sew artery closed with thin stitches',item:'sutures',action:'apply'},
+      {text:'Release lower clamp first — slowly',item:'clamps',action:'apply'},
+      {text:'Release upper clamp slowly',item:'clamps',action:'apply'},
+      {text:'Close outer wound and bandage',item:'bandages',action:'apply'},
+      {text:'Give Toki tea — elevate limb on pillows',item:'toki',action:'apply'}
+    ]
+  },
+  'arterial-neck':{
+    name:'Arterial Bleeding (Neck)',march:'M',category:'advanced',damage:120,
+    steps:[
+      {text:'Apply immediate firm direct pressure with clean cloth over wound',item:'bandages',action:'apply'},
+      {text:'Administer Peace Herb Tea immediately while maintaining pressure',item:'peace-herb',action:'apply'},
+      {text:'Sterilize tools — need second person holding pressure',item:'clean-water',action:'apply'},
+      {text:'Expose wound carefully — identify damaged vessel',item:null,action:'examine'},
+      {text:'Apply clamp above damaged section',item:'clamps',action:'apply'},
+      {text:'Apply clamp below damaged section',item:'clamps',action:'apply'},
+      {text:'Sew vessel closed with thin thread — very small stitches — precision critical',item:'sutures',action:'apply'},
+      {text:'Release lower clamp first slowly — watch for leak',item:'clamps',action:'apply'},
+      {text:'Release upper clamp slowly',item:'clamps',action:'apply'},
+      {text:'Close wound — light bandage only — do NOT bind neck tightly',item:'bandages',action:'apply'},
+      {text:'Keep patient flat and still — give Toki tea when conscious',item:'toki',action:'apply'},
+      {text:'Monitor breathing closely',item:null,action:'examine'}
+    ]
+  },
+  'collapsed-lung':{
+    name:'Collapsed Lung',march:'R',category:'advanced',damage:100,
+    steps:[
+      {text:'Listen to both sides of chest — one side absent or muffled',item:null,action:'examine'},
+      {text:'Needle decompression — insert hollow needle into 2nd/3rd rib space on affected side',item:'hollow-needle',action:'apply'},
+      {text:'Keep patient upright or at 45 degrees',item:'pillows',action:'apply'},
+      {text:'Administer Peace Herb Tea',item:'peace-herb',action:'apply'},
+      {text:'Insert chest tube at 4th/5th rib space — secure in place',item:'chest-tube',action:'apply'},
+      {text:'Attach tube to sealed water trap — watch for air bubbles',item:null,action:'examine'},
+      {text:'Monitor tube every 10 minutes — bubbles stopping = good',item:null,action:'examine'},
+      {text:'Confirm lung re-expanded — seal tube site with clean cloth',item:'bandages',action:'apply'},
+      {text:'Give Dream Root tea for lung fatigue recovery',item:'dream-root',action:'apply'},
+      {text:'Monitor breathing for 30 minutes after tube removal',item:null,action:'examine'}
+    ]
+  },
+  'blind-eye-surface':{
+    name:'Blind Eye (Surface Cut)',march:'H',category:'advanced',damage:45,
+    steps:[
+      {text:'Look directly at injured eye — check if firm and intact',item:null,action:'examine'},
+      {text:'Assess if patient can distinguish light from dark',item:null,action:'examine'},
+      {text:'Place patient flat on back — keep still',item:'pillows',action:'apply'},
+      {text:'Apply 1-2 tiny stitches on outer layer only — do NOT penetrate deeper',item:'sutures',action:'apply'},
+      {text:'Cover with dry soft cloth — no wet dressings',item:'bandages',action:'apply'},
+      {text:'Elevate head slightly',item:'pillows',action:'apply'},
+      {text:'Give Chrysanthemum tea to reduce inflammation',item:'chrysanthemum',action:'apply'},
+      {text:'Keep patient resting — monitor for worsening',item:null,action:'examine'}
+    ]
+  },
+  'blind-eye-puncture':{
+    name:'Blind Eye (Puncture)',march:'H',category:'advanced',damage:60,
+    steps:[
+      {text:'Look at injured eye — check if soft and leaking = puncture',item:null,action:'examine'},
+      {text:'Do NOT stitch — stitching forces fluid out and guarantees blindness',item:null,action:'examine'},
+      {text:'Do NOT apply any liquid compress or flush',item:null,action:'examine'},
+      {text:'Cover eye with dry rigid shield or clean dry cloth — nothing that presses',item:'bandages',action:'apply'},
+      {text:'Elevate head slightly — keep patient completely still',item:'pillows',action:'apply'},
+      {text:'Give Chrysanthemum tea to reduce ocular inflammation',item:'chrysanthemum',action:'apply'},
+      {text:'Close monitoring — blindness is likely permanent regardless',item:null,action:'examine'}
+    ]
+  },
+  'concussion':{
+    name:'Concussion',march:'H',category:'basic',damage:30,
+    steps:[
+      {text:'Check pupil response — are both eyes equal and reactive?',item:null,action:'examine'},
+      {text:'Ask basic questions — name, where they are, what happened',item:null,action:'examine'},
+      {text:'Check for nausea, dizziness, confusion',item:null,action:'examine'},
+      {text:'Lay patient down with head slightly elevated',item:'pillows',action:'apply'},
+      {text:'Apply cold stones to head for swelling',item:'cold-stones',action:'apply'},
+      {text:'Give Mugwort tea for pain',item:'mugwort',action:'apply'},
+      {text:'Keep them awake — do not let them sleep for first hour',item:null,action:'examine'},
+      {text:'Monitor for worsening — vomiting, seizures, one pupil larger',item:null,action:'examine'}
+    ]
+  }
+};
 
-leg_stable:{title:'Broken Leg — Stable',march:'MARCH — C',critical:false,
-  intro:'Slayer down after heavy impact to the lower leg. Visibly swollen, refusing to put weight on it. Skin intact. Conscious.',
-  timer:null,vitals:{pulse:'Normal',breath:'Normal',skin:'Normal'},
-  steps:[
-    {sit:'Assess the fracture before touching the leg.',actions:[
-      {t:'Compares both legs — looks for swelling, checks foot pulse and toe sensation',ok:true,fb:'Right leg swollen below the knee. Foot pulse present. Toes warm. Stable fracture.'},
-      {t:'Asks the patient to stand on the leg to test it',ok:false,pen:75,cq:'Weight on a fractured leg causes acute displacement. Stable becomes potentially open.',fix:'Never ask a patient to stand on a suspected fracture.'},
-    ]},
-    {sit:'Stable confirmed. Administer pain relief.',actions:[
-      {t:'Gives Puchuve tea and waits for it to work before setting',ok:true,fb:"Tea administered. Patient's breathing slows. Tension eases. Ready."},
-      {t:'Sets the bone without giving pain medication',ok:false,pen:75,cq:'Pain shock. Patient goes into shock from the pain of bone setting.',fix:'Give Puchuve tea. Wait for effect before touching the fracture.'},
-    ]},
-    {sit:'Pain managed. Set the bone.',actions:[
-      {t:'Applies gentle steady traction to pull the leg back into alignment',ok:true,fb:'Alignment correct. Leg straight.'},
-      {t:'Has the patient help by pushing against something for counter-traction',ok:false,pen:50,cq:'Patient moves and dislodges the bone mid-reduction.',fix:'Patient must be completely still.'},
-    ]},
-    {sit:'Bone set. Splint the leg.',actions:[
-      {t:'Rigid splint on both sides — bamboo or wood. Wrapped firm but not tight.',ok:true,fb:'Splint on. Firm enough. Leg immobilized.'},
-      {t:'Wraps the leg in cloth with no rigid support',ok:false,pen:50,cq:"Soft wrapping alone can't hold a bone fracture. Bone will shift.",fix:'Rigid support required — at least one rigid side, preferably two.'},
-      {t:'Wraps the splint very tightly to prevent any shifting',ok:false,pen:75,cq:'Circulation cut off. Foot becomes cold and blue. Gangrene risk.',fix:'Loosen immediately. Check foot warmth and color.',dt:8*60},
-    ]},
-    {sit:'Splinted. Check circulation and reduce swelling.',actions:[
-      {t:'Checks foot pulse and warmth after wrapping, then applies cold stones',ok:true,fb:'Foot warm. Pulse present. Cold stones applied. Treatment complete.'},
-      {t:'Skips post-splint circulation check',ok:false,pen:50,cq:'Silent circulation loss. Gangrene develops over hours.',fix:'Always check foot warmth and pulse after splinting.'},
-    ]}
-  ]
-},
+const INJURY_NAMES = {};
+Object.keys(INJURIES).forEach(k => INJURY_NAMES[k] = INJURIES[k].name);
 
-lac_arm:{title:'Deep Laceration — Arm',march:'MARCH — M',critical:true,
-  intro:'Slayer brought in after a blade strike to the forearm. Bleeding heavily. Wound deep — muscle possibly visible.',
-  timer:null,vitals:{pulse:'Fast',breath:'Normal',skin:'Pale'},
-  steps:[
-    {sit:'Heavy bleeding from the forearm. Identify the bleed type first.',actions:[
-      {t:'Checks if blood is spurting rhythmically with the heartbeat',ok:true,fb:'Steady heavy flow — not spurting. Venous bleed. No tourniquet needed. Proceed with direct pressure.'},
-      {t:'Assumes it is venous and immediately applies pressure without checking',ok:false,pen:0,cq:'Missed arterial bleed check. If arterial and treated as venous, patient bleeds out in 3-5 min.',fix:'Check for spurting every time. Never assume.',dt:5},
-    ]},
-    {sit:'Venous confirmed. Stop the bleeding.',actions:[
-      {t:'Applies firm direct pressure with clean cloth — holds it. Does not lift to check.',ok:true,fb:'Pressure on wound. Bleeding slowing. Hold it.'},
-      {t:'Lifts the cloth to check if bleeding has stopped',ok:false,pen:75,cq:'Lifting first layer breaks forming clot. Bleeding restarts fully.',fix:'Add more cloth on top. Never remove the first layer.'},
-    ]},
-    {sit:'Bleeding slowing under pressure. Once controlled, clean the wound.',actions:[
-      {t:'Irrigates with clean saline water — washes out all dirt and debris',ok:true,fb:'Clean water through the wound. Debris coming out. Site cleaner.'},
-      {t:'Stitches the wound closed without irrigating first',ok:false,pen:100,cq:'Infection sealed inside. Sepsis within hours.',fix:'Remove stitches. Irrigate thoroughly. Re-suture.',dt:6*60},
-    ]},
-    {sit:'Wound clean. Pack and suture.',actions:[
-      {t:'Packs Mugwort into the deep muscle tissue, then sutures closed center-outward',ok:true,fb:'Mugwort packed into deep tissue. Bleeding reduced. Sutured from center outward. Wound closed cleanly.'},
-      {t:'Sutures without packing Mugwort into deep tissue',ok:false,pen:50,cq:'Bleeding continues under sutures. Wound reopens from internal pressure.',fix:'Reopen. Pack Mugwort. Re-suture.'},
-    ]},
-    {sit:'Sutured. Apply infection prevention and bandage.',actions:[
-      {t:'Applies warm Loquat Leaf compress then bandages firmly (not tight)',ok:true,fb:'Compress on. Bandage applied firm. Checking fingers now.'},
-      {t:'Bandages tightly to ensure the wound stays closed',ok:false,pen:50,cq:'Circulation constricted. Fingers turn cold and blue.',fix:'Loosen. Firm enough to hold, not tight enough to cut circulation.',dt:8*60},
-    ]},
-    {sit:'Bandaged. Final checks.',actions:[
-      {t:'Checks finger warmth and color after bandaging — gives Toki tea for blood loss',ok:true,fb:'Fingers warm and pink. Toki tea administered. Patient color returning slowly. Case stable.'},
-      {t:'Skips post-bandage circulation check',ok:false,pen:50,cq:'Silent circulation loss from tight wrap. Develops gangrene over hours.',fix:'Always check finger warmth after bandaging arm injuries.'},
-    ]}
-  ]
-},
+let state = {
+  role: null,
+  gameCode: null,
+  gmHP: 300,
+  gmMaxHP: 300,
+  assignedInjuries: [],
+  selectedPart: null,
+  timerSeconds: 180,
+  timerRemaining: 0,
+  timerInterval: null,
+  currentInjuryIdx: 0,
+  currentStepIdx: 0,
+  selectedItem: null,
+  peaceHerbUsed: 0,
+  patientRES: 300,
+  consequences: [],
+  completedInjuries: [],
+  wrongAttempts: 0,
+  totalSteps: 0,
+  correctSteps: 0,
+  gameActive: false,
+  shockActive: false
+};
 
-lac_leg:{title:'Deep Laceration — Leg',march:'MARCH — M',critical:true,
-  intro:'Slayer down from a deep blade wound to the thigh. Heavy bleeding.',
-  timer:null,vitals:{pulse:'Weak, Rapid',breath:'Shallow',skin:'Pale'},
-  steps:[
-    {sit:'Deep thigh wound. Heavy bleeding. Identify bleed type.',actions:[
-      {t:'Checks for rhythmic spurting blood with each heartbeat',ok:true,fb:'Steady heavy flow — not spurting. Venous. No tourniquet. Proceed to pressure.'},
-      {t:'Ignores spurting blood because the wound is clearly severe',ok:false,pen:100,cq:'Arterial bleed missed. Venous treatment applied to arterial wound. Death in 3-5 min.',fix:'No recovery if arterial and untreated for 5 minutes. Tourniquet IMMEDIATELY above wound.',dt:5},
-    ]},
-    {sit:'Venous confirmed. Lay patient flat and apply pressure.',actions:[
-      {t:'Lays patient down — elevates leg with folded cloth under the ankle',ok:true,fb:'Patient flat. Leg elevated. Blood pooling reduced. Applying pressure now.'},
-      {t:'Lets patient stay seated while applying pressure',ok:false,pen:50,cq:'Blood pools in the thigh. Shock onset is faster in thigh lacerations.',fix:'Lay flat immediately. Elevate leg.'},
-    ]},
-    {sit:'Pressure on. Bleeding slowing.',actions:[
-      {t:'Holds pressure — adds more cloth on top if it soaks through',ok:true,fb:'Pressure maintained. Bleeding reduced significantly.'},
-      {t:'Removes the first cloth layer to check how the wound looks',ok:false,pen:75,cq:'First layer removed. Clot broken. Bleeding restarts fully.',fix:'Add layers on top. Never remove the first.'},
-    ]},
-    {sit:'Bleeding controlled. Irrigate the wound.',actions:[
-      {t:'Irrigates with clean saline — removes all grit and debris',ok:true,fb:'Saline through the wound. Clean.'},
-      {t:"Stitches immediately — doesn't want patient losing more blood",ok:false,pen:100,cq:'Infection sealed inside the leg. Sepsis risk.',fix:'Remove stitches. Irrigate. Re-suture.',dt:6*60},
-    ]},
-    {sit:'Irrigated. Pack and suture.',actions:[
-      {t:'Packs Mugwort, sutures center-outward, applies warm Loquat Leaf compress',ok:true,fb:'Mugwort packed. Sutured. Loquat Leaf compress warm on top. Bandaged.'},
-    ]},
-    {sit:'Bandaged. Check foot circulation.',actions:[
-      {t:'Checks foot warmth and pulse — gives Toki tea if patient fully conscious',ok:true,fb:'Foot warm. Pulse good. Toki tea given. Patient color stabilizing.'},
-      {t:'Gives Toki tea even though patient is becoming drowsy and eyes glazing',ok:false,pen:100,cq:'Fluid poured into semi-conscious patient. Aspiration. Airway blocked.',fix:'Turn on side immediately. Clear airway. No liquid until fully conscious.',dt:3},
-    ]},
-    {sit:'Patient stable. Monitor for shock.',actions:[
-      {t:'Monitors shock signs: pale skin, sweating, fast breathing, weak pulse, confusion',ok:true,fb:'Watching. Patient looks pale but improving. No shock onset. Case stable.'},
-      {t:'Treatment done — discharges without monitoring for shock',ok:false,pen:75,cq:'Thigh lacerations carry high shock risk. Missed onset means patient crashes post-discharge.',fix:'Monitor minimum 20 minutes after treatment completion.',triggerShock:true},
-    ]}
-  ]
-},
-
-venous:{title:'Venous Bleeding',march:'MARCH — M',critical:false,
-  intro:'A slayer was impaled by debris. Once removed, dark blood oozes continuously from the puncture wound. Steady, not spurting.',
-  timer:null,vitals:{pulse:'Fast',breath:'Normal',skin:'Pale'},
-  steps:[
-    {sit:'Dark blood oozing from the wound. Confirm bleed type.',actions:[
-      {t:'Observes blood color and flow pattern — dark red, steady ooze, no rhythmic spurting',ok:true,fb:'Dark red blood. No spurting. Venous bleed confirmed. Direct pressure appropriate.'},
-      {t:'Applies tourniquet immediately',ok:false,pen:25,cq:'Tourniquet not indicated for venous bleeding. Unnecessary trauma to the limb.',fix:'Remove tourniquet. Apply direct pressure with clean cloth instead.'},
-    ]},
-    {sit:'Venous confirmed. Apply direct pressure.',actions:[
-      {t:'Places clean bandage directly on wound — applies firm steady pressure',ok:true,fb:'Cloth on wound. Pressure applied. Bleeding slowing under the compress.'},
-      {t:'Packs the wound loosely and covers it',ok:false,pen:50,cq:'Loose packing provides no effective hemostasis. Oozing continues.',fix:'Firm direct pressure. The cloth must be pressed tightly against the wound surface.'},
-    ]},
-    {sit:'Pressure on. Holding until bleeding stops.',actions:[
-      {t:'Maintains pressure without lifting or checking — waits until bleeding stops',ok:true,fb:'Pressure maintained. Bleeding slows and stops after several minutes. Good.'},
-      {t:'Lifts the cloth to check if bleeding has stopped after 1 minute',ok:false,pen:50,cq:'Lifting disrupts the forming clot. Bleeding restarts.',fix:'Do not lift the first layer. Add cloth on top if soaking through. Wait.'},
-    ]},
-    {sit:'Bleeding stopped. Assess wound depth.',actions:[
-      {t:'Examines wound carefully — checks depth, checks for remaining debris',ok:true,fb:'Wound is moderately deep. No remaining debris visible. Clean entry point.'},
-      {t:'Immediately closes with stitches now that bleeding has stopped',ok:false,pen:75,cq:'Wound closed without checking for debris. Infection risk.',fix:'Always check and irrigate before suturing.'},
-    ]},
-    {sit:'Wound assessed. Clean and close.',actions:[
-      {t:'Irrigates with clean saline, then sutures the wound closed',ok:true,fb:'Irrigated cleanly. Sutured. Wound closed. Good technique.'},
-      {t:'Closes wound without irrigation',ok:false,pen:75,cq:'Debris sealed inside. Infection risk within hours.',fix:'Irrigate before closing. No exceptions.',dt:6*60},
-    ]}
-  ]
-},
-
-shock:{title:'Shock',march:'MARCH — SECONDARY',critical:true,
-  intro:"The medic just finished treating a leg wound. The slayer has gone too quiet. Skin pale and cold to touch. Breathing has gone shallow. Not responding normally.",
-  timer:{secs:120,reason:'Untreated shock progresses to irreversible — patient has minutes'},
-  vitals:{pulse:'Weak, Rapid',breath:'Shallow',skin:'Pale, Cold, Sweating'},
-  steps:[
-    {sit:'Something is wrong. The medic must assess right now.',actions:[
-      {t:'Checks all shock indicators: skin, temperature, breathing rate, pulse, mental state',ok:true,fb:'Pale cold skin. Sweating. Shallow fast breathing. Weak rapid pulse. Confused speech. Shock confirmed.'},
-      {t:'Assumes patient is just tired — lets them rest',ok:false,pen:75,cq:'Shock progressing undetected. Patient approaching irreversible.',fix:'Assess immediately. Pale cold skin + altered mental state = shock.',dt:5},
-      {t:'Checks wound first for rebleeding',ok:false,pen:25,cq:'Wound check first delays the shock assessment.',fix:'Assess shock signs first. Wound check can happen simultaneously.'},
-    ]},
-    {sit:'Shock confirmed. Timer running. Position the patient.',actions:[
-      {t:'Lays patient flat — raises legs with cloth under the ankles',ok:true,fb:'Flat on the back. Cloth under both ankles. Legs elevated. Blood returning toward core.'},
-      {t:'Sits patient upright',ok:false,pen:50,cq:'Sitting up in shock diverts blood away from brain and organs. Worsens rapidly.',fix:'Lay flat immediately. Elevate legs only.',dt:3},
-    ]},
-    {sit:'Positioned. Patient is shivering.',actions:[
-      {t:'Covers patient with blankets immediately',ok:true,fb:"Blanket on. Shivering slows slightly."},
-      {t:'Judges the room is warm enough — skips blanket',ok:false,pen:50,cq:'Shock drops body temperature regardless of ambient temperature.',fix:'Blanket on immediately. Always.'},
-    ]},
-    {sit:'Warm and positioned. Patient still conscious. Give fluids.',actions:[
-      {t:'Brews Yuzu tea with honey — gives warm, small sips only',ok:true,fb:'Yuzu tea, warm, small sips. Swallows with difficulty. Encouraging.'},
-      {t:'Pours water into their mouth to hydrate fast',ok:false,pen:50,cq:'Rapid large fluid intake in shock state can cause vomiting and aspiration.',fix:'Small sips only. Warm Yuzu tea with honey specifically.'},
-    ]},
-    {sit:'Patient starts to drift — eyes glazing over.',actions:[
-      {t:'Stops giving liquid — talks clearly to patient to keep them conscious',ok:true,fb:'Eyes refocus. Barely present. No more liquid until safe.'},
-      {t:'Continues pouring Yuzu tea into their mouth',ok:false,pen:100,cq:'Fluid given to a semi-conscious patient. Aspiration. Fluid enters the lungs.',fix:'Turn on side IMMEDIATELY. Clear airway. No more liquid until fully conscious.',dt:2},
-    ]},
-    {sit:'Patient stabilizing. Reassess all shock indicators.',actions:[
-      {t:'Reassesses: pulse, skin color, temperature, breathing rate, mental clarity',ok:true,fb:'Pulse slightly stronger. Color returning. Breathing deeper. Answers coherently. Improving.'},
-      {t:'Patient looks better — treatment done',ok:false,pen:75,cq:'Shock can appear to stabilize then suddenly crash.',fix:'Reassess every few minutes. Never assume shock is resolved.',dt:10},
-    ]}
-  ]
-},
-
-infection:{title:'Infection',march:'MARCH — H',critical:true,
-  intro:"Patient presented with a wound from 2 days ago that was treated in the field. Now feverish. Wound smells wrong.",
-  timer:null,vitals:{pulse:'Fast',breath:'Normal',skin:'Feverish'},
-  steps:[
-    {sit:'Assess the wound area before touching it.',actions:[
-      {t:'Looks for spreading redness, swelling, heat at the wound, pus, swollen lumps nearby',ok:true,fb:'Redness around the wound edges. Slight swelling. Warm to touch. Pus visible. Infection confirmed.'},
-      {t:'Immediately applies fresh bandaging over the existing one',ok:false,pen:50,cq:'Applied treatment over an unassessed wound. Infection type and spread unknown.',fix:'Remove everything first. Assess fully before any treatment.'},
-    ]},
-    {sit:'Wound assessed. CHECK FOR RED STREAKS — most critical step.',actions:[
-      {t:'Traces the skin from the wound toward the heart — checks for red lines',ok:true,fb:'No red streaks visible. Normal infection — dangerous but not demonic. Proceed with standard treatment.'},
-      {t:'Skips red streak check — proceeds directly to cleaning',ok:false,pen:75,cq:'Demonic infection potentially missed. Red streaks mean 10-minute death timer.',fix:'Check for red streaks BEFORE every infection treatment. No exceptions. If red streaks ARE present — switch to Demonic Infection protocol immediately.',dt:10,pivot:'demonic_inf'},
-    ]},
-    {sit:'No red streaks. Remove old bandaging and clean the wound.',actions:[
-      {t:'Removes all old bandaging — washes wound with clean water, removes all pus and dead tissue',ok:true,fb:'Old bandage off. Wound flushed. Pus cleared. Dead tissue removed. Raw but clean.'},
-      {t:'Applies Loquat Leaf directly to the wound without cleaning it first',ok:false,pen:75,cq:'Medicine applied to a dirty wound. Infection locked in. Accelerates rapidly.',fix:'Remove everything. Clean fully. Restart compress cycle from a clean wound.',dt:30},
-    ]},
-    {sit:'Wound cleaned. Apply Loquat Leaf compresses.',actions:[
-      {t:'Applies WARM Loquat Leaf compress — repeats three times total',ok:true,fb:'First compress on. Warm. Second. Third. Redness has slightly pulled back. Good.'},
-      {t:'Applies cold Loquat Leaf compresses',ok:false,pen:75,cq:'Cold Loquat Leaf is inert. No medicinal effect. No treatment occurred.',fix:'Reheat leaves. Warm only. Repeat all three rounds.'},
-      {t:'Applies one compress and considers the treatment done',ok:false,pen:50,cq:'Insufficient treatment. One compress is not enough for established infection.',fix:'Three warm compress cycles minimum.'},
-    ]},
-    {sit:'Compresses done. Treat the fever.',actions:[
-      {t:'Gives Chrysanthemum tea for the fever',ok:true,fb:'Tea administered. Patient drinks slowly. Shivering eases. Fever being managed.'},
-      {t:'Ignores the fever — wound is treated now',ok:false,pen:50,cq:'Infection worsens each day fever is left untreated.',fix:'Chrysanthemum tea for fever. Always.',dt:24*60},
-    ]},
-    {sit:'Mark the wound perimeter to track spread.',actions:[
-      {t:'Marks the edge of redness with charcoal — creates reference for monitoring',ok:true,fb:'Charcoal line drawn at redness boundary. Return instructions left.'},
-      {t:'Discharges without marking the wound or leaving instructions',ok:false,pen:25,cq:"No reference point to detect spread. Patient won't know when to return.",fix:'Mark the redness boundary. Leave clear return instructions.'},
-    ]},
-    {sit:'Finalize — bandage with clean cloth only.',actions:[
-      {t:'Rebandages with clean cloth only — discards all used material',ok:true,fb:'Clean cloth applied. Case closed for now. Monitoring critical.'},
-      {t:"Reuses original bandage if it's not too soaked",ok:false,pen:50,cq:'Dirty cloth reapplied. Immediate reinfection.',fix:'Discard everything. Clean cloth only.'},
-    ]}
-  ]
-},
-
-demonic_inf:{title:'Demonic Infection — Crimson Spread',march:'MARCH — H · ADVANCED',critical:true,
-  intro:'A slayer was struck by a corruption-type demon. Dark red-black streaks are beginning to radiate from the wound site along visible veins. Skin is hot. Patient has fever, increasing pain, and disorientation. Streaks are advancing toward the chest.',
-  timer:{secs:25*60,reason:'Stage 2 → Stage 4 progression. Must complete treatment before streaks reach the heart.'},
-  vitals:{pulse:'Fast',breath:'Shallow',skin:'Feverish'},
-  steps:[
-    {sit:'Announce the stage. Assess streak progression before anything else.',actions:[
-      {t:'Confirms current stage — announces to patient. Verifies streaks have NOT reached the torso.',ok:true,fb:'Stage 2 confirmed. Streaks crossing the limb, not yet reaching torso. Time to act.'},
-      {t:'Skips stage announcement and begins treatment immediately',ok:false,pen:25,cq:'Stage unknown. If Stage 4 or torso — treatment at this point causes more harm than help.',fix:'Always confirm and announce the stage before beginning.'},
-    ]},
-    {sit:'Stage confirmed. Position the patient and have an assistant hold them.',actions:[
-      {t:'Lays patient flat, elevates infected limb, assigns assistant to hold patient still',ok:true,fb:'Patient flat. Limb elevated. Assistant in position. Controlled environment.'},
-      {t:'Sits the patient up and begins without assistant support',ok:false,pen:50,cq:'Patient may convulse during the painful procedure. No one to hold them.',fix:'Flat position mandatory. Assistant required — procedure is too painful to work solo.'},
-    ]},
-    {sit:'Positioned. Apply tourniquet ABOVE the highest visible streak — buys 10 extra minutes.',actions:[
-      {t:'Applies tight tourniquet directly above the highest visible streak on the infected limb',ok:true,fb:'Tourniquet on. Streak progression slowed. Approximately 10 additional minutes gained.'},
-      {t:'Skips tourniquet — begins incision immediately',ok:false,pen:50,cq:'Lost the time buffer. Stage progression accelerates. Less time to work.',fix:'Tourniquet first. Always. It does not stop the infection — it slows the spread to buy time.',dt:10},
-    ]},
-    {sit:'Tourniquet applied. Sedate the patient.',actions:[
-      {t:'Administers one dose Peace Herb tea — waits for sedation',ok:true,fb:'One dose. Waiting. Sedation taking hold. Patient calming.'},
-      {t:'Skips sedation — patient needs to be conscious to respond to questions',ok:false,pen:75,cq:'Patient goes into shock from pain during the incision and tissue removal.',fix:'Sedate before cutting. The patient cannot hold still through Steps V–X without it.'},
-    ]},
-    {sit:'Sedated. Open the wound at its origin point.',actions:[
-      {t:'Makes a controlled incision directly over the wound origin — opens it fully',ok:true,fb:'Incision made. Wound opened fully. Darkened tissue visible at the edges. Clear to work.'},
-      {t:'Makes small cuts around the wound rather than opening it fully',ok:false,pen:50,cq:'Cannot see the full depth of corruption. Incomplete view means incomplete removal.',fix:'Open the wound origin fully. You need to see everything inside.'},
-    ]},
-    {sit:'Wound open. Remove ALL darkened tissue — corrupted tissue appears blackened.',actions:[
-      {t:'Removes all visibly blackened tissue with clean blade cuts — wide clean margins',ok:true,fb:'Darkened tissue removed. Margins clean. Assistant maintaining pressure on surrounding tissue.'},
-      {t:'Removes only the most visibly blackened tissue and leaves the rest',ok:false,pen:100,cq:'Incomplete removal. Infection restarts within 5 minutes of closing.',fix:'If tissue looks dark, it goes. Clean margins are not optional.',dt:5},
-    ]},
-    {sit:'Tissue removed. Flush with clean water, then apply Blight Thorn sap.',actions:[
-      {t:'Pours large amounts of clean water through cavity, then applies Blight Thorn sap directly inside',ok:true,fb:'Cavity flushed. Blight Thorn sap applied thoroughly. Patient reacts even under sedation. Expected.'},
-      {t:'Uses water only — no Blight Thorn available so skips it',ok:false,pen:100,cq:'Surface cleaned but deep corruption remains. Relapse at next combat.',fix:'Blight Thorn is required. If unavailable, treatment cannot proceed safely — consider amputation.',dt:30},
-    ]},
-    {sit:'Flushed. Pack with Mugwort if available, then cauterize.',actions:[
-      {t:'Packs wound with Mugwort, then heats blade and cauterizes the entry point completely',ok:true,fb:'Mugwort packed. Blade heated. Entry point cauterized and sealed. −25 RES from the procedure.'},
-      {t:'Skips cauterization — the stitches will close it sufficiently',ok:false,pen:150,cq:'Infection restarts within 3 minutes. Stitches cannot seal a corruption vector. Patient dies.',fix:'Cauterization is mandatory. It is the only thing that seals the corruption entry point.',dt:3},
-    ]},
-    {sit:'Cauterized. Close the wound and administer Snowveil Bloom.',actions:[
-      {t:'Closes wound with stitches, applies Loquat Leaf compress, gives Snowveil Bloom in tea — one dose',ok:true,fb:'Wound closed. Compress on. Snowveil Bloom administered. Immune response triggered.'},
-      {t:'Gives two doses of Snowveil Bloom to speed up recovery',ok:false,pen:25,cq:'Double dose may cause nausea and vomiting. One dose per rest cycle.',fix:'One dose only. The immune response needs time, not volume.'},
-    ]},
-    {sit:'Medication given. Release tourniquet slowly — watch the streak line.',actions:[
-      {t:'Releases tourniquet slowly — watches for streak advancement above it',ok:true,fb:'Tourniquet released. Watching. Streaks holding at the wound site. No new advancement. Stable.'},
-      {t:'Releases tourniquet quickly to restore full circulation',ok:false,pen:50,cq:'Spread resumes before streaks are confirmed held. Cannot tell if treatment worked.',fix:'Slow release only. Watch every second of it.',dt:5},
-    ]},
-    {sit:'Tourniquet released. Monitor for 15 minutes without moving the patient.',actions:[
-      {t:'Watches streak line for 15 full minutes — checking for advancement or recession',ok:true,fb:'15 minutes. Streaks holding. Beginning to visibly recede toward the wound site. Patient is stabilizing.'},
-      {t:'Patient seems fine after 5 minutes — discharges early',ok:false,pen:75,cq:'Destabilizes recovery. Streaks resume advancing if patient is moved early.',fix:'15 full minutes minimum. No exceptions. If streaks advance again — proceed to amputation immediately.',dt:10},
-    ]},
-    {sit:'Stable. Final recovery medication.',actions:[
-      {t:'Administers Japanese Angelica tea if available — confines patient to full rest for remainder of session',ok:true,fb:'Angelica tea given. Patient confined. Medic has informed them: any new injury risks reactivating corruption. Case stable.'},
-      {t:'Clears patient for light activity since they are no longer in immediate danger',ok:false,pen:75,cq:'Any new injury destabilizes the corruption recovery and reactivates the spread.',fix:'Full rest. No combat. No exceptions. Patient must be told explicitly.'},
-    ]}
-  ]
-},
-
-lung:{title:'Damaged Lung (Pulmonary Contusion)',march:'MARCH — R',critical:true,
-  intro:'Patient presented after chest trauma from a demon strike. Both sides of the chest still rise, but breathing is clearly painful and labored.',
-  timer:null,vitals:{pulse:'Fast',breath:'Shallow',skin:'Pale'},
-  steps:[
-    {sit:'Perform a full breathing assessment.',actions:[
-      {t:'Observes both sides of the chest for symmetry — listens to both lungs',ok:true,fb:'Both sides rise — but one sounds wet or muffled. Not a collapsed lung, but something is building inside.'},
-      {t:'Diagnoses collapsed lung and begins decompression',ok:false,pen:75,cq:'Wrong protocol. Damaged lung is NOT collapsed lung — invasive decompression will cause additional trauma.',fix:'Listen to both sides. If both rise but one sounds wet, this is contusion — not collapse.'},
-    ]},
-    {sit:'Wet or muffled sound on one side. Check for associated signs.',actions:[
-      {t:'Checks for coughing blood, pink-tinged fluid, bruising across the chest',ok:true,fb:'Slight pink tinge when patient coughs. Bruising across the right side. Contusion confirmed.'},
-      {t:'Skips detailed chest assessment — moves to treatment',ok:false,pen:25,cq:'Severity unknown. Cannot judge treatment intensity without knowing what you are dealing with.',fix:'Full assessment first. Check for bleeding, bruising, coughing output.'},
-    ]},
-    {sit:'Contusion confirmed. Position the patient.',actions:[
-      {t:'Keeps patient seated upright — explains they must not lie flat',ok:true,fb:'Patient upright. Fluid cannot pool in this position. Better lung expansion.'},
-      {t:'Lays patient flat to let them rest',ok:false,pen:75,cq:'Lying flat causes fluid to pool faster. Condition accelerates.',fix:'Upright position mandatory. Never lay flat with lung contusion.',dt:20},
-    ]},
-    {sit:'Upright. Administer Tundra Aster tea.',actions:[
-      {t:'Mixes extracted Tundra Aster juice into warm water — gives in slow small sips',ok:true,fb:'Patient drinks slowly. Breathing slightly less labored. Inflammation easing.'},
-      {t:'Skips Tundra Aster',ok:false,pen:50,cq:'Inflammation worsens without treatment.',fix:'Tundra Aster tea is required. Give when available.'},
-      {t:'Tells patient to take deep forced breaths to clear the lungs',ok:false,pen:100,cq:'Forced breathing exercises risk pneumothorax in a contused lung.',fix:'Shallow, calm, controlled breaths ONLY. Never forced deep breathing.',dt:15},
-    ]},
-    {sit:'Tundra Aster given. Follow with Snowveil Bloom.',actions:[
-      {t:'Gives Snowveil Bloom powder dissolved in warm water — one dose per rest cycle',ok:true,fb:'Snowveil Bloom administered. Supports breathing recovery. Slows fluid buildup.'},
-      {t:'Gives both teas at once to speed up treatment',ok:false,pen:25,cq:'Snowveil Bloom is once per rest cycle — doubling doses may cause nausea.',fix:'One dose per cycle. Tundra Aster first, then Snowveil Bloom.'},
-    ]},
-    {sit:'Medication given. Monitor closely.',actions:[
-      {t:'Listens to both lungs every hour — checks if wet crackling sounds are growing',ok:true,fb:'Monitoring in place. Sounds are not worsening. Patient stable for now.'},
-      {t:'Declares patient stable and stops monitoring',ok:false,pen:75,cq:'Contusion can worsen silently. Patient reaches critical state without warning if monitoring stops.',fix:'Monitor every hour. Growing wet sounds = call a surgeon immediately.',dt:60},
-    ]},
-    {sit:'Patient reports sharp stabbing pain on one side.',actions:[
-      {t:'Escalates immediately — treats as collapsed lung. Calls surgeon.',ok:true,fb:'Escalated. Sharp stabbing pain indicates contusion has progressed to pneumothorax. Correct response.'},
-      {t:'Gives more Tundra Aster tea and continues monitoring',ok:false,pen:100,cq:'Progressed to collapsed lung. Pneumothorax undetected and untreated. Death possible within 20 minutes.',fix:'Sharp stabbing pain = escalate to collapsed lung protocol immediately. No waiting.',dt:20,pivot:'collapsed_lung'},
-    ]}
-  ]
-},
-
-collapsed_lung:{title:'Collapsed Lung (Pneumothorax)',march:'MARCH — R · ADVANCED',critical:true,
-  intro:'Slayer brought in with asymmetric chest movement — one side barely rises. Lips darkening. Labored, desperately shallow breathing. Cannot speak in full sentences. Each breath visibly shorter than the last.',
-  timer:{secs:15*60,reason:'Collapsed lung death timer: 10–20 minutes without needle decompression. Breath stat halved.'},
-  vitals:{pulse:'Fast',breath:'Shallow',skin:'Pale'},
-  steps:[
-    {sit:'Critical presentation. Position the patient FIRST.',actions:[
-      {t:'Sits patient upright at 45 degrees — assistant supports from behind',ok:true,fb:'Patient upright. Lung can attempt to re-expand. Assistant holding from behind. Position maintained.'},
-      {t:'Lays patient flat to examine the chest more easily',ok:false,pen:100,cq:'Collapsed lung cannot re-expand with body weight pressing on it. Procedure fails. Breath halved.',fix:'Upright 45 degrees. Mandatory for the entire procedure.',dt:10},
-    ]},
-    {sit:'Upright. Identify the affected side definitively.',actions:[
-      {t:'Presses gently on both sides of the ribcage and watches chest rise — confirms which side lags or fails to rise',ok:true,fb:'Left side lags badly on inhale. Right side rising normally. Affected side confirmed: LEFT.'},
-      {t:'Treats the side that looks more injured without testing both sides',ok:false,pen:0,cq:'Side not definitively confirmed. If wrong side is treated — healthy lung is punctured.',fix:'Test both sides. The side that fails to rise = the collapsed side. Do not guess.',dt:0},
-    ]},
-    {sit:'Side confirmed. Administer Peace Herb before the invasive steps.',actions:[
-      {t:'Administers one dose Peace Herb tea — waits for sedation before proceeding',ok:true,fb:'Peace Herb given. Waiting. If deterioration is too fast — proceed anyway. Document it.'},
-      {t:'Skips sedation to save time — begins decompression immediately',ok:false,pen:50,cq:'Patient may move or convulse from pain during needle insertion. Misplacement tears surrounding tissue.',fix:'Sedate unless lips are fully blue and patient is unresponsive — then skip and document.'},
-    ]},
-    {sit:'Sedated. Perform needle decompression immediately.',actions:[
-      {t:'Inserts thin hollow instrument into the SECOND intercostal space on the affected side — just ABOVE the rib. Waits for air rush.',ok:true,fb:'Air rushes out with a hiss. Chest pressure releasing. Patient gasps — deeper breath attempted. Correct placement confirmed.'},
-      {t:'Inserts needle BELOW the rib to avoid the bone',ok:false,pen:100,cq:'Vessel laceration. Vessels run beneath each rib. −100 RES. Arterial bleed begins.',fix:'Always insert ABOVE the rib to avoid the vessels underneath.',dt:5},
-      {t:'Skips needle decompression — moves straight to chest tube',ok:false,pen:50,cq:'Trapped air not released before tube placement. Pressure builds. Procedure fails.',fix:'Needle decompression first. Tube second. The decompression confirms side and releases acute pressure.'},
-    ]},
-    {sit:'Air released. Hold the decompression instrument in place — watch chest for improvement.',actions:[
-      {t:'Holds needle in place — watches whether affected side begins to rise',ok:true,fb:'Affected side beginning to rise. Slight improvement. Decompression is working. Hold it.'},
-      {t:'Removes the needle after air release — considers decompression complete',ok:false,pen:50,cq:'Needle removed too early. Trapped air may re-accumulate before the chest tube is placed.',fix:'Hold needle in position while preparing the chest tube site. Do not remove it yet.'},
-    ]},
-    {sit:'Decompression working. Prepare chest tube site — 4th or 5th intercostal space, mid-axillary (armpit level).',actions:[
-      {t:'Marks the chest tube insertion site — 4th or 5th intercostal space, mid-axillary line on the affected side',ok:true,fb:'Site marked. Level with the armpit. Correct anatomical position.'},
-      {t:'Inserts the tube at the same spot as the decompression needle',ok:false,pen:50,cq:'Wrong intercostal level for the chest tube. Drainage will be ineffective.',fix:'Chest tube goes into the 4th–5th space, mid-axillary. Decompression needle was 2nd space, midclavicular.'},
-    ]},
-    {sit:'Site marked. Make the incision and insert the chest tube.',actions:[
-      {t:'Makes controlled incision at the marked site — inserts hollow reed/tube through skin and muscle into cavity, angled upward toward the back',ok:true,fb:'Tube inserted. Angled upward. Inside the cavity. Resistance felt then released on entry. Correct.'},
-      {t:'Inserts tube without making an incision — pushes through directly',ok:false,pen:75,cq:'Jagged entry without a clean incision. Cannot create an airtight seal around a torn opening.',fix:'Incision must be made first. The tube passes through the clean incision, not raw tissue.',dt:10},
-    ]},
-    {sit:'Tube in place. Seal it immediately — no air must enter from outside.',actions:[
-      {t:'Seals tube insertion site with cloth soaked in rendered fat or resin — airtight seal around the tube',ok:true,fb:'Seal applied. Testing: watching tube end for bubbles on exhale. Bubbles present — air evacuating correctly.'},
-      {t:'Wraps cloth around the tube loosely and considers it sealed',ok:false,pen:75,cq:'Outside air drawn back into the chest cavity with each breath. Lung re-collapses.',fix:'Seal must be airtight. Any gap undoes the entire procedure.',dt:5},
-    ]},
-    {sit:'Tube sealed. Monitor for 2 minutes — bubbles on exhale = correct.',actions:[
-      {t:'Monitors tube for 2 full minutes — confirms bubbles on exhale, no bubbles on inhale, and improved breathing',ok:true,fb:'Bubbles on exhale. None on inhale. Chest movement symmetry improving. Lung re-expanding. Good.'},
-      {t:'Removes the tube after 30 seconds because the patient looks better',ok:false,pen:100,cq:'Tube removed before lung fully re-expanded. Lung collapses again. Second surgery required.',fix:'Tube stays in until GM confirms lung has re-expanded. Never remove early.',dt:15},
-    ]},
-    {sit:'Breathing improving. Close the incision around the tube, then seal the decompression needle site.',actions:[
-      {t:'Closes incision layers around the tube while keeping the seal intact. Then removes the decompression needle and immediately seals that entry point.',ok:true,fb:'Incision closed around tube. Decompression needle removed and sealed. Both sites secured.'},
-      {t:'Removes the decompression needle and leaves it unsealed — focuses on the tube site',ok:false,pen:75,cq:'Secondary air entry point left open. Partial re-collapse. Breath stat reduced.',fix:'Decompression entry point is small but must be sealed. Both sites must be closed.'},
-    ]},
-    {sit:'Both sites closed. Administer respiratory support.',actions:[
-      {t:'Applies Loquat Leaf compress over chest wound, wraps ribcage firmly (not restricting). Gives Tundra Aster tea for respiratory function.',ok:true,fb:'Compress on. Ribcage supported. Tundra Aster tea given. Patient breathing steadier. Lips beginning to pink up.'},
-      {t:'Skips Tundra Aster — lung is mechanically repaired, medication not necessary',ok:false,pen:50,cq:'Respiratory recovery is slower without support. Ongoing inflammation not addressed.',fix:'Tundra Aster supports the mechanical repair. Give it.',dt:60},
-    ]},
-    {sit:'Patient stabilizing. Monitor for 15 minutes without movement.',actions:[
-      {t:'Monitors chest symmetry every few minutes for 15 minutes — watches for re-collapse',ok:true,fb:'15 minutes. Chest movement symmetric. Lips fully pink. Breathing steady. Patient stable.'},
-      {t:'Declares treatment complete and allows patient to move freely',ok:false,pen:75,cq:'Movement risks tube displacement and seal failure before lung has stabilized.',fix:'15 minutes minimum immobile monitoring. Tube stays in until GM confirms re-expansion.',dt:15},
-    ]}
-  ]
-},
-
-concussion:{title:'Concussion',march:'MARCH — D',critical:false,
-  intro:'Slayer found after a blow to the head during combat. Reports headache and ringing ears. Conscious but disoriented.',
-  timer:null,vitals:{pulse:'Normal',breath:'Normal',skin:'Normal'},
-  steps:[
-    {sit:'Perform a full disability check.',actions:[
-      {t:'Uses AVPU scale, tests pupil reaction, asks memory questions, does balance test',ok:true,fb:'Alert but confused. Pupils slightly unequal. Cannot recall what happened. Balance impaired. Concussion confirmed.'},
-      {t:'Asks if they have a headache and proceeds to treatment',ok:false,pen:25,cq:'AVPU and pupil check skipped. Cannot assess severity or rule out brain bleed.',fix:'Full AVPU, pupil check, memory test, balance test before any treatment.'},
-    ]},
-    {sit:'Concussion confirmed. Check pupils carefully.',actions:[
-      {t:'Tests both pupils with a light source — checks for equal size and reaction',ok:true,fb:'Left pupil larger than right. Sluggish reaction. Concerning. Note this.'},
-      {t:'Skips pupil check — patient is clearly awake',ok:false,pen:75,cq:'Unequal pupils can indicate brain bleed. Missed = brain bleed goes undetected.',fix:'Pupil check every assessment. No shortcuts.',dt:20},
-    ]},
-    {sit:'Pupils noted. Move patient to controlled environment.',actions:[
-      {t:'Moves to a dark, quiet room — removes bright light and loud sounds',ok:true,fb:'Patient in a dim room. Shielded from noise. Immediate relief reported.'},
-      {t:'Leaves patient in the main treatment area where there is activity',ok:false,pen:25,cq:'Light and noise increase intracranial pressure. Recovery time doubled.',fix:'Dark quiet room. Mandatory.'},
-    ]},
-    {sit:'Environment controlled. Administer pain relief.',actions:[
-      {t:'Gives Chrysanthemum tea (Kiku) for the headache',ok:true,fb:'Chrysanthemum tea given. Headache reduces slightly within 20 minutes.'},
-      {t:'Gives Puchuve tea because it is stronger for pain',ok:false,pen:150,cq:'CRITICAL: Puchuve masks neurological warning signs. Brain bleed goes undetected. Near-lethal.',fix:'NEVER give Puchuve for head injuries. Chrysanthemum only.',dt:30},
-    ]},
-    {sit:'Pain managed. Enforce sleep restriction protocol.',actions:[
-      {t:'Keeps patient awake for first several hours — asks periodic questions',ok:true,fb:'Patient kept awake. Answering questions. Lucid intervals holding.'},
-      {t:'Lets patient sleep because rest helps concussion',ok:false,pen:150,cq:'Unsupervised sleep after concussion — patient may not wake. Death possible.',fix:'DO NOT allow sleep without supervision. If they sleep, wake them every hour.',dt:240},
-    ]},
-    {sit:'If patient falls asleep — monitor them.',actions:[
-      {t:'Wakes them every hour to check responsiveness',ok:true,fb:'Hourly checks in place. Patient roused each time. Responsive.'},
-      {t:'Patient seems fine — lets them sleep through the night uninterrupted',ok:false,pen:150,cq:'Patient cannot be roused after 3 hours. Brain bleed deteriorated overnight.',fix:'Every hour. If they cannot be roused, call surgeon immediately.',dt:180},
-    ]},
-    {sit:'Watch for escalation signs.',actions:[
-      {t:'Monitors for worsening headache, sudden confusion, or one pupil growing larger',ok:true,fb:'Watching. Pupils equal now. Headache stable. No sudden worsening. Good sign.'},
-      {t:'Worsening headache reported — gives more Chrysanthemum tea and waits',ok:false,pen:100,cq:'Worsening headache is a brain bleed warning sign. Treated as normal headache. Bleed progresses.',fix:'Worsening headache + altered pupils = brain bleed. Call surgeon immediately.',dt:20},
-    ]},
-    {sit:'Patient stabilized. Restrict activity.',actions:[
-      {t:'Restricts all physical activity — explicitly forbids Slayer breathing techniques',ok:true,fb:'Activity restricted. Breathing techniques prohibited. Discharged with monitoring instructions.'},
-      {t:"Clears patient for light activity since their headache has improved",ok:false,pen:75,cq:'Physical activity or breathing techniques can trigger rebleed. Permanent cognitive damage.',fix:'Full activity restriction until symptom-free for a full rest cycle.'},
-    ]}
-  ]
-},
-
-mental_trauma:{title:'Mental Trauma',march:'MARCH — D',critical:false,
-  intro:'Slayer brought in after a traumatic demon encounter. Physically unharmed. Not speaking. Eyes unfocused. Will not respond to direct questions.',
-  timer:null,vitals:{pulse:'Fast',breath:'Shallow',skin:'Normal'},
-  steps:[
-    {sit:'Assess mental state before any intervention.',actions:[
-      {t:'Assesses specific triggers, sleep disruption, responsiveness, and emotional state without pressure',ok:true,fb:'Quiet withdrawal. Not dissociating — but close. No violent responses. Food refused since the incident. Deep emotional shutdown.'},
-      {t:'Immediately administers Peace Herb to calm the patient',ok:false,pen:50,cq:'Sedating an unassessed patient — unknown triggers, unknown state. May worsen dissociation.',fix:'Assess first. Peace Herb only for severe panic attacks or non-functional state.'},
-      {t:'Tells the patient to recount what happened to get it out',ok:false,pen:100,cq:'Forced recounting of trauma prematurely. Condition worsens significantly. Extended recovery.',fix:'Never push the patient to recount until they initiate it themselves.'},
-    ]},
-    {sit:'Assign safe space and companion.',actions:[
-      {t:'Assigns a private room — pairs with dedicated Kakushi companion who stays with them',ok:true,fb:'Private room secured. Companion assigned. Patient is not alone. Buddy system active.'},
-      {t:'Puts patient in a shared recovery room to avoid isolation',ok:false,pen:25,cq:'Shared space means noise, strangers, unpredictable triggers. Recovery disrupted.',fix:'Private room mandatory during acute phase.'},
-      {t:'Assigns a companion but lets them leave when the patient falls asleep',ok:false,pen:50,cq:'Patient unsupervised during acute phase. Self-harm or violent episode risk.',fix:'Companion stays during entire first rest cycle. No exceptions.'},
-    ]},
-    {sit:'Safe space established. Address immediate distress.',actions:[
-      {t:'For severe panic attack: administers one dose of Peace Herb tea — monitors closely',ok:true,fb:'One dose of Peace Herb tea. Patient settles within minutes. Breathing stabilizes.'},
-      {t:'Gives Peace Herb three times because the patient keeps panicking',ok:false,pen:0,cq:'THIRD DOSE OF PEACE HERB. Patient does not wake.',fix:'TWO DOSES MAXIMUM. Third dose = death. Track doses carefully.',dt:0},
-    ]},
-    {sit:'Distress managed. Treat demon-specific trauma.',actions:[
-      {t:'Gives Azure Wisp Herb dissolved in tea for demon-encounter trauma and recurring visions',ok:true,fb:"Azure Wisp administered. Patient's eyes clear somewhat. The worst of the visions seem quieter."},
-      {t:'Skips demon-specific treatment — patient seems calmer now',ok:false,pen:75,cq:'Demon-encounter trauma without Azure Wisp leaves hallucinations unaddressed. Patient becomes functionally unfit for duty.',fix:'Azure Wisp for demon trauma. Star-Seer for dissociation.',dt:24*60},
-    ]},
-    {sit:'Medication given. Try grounding techniques.',actions:[
-      {t:'Uses grounding: asks patient to name 5 things they see, 4 they hear, 3 they can touch',ok:true,fb:'Patient responds slowly at first. By the third round, they are making eye contact. Present.'},
-      {t:'Skips grounding — medication should be enough',ok:false,pen:25,cq:'Medication without grounding leaves the patient still detached. Progress slower.',fix:'Grounding exercises alongside medication, not instead of it.'},
-    ]},
-    {sit:'Patient grounded. Establish routine.',actions:[
-      {t:'Sets consistent mealtimes and daily structure — no surprises, no forced conversations',ok:true,fb:'Routine established. Patient eats at first meal. Small portions. Progress.'},
-      {t:'Keeps trying to get the patient to talk about what happened',ok:false,pen:50,cq:'Pushed before ready. Patient shuts down further. Routine broken.',fix:'Wait for the patient to initiate. Routine and predictability are the treatment now.'},
-    ]},
-    {sit:'Day two: patient refuses all food and water.',actions:[
-      {t:'Escalates to senior Kakushi staff immediately',ok:true,fb:'Senior staff called. Additional support arranged. Correct escalation.'},
-      {t:'Continues standard treatment hoping they will eat eventually',ok:false,pen:75,cq:'Full rest cycle without food or water. Condition deteriorates physically on top of mental state.',fix:'One full rest cycle refusal = escalate. No exceptions.',dt:8*60},
-    ]}
-  ]
-},
-
-art_neck:{title:'Arterial Bleeding — Neck',march:'MARCH — M · SURGICAL · ADVANCED',critical:true,
-  intro:'Patient carried in. Blood everywhere. Pulsatile scarlet flow with every heartbeat — carotid involvement. Gray skin. Cannot speak. Every second of hesitation costs blood volume that cannot be recovered. Death timer: 3–5 minutes.',
-  timer:{secs:4*60,reason:'Neck arterial bleed — 3–5 minutes to death without direct pressure and surgical intervention'},
-  vitals:{pulse:'Weak, Rapid',breath:'Shallow',skin:'Pale, Gray'},
-  steps:[
-    {sit:'Patient down and bleeding from the neck. Position them and apply pressure.',actions:[
-      {t:'Lays patient flat — nothing under the head. Both hands on the wound immediately.',ok:true,fb:'Patient flat. Head neutral. Both hands pressing hard on the wound. Bleeding slowing under pressure.'},
-      {t:'Elevates the patient\'s head with a cloth roll to keep airway clear',ok:false,pen:100,cq:'Head elevation shifts the vessel. Any elevation risks disrupting the wound before clamping.',fix:'Nothing under the head. Neck must be neutral and still. Elevating the head is wrong here.',dt:3},
-    ]},
-    {sit:'Pressure applied. Hold for 10 seconds while assistant prepares tools — do not release early.',actions:[
-      {t:'Holds both hands on wound for full 10-second count — assistant prepares blade, thread, clamps, Mugwort',ok:true,fb:'10 seconds. Tools in reach. Pressure maintained. Assistant ready to take over the moment hands need to move.'},
-      {t:'Releases pressure after 5 seconds because the bleeding seems slower',ok:false,pen:150,cq:'Pressure released before tools ready. Uncontrolled bleed resumes. Near-certain death.',fix:'Full 10-second count. If tools are not ready, keep holding. You do not release early for any reason.',dt:2},
-    ]},
-    {sit:'Tools ready. Sedate the patient if conscious.',actions:[
-      {t:'Assistant administers Peace Herb tea while pressure is maintained — waits for sedation',ok:true,fb:'Peace Herb given. Sedation taking hold. Patient stops resisting. Proceed.'},
-      {t:'Skips Peace Herb — unconscious patients don\'t need sedation',ok:false,pen:75,cq:'Patient may still be conscious and will move when wound is opened. Vessel tears further.',fix:'If patient is unconscious from blood loss, skip to next step. If conscious — sedate first.',dt:2},
-    ]},
-    {sit:'Sedated. Expose the vessel.',actions:[
-      {t:'Releases pressure on count — assistant takes over immediately. Extends wound with clean cut to expose vessel.',ok:true,fb:'Wound extended. No gap in pressure coverage. Vessel visible. Clean working space.'},
-      {t:'Removes hand briefly to reposition before extending the wound',ok:false,pen:75,cq:'Gap in pressure. Bleed resumes uncovered. Blood volume loss accelerates.',fix:'No gap between your hands leaving and your assistant\'s arriving. Not one second.',dt:2},
-    ]},
-    {sit:'Vessel exposed. Identify it before touching.',actions:[
-      {t:'Identifies the vessel: carotid = larger, deeper, bright red pulsing. Jugular = closer to surface, darker, steadier.',ok:true,fb:'Carotid identified. Bright red, pulsing. The damaged vessel is the carotid. Correct identification.'},
-      {t:'Clamps blindly — the wound is already open, no time to identify',ok:false,pen:0,cq:'Clamping the wrong vessel or clamping blindly causes immediate death.',fix:'Identify the vessel before touching it. Carotid is deeper and bright red. Jugular is shallower and darker.',dt:0},
-    ]},
-    {sit:'Vessel identified. Clamp above AND below the damage.',actions:[
-      {t:'Clamps vessel above the damage, then below — both clamps holding before proceeding',ok:true,fb:'Upper clamp on. Lower clamp on. Vessel isolated between clamps. Bleeding controlled.'},
-      {t:'Clamps above only — the lower damage point is too close to suture',ok:false,pen:100,cq:'Cannot isolate the bleed without both clamps. Uncontrolled flow from below.',fix:'Both clamps required. Above AND below. The vessel must be isolated between them.',dt:3},
-    ]},
-    {sit:'Vessel isolated. Pack with Mugwort if available, then cut clean vessel ends.',actions:[
-      {t:'Packs Mugwort around the clamps, then cuts vessel ends cleanly — removes the damaged section',ok:true,fb:'Mugwort packed. Vessel ends cut clean and perpendicular. Damaged section removed. Clean cuts.'},
-      {t:'Attempts to repair the damaged section in place without removing it',ok:false,pen:50,cq:'Damaged vessel wall cannot hold sutures. Repair will fail on clamp release.',fix:'Remove the damaged section entirely. Cut clean ends on both sides of the damage.'},
-    ]},
-    {sit:'Clean ends prepared. Suture the vessel.',actions:[
-      {t:'Sutures closed with thinnest thread available — small stitches, tight spacing, full circumference',ok:true,fb:'Suturing. Small stitches. Full circumference. Each gap is a potential leak. Careful work.'},
-      {t:'Rushes the suturing to save time — fewer larger stitches',ok:false,pen:75,cq:'Incomplete suture line. Repair fails on clamp release. Bleeds resume.',fix:'Do not rush this step. One missed stitch means failure. Thread first if available, cord as fallback.'},
-    ]},
-    {sit:'Sutures complete. Release clamps ONE AT A TIME — lower first.',actions:[
-      {t:'Releases lower clamp slowly — watches suture line. If holding, releases upper clamp slowly. Watches for 15 seconds.',ok:true,fb:'Lower clamp off. Watching. No blood seeping. Upper clamp off slowly. Watching. 15 seconds. No blood. Surgery successful.'},
-      {t:'Releases both clamps at once to see if the repair holds',ok:false,pen:150,cq:'Both clamps released simultaneously. If repair fails, cannot re-clamp. Patient bleeds out.',fix:'Lower clamp first. Slow release. Watch. Then upper. Never both at once.',dt:2},
-    ]},
-    {sit:'Repair confirmed. Close the wound in layers.',actions:[
-      {t:'Closes skin in layers carefully — sutures or binds tightly. Applies compression bandage around neck. Not too tight.',ok:true,fb:'Wound closed in layers. Compression bandage applied. Testing: patient can breathe freely. Good.'},
-      {t:'Applies the neck bandage as tightly as possible to prevent reopening',ok:false,pen:75,cq:'Airway restricted. Patient suffocates.',fix:'Firm enough to support the repair. Test: patient must be able to breathe freely.',dt:5},
-    ]},
-    {sit:'Wound closed. Final recovery.',actions:[
-      {t:'Administers Japanese Angelica tea (or Toki if unavailable). Patient not moved for 10 minutes. Checks lip and fingertip color.',ok:true,fb:'Angelica tea given. Patient still. Lips pinking up. Fingertips returning to color. Monitoring.'},
-      {t:'Allows patient to move and sit up now that surgery is complete',ok:false,pen:100,cq:'Movement tears the repair. Neck arterial bleed resumes.',fix:'Patient must not move for at least 10 minutes post-surgery. Any head movement risks tearing the repair.',dt:3},
-    ]}
-  ]
-},
-
-art_limb:{title:'Arterial Bleeding — Limb',march:'MARCH — M · SURGICAL · ADVANCED',critical:true,
-  intro:'Slayer brought in with pulsatile bright red blood spurting with every heartbeat from a limb wound. Press on the wound: bleeding stops, then spurts when released. Arterial confirmed. Tourniquet may or may not already be in place.',
-  timer:{secs:5*60,reason:'Arterial limb bleed — uncontrolled, 5 minutes to death'},
-  vitals:{pulse:'Weak, Rapid',breath:'Shallow',skin:'Pale'},
-  steps:[
-    {sit:'Arterial confirmed. Tourniquet status: check if one is in place.',actions:[
-      {t:'Checks for tourniquet — applies one high above the wound if not already present',ok:true,fb:'Tourniquet confirmed above the wound. Bleeding slowed. Good start.'},
-      {t:'Skips tourniquet — moves straight to opening the wound surgically',ok:false,pen:150,cq:'No tourniquet. Surgical site is uncontrolled. Patient bleeds out during the procedure.',fix:'Tourniquet FIRST. High above the wound. Do not attempt surgery without it.',dt:3},
-    ]},
-    {sit:'Tourniquet in place. Do NOT remove it under any circumstances.',actions:[
-      {t:'Confirms tourniquet remains in place — notes to all assistants: do not touch it',ok:true,fb:'Tourniquet confirmed and communicated. Everyone knows it stays on.'},
-      {t:'Loosens the tourniquet slightly to reduce limb damage while preparing',ok:false,pen:100,cq:'Tourniquet loosened. Arterial bleeding resumes. Patient bleeds out.',fix:'Leave the tourniquet. Do not loosen, do not remove. It stays until the artery is surgically controlled.',dt:3},
-    ]},
-    {sit:'Tourniquet secured. Sedate the patient.',actions:[
-      {t:'Gives Peace Herb tea — waits for full sedation before opening the wound',ok:true,fb:'Peace Herb given. Waiting. Sedation confirmed. Patient still. Safe to proceed.'},
-      {t:'Opens the wound while patient is still awake to save time',ok:false,pen:75,cq:'Patient convulses from pain. Disrupts surgical site. Instrument slips.',fix:'Full sedation required before opening the wound. The time cost is worth it.'},
-    ]},
-    {sit:'Sedated. Open the wound with a clean cut and locate the artery.',actions:[
-      {t:'Opens wound with a clean cut following the original injury — locates the artery: darker, larger vessel, may still be pulsing',ok:true,fb:'Wound open. Artery located — darker, larger, slight residual pulse. Clear to work.'},
-      {t:'Probes the wound with a finger to feel for the artery',ok:false,pen:50,cq:'Unprotected finger contact with an open arterial wound. Contamination risk. Slows identification.',fix:'Visual identification. The artery is the darker, larger vessel. Do not probe with unprotected fingers.'},
-    ]},
-    {sit:'Artery located. Pack with Mugwort if available.',actions:[
-      {t:'Packs wound heavily with Mugwort around the artery before clamping',ok:true,fb:'Mugwort packed around the site. Surrounding bleed controlled. Cleaner working space.'},
-      {t:'Skips Mugwort packing — clamps the artery immediately',ok:false,pen:25,cq:'Surrounding bleed makes the surgical site messier and harder to work in.',fix:'Pack Mugwort first if available. It gives you cleaner visibility for clamping.'},
-    ]},
-    {sit:'Ready to clamp. BOTH clamps required — above AND below.',actions:[
-      {t:'Clamps ABOVE the damaged section, then clamps BELOW. Artery now isolated between both clamps.',ok:true,fb:'Upper clamp on. Lower clamp on. Artery isolated. Controlled.'},
-      {t:'Clamps above the damage only',ok:false,pen:100,cq:'Lower end not clamped. Cannot isolate the vessel. Bleed continues from below.',fix:'Above AND below. Both clamps. The artery must be isolated between them before any repair.',dt:5},
-    ]},
-    {sit:'Artery isolated. Repair it.',actions:[
-      {t:'Sews artery closed with thin thread and small stitches, OR: ties cord above and below damage and cuts out the damaged section',ok:true,fb:'Artery sutured closed. Repair looks complete. Thread method used.'},
-      {t:'Cauterizes the artery ends instead of suturing',ok:false,pen:75,cq:'Cauterization seals the surface but does not repair blood flow correctly. Risk of late failure.',fix:'Suture with thin thread. Cord ligation as fallback. Cauterization is not appropriate here.'},
-    ]},
-    {sit:'Artery repaired. Release clamps — LOWER first.',actions:[
-      {t:'Releases LOWER clamp slowly — watches for leaking. If none, releases UPPER clamp slowly.',ok:true,fb:'Lower clamp off. Watching. No leaking. Upper clamp off. No blood escaping. Surgery successful.'},
-      {t:'Releases upper clamp first because it was placed first',ok:false,pen:50,cq:'Upper clamp released first — if repair fails, lower end bleeds uncontrolled without upper pressure.',fix:'Always lower clamp first. Slow release. Watch. Then upper. Order is not optional.',dt:3},
-    ]},
-    {sit:'Repair confirmed. Close the outer wound.',actions:[
-      {t:'Closes the outer wound with clean stitches or tight binding. Applies clean bandage.',ok:true,fb:'Outer wound closed. Bandage applied. Clean.'},
-      {t:'Leaves outer wound open to monitor the repair underneath',ok:false,pen:25,cq:'Open wound is an infection vector and does not protect the repair underneath.',fix:'Close the outer wound. The repair is confirmed. Seal it.'},
-    ]},
-    {sit:'Wound closed. Final recovery care.',actions:[
-      {t:'Gives Toki tea. Elevates limb on pillows. Monitors circulation in fingers/toes.',ok:true,fb:'Toki tea given. Limb elevated. Fingers/toes warm and pink. Circulation intact. Case stable.'},
-      {t:'Skips Toki tea — patient can recover naturally',ok:false,pen:50,cq:'Blood volume recovery unsupported after significant arterial blood loss.',fix:'Toki tea after arterial surgery. Always. Blood volume needs recovery support.',dt:30},
-    ]}
-  ]
-},
-
-mass_hem:{title:'Massive Hemorrhage',march:'MARCH — M · SURGICAL · MULTI-PERSON',critical:true,
-  intro:'Patient unconscious or barely responsive. Blood pooling on the bed. Multiple wounds all actively bleeding simultaneously. Bandages saturating within minutes. Skin white-gray. Cold extremities. Absent peripheral pulse. Torso AND limb wounds at the same time.',
-  timer:{secs:6*60,reason:'Massive hemorrhage — multiple simultaneous sources. Minutes to irreversible shock.'},
-  vitals:{pulse:'Weak, Rapid',breath:'Shallow',skin:'Pale, Gray, Cold'},
-  steps:[
-    {sit:'Multiple sources. Cannot treat one at a time. Sedate and assign roles immediately.',actions:[
-      {t:'Gives 2 doses of Peace Herb tea. Assigns: Person 1 (torso), Person 2 (thigh wound), Person 3 (arm wound).',ok:true,fb:'Two doses administered. Roles assigned and communicated. Everyone knows their task. Proceed simultaneously.'},
-      {t:'Treats the most serious wound first, then moves to the others',ok:false,pen:100,cq:'Sequential treatment in massive hemorrhage means the patient bleeds out from the untreated wounds while you work on the first.',fix:'Multi-person simultaneous response is mandatory. Assign roles before anyone touches anything.',dt:3},
-    ]},
-    {sit:'Roles assigned. PERSON 1 — torso. Simultaneous action required.',actions:[
-      {t:'PERSON 1: Takes packing cloth, pushes DEEP into the torso wound, applies STRONG direct pressure',ok:true,fb:'Cloth deep in torso wound. Strong pressure applied. Holding.'},
-      {t:'PERSON 1 applies gentle surface pressure to avoid causing more damage',ok:false,pen:75,cq:'Gentle pressure on a torso bleed is insufficient. Bleed continues under the cloth.',fix:'The pressure must be STRONG and the cloth must be pushed DEEP. This is not gentle work.',dt:5},
-    ]},
-    {sit:'PERSON 1 holding. Count out loud — 90 seconds. DO NOT let go.',actions:[
-      {t:'PERSON 1 holds pressure for 90 seconds while counting out loud — does NOT lift to check',ok:true,fb:'Counting. 30 seconds. 60 seconds. 90 seconds. Holding. Not lifting. Not checking.'},
-      {t:'PERSON 1 checks the wound after 30 seconds to see if it is working',ok:false,pen:100,cq:'Pressure released at 30 seconds. Clot formation disrupted. Torso bleed fully resumes.',fix:'90 seconds. Count out loud. Do not lift. Do not check. Do not stop.',dt:5},
-    ]},
-    {sit:'SAME TIME as Person 1 holding — PERSON 2 and PERSON 3 apply limb tourniquets.',actions:[
-      {t:'PERSON 2: Tight bandage above thigh wound toward body. PERSON 3: Same to arm wound simultaneously.',ok:true,fb:'Both limb wounds addressed. Tourniquets applied simultaneously while Person 1 holds the torso.'},
-      {t:'Persons 2 and 3 wait for Person 1 to finish before addressing the limbs',ok:false,pen:75,cq:'Limb wounds bleeding freely while waiting. Blood volume loss continues from both sources.',fix:'Simultaneous. Person 2 and 3 work the limbs at the same time Person 1 holds the torso. No waiting.',dt:3},
-    ]},
-    {sit:'90 seconds complete. Wrap the torso wound.',actions:[
-      {t:'PERSON 1 wraps a firm bandage over the packed torso wound to hold the packing in place',ok:true,fb:'Torso wound wrapped over the packing. Pressure maintained without hands. Hands free.'},
-      {t:'Person 1 removes the packing cloth and applies a clean surface bandage',ok:false,pen:75,cq:'Packing removed. The deep wound space collapses. Torso bleed resumes.',fix:'Wrap OVER the packing. Do not remove it. The cloth stays inside.',dt:5},
-    ]},
-    {sit:'Torso wrapped. Elevate both legs.',actions:[
-      {t:'Folds blankets under both ankles to elevate legs — tilts bed so legs are higher than head if possible',ok:true,fb:'Both legs elevated. If possible, bed tilted. Blood volume redistributing toward core. Correct.'},
-      {t:'Skips leg elevation — patient is already horizontal',ok:false,pen:50,cq:'Horizontal is insufficient in massive hemorrhage. Leg elevation actively redirects blood volume to vital organs.',fix:'Legs must be elevated. This is not optional. Blankets under both ankles minimum.',dt:10},
-    ]},
-    {sit:'Legs elevated. Administer Toki tea if patient can swallow anything at all.',actions:[
-      {t:'Checks for any swallowing response — gives Toki tea if even slight swallow is present',ok:true,fb:'Faint swallowing reflex present. Toki tea given in small amounts. Blood volume recovery beginning.'},
-      {t:'Gives Toki tea via pouring into the unconscious patient\'s mouth',ok:false,pen:100,cq:'Fluid poured into an unconscious patient. Aspiration. Airway blocked on top of hemorrhage.',fix:'Toki tea only if the patient can demonstrate any swallowing. Turn on side and clear airway if aspirated.',dt:2},
-    ]},
-    {sit:'Toki tea given or withheld appropriately. Cover the patient.',actions:[
-      {t:'Covers entire body with warm blankets — tucks around sides to prevent heat loss',ok:true,fb:'Patient covered. Warm. Heat loss slowed. Color beginning to return. Barely, but present.'},
-      {t:'Skips blankets — focus should be on the wounds, not temperature',ok:false,pen:50,cq:'Massive hemorrhage causes rapid temperature drop. Cold slows clotting and accelerates shock.',fix:'Blankets mandatory in all hemorrhage cases. Temperature support is part of the treatment.',dt:15},
-    ]},
-    {sit:'Patient covered. Final assessment.',actions:[
-      {t:'Reassesses all wound sites — confirms no new active bleeding. Checks pulse, color, breathing.',ok:true,fb:'All sites confirmed. No new bleeding. Pulse present — weak but present. Color gray but stable. Patient alive.'},
-      {t:'Declares treatment complete and leaves the patient to rest',ok:false,pen:75,cq:'Massive hemorrhage patients require continuous monitoring. New bleeding sites can open.',fix:'Continuous monitoring. Never leave a massive hemorrhage patient unattended.',dt:15},
-    ]}
-  ]
-},
-
-shrapnel:{title:'Shrapnel Removal',march:'MARCH — SURGICAL · TEAM',critical:true,
-  intro:'Patient brought in after an explosion. Multiple puncture wounds. Some pieces may still be embedded. Bleeding at multiple points. A team is required — different people will manage pressure points, vitals, and extraction simultaneously.',
-  timer:null,vitals:{pulse:'Fast',breath:'Normal',skin:'Pale'},
-  steps:[
-    {sit:'Multiple punctures. Assess before touching anything.',actions:[
-      {t:'Counts and marks all visible puncture wounds. Notes which are bleeding actively vs oozing.',ok:true,fb:'Four puncture sites identified. Two actively bleeding. Two oozing. No spurting — no arterial involvement confirmed. Mapped.'},
-      {t:'Immediately begins removing visible shrapnel pieces',ok:false,pen:75,cq:'Removing shrapnel before assessment. If a piece is sitting against an artery, removal causes immediate arterial bleed.',fix:'Always assess all wounds first. Note positions, depths, bleeding patterns. Plan before removing anything.',dt:5},
-    ]},
-    {sit:'All wounds mapped. Check for arterial involvement.',actions:[
-      {t:'Presses on each wound site individually — checks for spurting with heartbeat',ok:true,fb:'Pressed on all four sites. No rhythmic spurting. No arterial involvement confirmed. Safe to proceed with venous protocol.'},
-      {t:'Proceeds to extraction without checking for arterial involvement',ok:false,pen:100,cq:'Shrapnel near an artery dislodged without caution. Arterial bleed initiated mid-extraction.',fix:'Check every wound for arterial involvement before removing anything. One piece in the wrong place ends the patient.',dt:5},
-    ]},
-    {sit:'No arterial involvement. Sedate and sterilize.',actions:[
-      {t:'Administers Peace Herb tea. Sterilizes all tools and personnel hands.',ok:true,fb:'Peace Herb given. Tools sterilized. Personnel cleaned. Patient sedated. Environment as sterile as field conditions allow.'},
-      {t:'Skips sterilization to work faster while patient is still sedating',ok:false,pen:75,cq:'Contaminated tools introduced to puncture wounds. Infection at multiple sites.',fix:'Sterilization before opening any wound. This is not optional.',dt:24*60},
-    ]},
-    {sit:'Sedated and sterilized. Open and irrigate each wound.',actions:[
-      {t:'Cuts open each puncture site to expose the wound interior — irrigates each with large amounts of clean water',ok:true,fb:'Each site opened and irrigated. Debris and surface contamination washed out. Clean working field.'},
-      {t:'Attempts to extract shrapnel through the original puncture holes without opening them',ok:false,pen:50,cq:'Cannot safely extract through a small puncture hole. Pieces are pushed deeper or break on extraction.',fix:'Open each site cleanly. You need full visibility to remove shrapnel safely.'},
-    ]},
-    {sit:'Wounds open. Assign roles: one person extracts, others clamp indirect pressure points and monitor vitals.',actions:[
-      {t:'Assigns extracting surgeon, indirect pressure clamp holders for each wound, and a vitals monitor',ok:true,fb:'Roles assigned. Clamp holders in position at indirect pressure points. Vitals monitor watching. Extractor ready.'},
-      {t:'One person handles everything — extraction, pressure, and vitals monitoring',ok:false,pen:50,cq:'Single operator cannot manage multiple bleeding sites, extraction complexity, and patient vitals. Someone suffers.',fix:'This procedure requires a team. Extraction, pressure control, and vitals must be handled simultaneously.'},
-    ]},
-    {sit:'Team in position. Begin extraction.',actions:[
-      {t:'Uses forceps to remove individual shrapnel pieces one by one — does NOT use direct pressure on shrapnel wounds during extraction',ok:true,fb:'Forceps on first piece. Careful extraction. Second piece. Third. Checking each one. Indirect pressure holding.'},
-      {t:'Applies direct pressure to shrapnel wounds to control bleeding during extraction',ok:false,pen:75,cq:'Direct pressure on a shrapnel wound pushes fragments deeper and can force them into vessels.',fix:'Indirect pressure points only during extraction. Clamps at pressure points away from the wounds. No direct pressure.',dt:5},
-    ]},
-    {sit:'Extraction in progress. Account for all pieces.',actions:[
-      {t:'Counts extracted pieces and cross-references wound count — probes any remaining sites with sterilized probe if needed',ok:true,fb:'Four pieces accounted for. Each wound site re-examined. No remaining fragments detected.'},
-      {t:'Stops extracting when no more pieces are visible on the surface',ok:false,pen:100,cq:'Internal fragments left behind. Shrapnel migrates toward organs over time. Complications within hours.',fix:'Use a sterilized probe to check all wound interiors. If a piece cannot be safely removed and patient survives without it — leave it. Otherwise it must come out.',dt:12*60},
-    ]},
-    {sit:'All extractable pieces removed. Disinfect and close.',actions:[
-      {t:'Disinfects each punctured area with clean water and Loquat Leaf compress — closes each wound',ok:true,fb:'All sites disinfected. Loquat Leaf compresses warm and on. Wounds closed. Bandaged.'},
-      {t:'Closes wounds without disinfecting first',ok:false,pen:75,cq:'Contamination sealed inside multiple wound sites. Multi-site infection within hours.',fix:'Disinfect every site before closing. Every one.',dt:8*60},
-    ]}
-  ]
-},
-
-amputation:{title:'Amputation',march:'MARCH — SURGICAL',critical:true,
-  intro:'The limb cannot be saved. Indication: severe infectious disease advancing toward vital organs, OR limb is completely non-functional with no prospect of recovery. Last resort. This procedure is irreversible.',
-  timer:null,vitals:{pulse:'Fast',breath:'Normal',skin:'Feverish'},
-  steps:[
-    {sit:'Confirm the indication — amputation is irreversible.',actions:[
-      {t:'Verifies the indication: either infection is advancing past the tourniquet and no other option remains, OR limb is confirmed non-functional',ok:true,fb:'Indication confirmed. Infection advancing past control. No viable surgical repair option. Amputation is the correct call.'},
-      {t:'Proceeds with amputation because the limb looks damaged',ok:false,pen:50,cq:'Amputation performed without confirming the limb cannot be saved. Irreversible procedure done unnecessarily.',fix:'Amputation requires confirmation of the specific indication. It is not performed on aesthetically damaged limbs — only non-functional or fatally infected ones.'},
-    ]},
-    {sit:'Indication confirmed. Sedate the patient.',actions:[
-      {t:'Administers Peace Herb tea — waits for full sedation',ok:true,fb:'Peace Herb given. Waiting. Full sedation confirmed. Patient still.'},
-      {t:'Proceeds without sedation — patient is already in too much pain to fight back',ok:false,pen:100,cq:'Amputation without sedation. Patient goes into fatal pain shock mid-procedure.',fix:'Full sedation before amputation. No exceptions. A conscious amputation is lethal from shock.',dt:2},
-    ]},
-    {sit:'Sedated. Sterilize all tools and personnel.',actions:[
-      {t:'Sterilizes blade, saw, and all personnel hands before making any cut',ok:true,fb:'Tools cleaned. Blade sterilized. Saw sterilized. Personnel ready.'},
-      {t:'Skips sterilization — the infected limb will contaminate everything anyway',ok:false,pen:100,cq:'Contaminated tools introduce new infection into the clean stump after amputation. New infection begins at the base.',fix:'Sterilize regardless of the limb condition. The goal is to prevent NEW infection at the stump.',dt:24*60},
-    ]},
-    {sit:'All tools ready. Apply tourniquet at the joint above the amputation site.',actions:[
-      {t:'Applies rope or tourniquet tightly at the joint area above the limb being amputated — cuts off all blood flow',ok:true,fb:'Tourniquet tight at the joint. Blood flow to the limb cut off. Controlled.'},
-      {t:'Skips tourniquet — relies on speed to minimize blood loss',ok:false,pen:150,cq:'No tourniquet. Massive blood loss during amputation. Patient bleeds out on the table.',fix:'Tourniquet before the first cut. The entire reason you can do this procedure is because the tourniquet controls the bleeding.',dt:3},
-    ]},
-    {sit:'Tourniquet applied. Amputate.',actions:[
-      {t:'Uses sharp blade to cut through soft tissue, then saw through the bone cleanly — removes the limb in one controlled motion',ok:true,fb:'Blade through soft tissue. Saw through the bone. Clean cut. Limb removed. Procedure complete.'},
-      {t:'Saws through the soft tissue and bone together with the saw from the start',ok:false,pen:50,cq:'Using a bone saw on soft tissue causes jagged tearing. The stump site becomes difficult to close cleanly.',fix:'Blade for soft tissue. Saw for bone. Two instruments, two phases.'},
-    ]},
-    {sit:'Limb removed. Disinfect the stump and close.',actions:[
-      {t:'Disinfects the base of the remaining limb thoroughly — bandages the stump fully and firmly',ok:true,fb:'Stump disinfected. Bandaged firmly. Closed cleanly. Patient alive.'},
-      {t:'Bandages immediately without disinfecting the stump',ok:false,pen:100,cq:'Stump site not disinfected. New infection begins at the base within hours.',fix:'Disinfect the stump before bandaging. The entire purpose was to stop the infection — do not reintroduce it at the wound site.',dt:12*60},
-    ]}
-  ]
+function generateCode() {
+  return Math.random().toString(36).substring(2, 8).toUpperCase();
 }
 
-}; // end DB
-
-let patientLog = [];
-try { patientLog = JSON.parse(localStorage.getItem('dss_v3_log') || '[]'); } catch(e) {}
-
-function persistLog() {
-  try { localStorage.setItem('dss_v3_log', JSON.stringify(patientLog)); } catch(e) {}
-  $('log-badge').textContent = patientLog.length ? '(' + patientLog.length + ')' : '';
+function selectRole(role) {
+  state.role = role;
+  document.getElementById('role-select').classList.remove('active');
+  document.getElementById('back-btn').style.display = 'inline-block';
+  if (role === 'gm') {
+    document.getElementById('role-display').textContent = 'Game Master';
+    document.getElementById('gm-screen').classList.add('active');
+    state.gameCode = generateCode();
+    initGMBody();
+  } else {
+    document.getElementById('role-display').textContent = 'Medic';
+    document.getElementById('medic-wait').classList.add('active');
+    state.gameCode = generateCode();
+    document.getElementById('game-code-text').textContent = state.gameCode;
+    listenForGameStart();
+  }
 }
 
-let C = null, caseKey = '', stepIdx = 0, res = 300, alive = true;
-let timerInt = null, timerSecs = 0;
-let activeConsequences = [], consecId = 0, stepDone = false;
-let peaceHerbCount = 0;
-let curPatient = '—', curMedicUser = '—', curMedicLore = '—', pendingKey = '';
-let shockActive = false, shockC = null, shockStep = 0, shockConseq = [], shockDone = false, shockConId = 0;
-let activeSubtab = 'main';
-
-const $ = id => document.getElementById(id);
-
-function setRes(v) {
-  res = Math.max(0, v);
-  const p = (res / 300) * 100;
-  $('res-fill').style.width = p + '%';
-  $('res-val').textContent = res;
-
-  if (p < 30) $('res-fill').style.background = 'linear-gradient(90deg,#4a0000,#8b0000)';
-  else if (p < 60) $('res-fill').style.background = 'linear-gradient(90deg,var(--blood),var(--warn))';
-  else $('res-fill').style.background = 'linear-gradient(90deg,var(--blood),var(--blood-bright))';
-
-  if (res <= 0) killPatient('RES reached zero. The patient did not survive the accumulation of treatment errors.');
+function backToLobby() {
+  if (state.timerInterval) clearInterval(state.timerInterval);
+  state = {role:null,gameCode:null,gmHP:300,gmMaxHP:300,assignedInjuries:[],selectedPart:null,timerSeconds:180,timerRemaining:0,timerInterval:null,currentInjuryIdx:0,currentStepIdx:0,selectedItem:null,peaceHerbUsed:0,patientRES:300,consequences:[],completedInjuries:[],wrongAttempts:0,totalSteps:0,correctSteps:0,gameActive:false,shockActive:false};
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('role-select').classList.add('active');
+  document.getElementById('back-btn').style.display = 'none';
+  document.getElementById('role-display').textContent = '';
 }
 
-function setVitals(pulse, breath, skin) {
-  $('vt-pulse').textContent = 'Pulse: ' + pulse;
-  $('vt-breath').textContent = 'Breathing: ' + breath;
-  $('vt-skin').textContent = 'Skin: ' + skin;
-  $('vd-pulse').className = 'vdot ' + (pulse.includes('Weak') ? 'crit' : pulse.includes('Fast') ? 'bad' : 'ok');
-  $('vd-breath').className = 'vdot ' + (breath.includes('Shallow') ? 'bad' : 'ok');
-  $('vd-skin').className = 'vdot ' + ((skin.includes('Pale') || skin.includes('Cold') || skin.includes('Feverish')) ? 'crit' : 'ok');
+function initGMBody() {
+  document.querySelectorAll('#gm-body .body-part').forEach(el => {
+    el.addEventListener('click', () => {
+      const part = el.dataset.part;
+      document.querySelectorAll('#gm-body .body-part').forEach(p => p.classList.remove('selected'));
+      el.classList.add('selected');
+      state.selectedPart = part;
+      document.getElementById('gm-selected-part').textContent = BODY_PARTS[part].name;
+      showInjuryPicker(part);
+    });
+  });
 }
 
-function startTimer(secs, reason) {
-  timerSecs = secs;
-  $('treason').textContent = reason;
-  $('timer-bar').classList.add('on');
-  clearInterval(timerInt);
+function showInjuryPicker(part) {
+  const panel = document.getElementById('gm-injury-panel');
+  const grid = document.getElementById('injury-pick');
+  panel.style.display = 'block';
+  grid.innerHTML = '';
+  const injuries = BODY_PARTS[part].injuries;
+  injuries.forEach(injId => {
+    const inj = INJURIES[injId];
+    const btn = document.createElement('button');
+    btn.className = 'injury-btn';
+    if (inj.category === 'advanced') btn.style.borderColor = 'rgba(192,57,43,0.6)';
+    btn.innerHTML = `${inj.name}<br><span style="font-size:7px;color:var(--blood-bright);letter-spacing:2px">MARCH: ${inj.march}</span>`;
+    if (inj.category === 'advanced') btn.innerHTML += `<br><span style="font-size:7px;color:var(--critical)">ADVANCED</span>`;
+    btn.onclick = () => addInjury(part, injId);
+    grid.appendChild(btn);
+  });
+}
 
-  const tick = () => {
-    timerSecs--;
-    const m = Math.floor(timerSecs / 60), s = timerSecs % 60;
-    $('tclock').textContent = m + ':' + (s < 10 ? '0' : '') + s;
-    if (timerSecs <= 0) {
-      clearInterval(timerInt);
-      killPatient('Critical timer expired. The patient crashed before treatment was completed.');
-    }
+function addInjury(part, injId) {
+  const existing = state.assignedInjuries.find(i => i.part === part && i.injId === injId);
+  if (existing) return;
+  state.assignedInjuries.push({part, injId, treated: false});
+  document.querySelectorAll(`#gm-body .body-part[data-part="${part}"]`).forEach(el => el.classList.add('injured'));
+  renderActiveInjuries();
+  document.getElementById('start-game-btn').disabled = state.assignedInjuries.length === 0;
+}
+
+function removeInjury(idx) {
+  const removed = state.assignedInjuries.splice(idx, 1)[0];
+  const stillHasInjury = state.assignedInjuries.some(i => i.part === removed.part);
+  if (!stillHasInjury) {
+    document.querySelectorAll(`#gm-body .body-part[data-part="${removed.part}"]`).forEach(el => el.classList.remove('injured'));
+  }
+  renderActiveInjuries();
+  document.getElementById('start-game-btn').disabled = state.assignedInjuries.length === 0;
+}
+
+function renderActiveInjuries() {
+  const container = document.getElementById('active-injuries');
+  if (state.assignedInjuries.length === 0) {
+    container.innerHTML = '<div style="font-size:13px;color:var(--text-muted);font-style:italic">No injuries assigned yet</div>';
+    return;
+  }
+  container.innerHTML = '';
+  state.assignedInjuries.forEach((inj, idx) => {
+    const data = INJURIES[inj.injId];
+    const div = document.createElement('div');
+    div.className = 'injury-list-item';
+    div.innerHTML = `
+      <div>
+        <span class="name">${data.name}</span>
+        <span style="font-size:11px;color:var(--text-muted)"> — ${BODY_PARTS[inj.part].name}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="march-tag">MARCH: ${data.march}</span>
+        <button class="remove-injury" onclick="removeInjury(${idx})">&times;</button>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+function startGame() {
+  if (state.assignedInjuries.length === 0) return;
+  state.timerSeconds = parseInt(document.getElementById('timer-input').value) || 180;
+  state.gameActive = true;
+  const gameData = {
+    code: state.gameCode,
+    injuries: JSON.parse(JSON.stringify(state.assignedInjuries)),
+    timer: state.timerSeconds
   };
-
-  timerInt = setInterval(tick, 1000);
-  const m = Math.floor(secs / 60), s = secs % 60;
-  $('tclock').textContent = m + ':' + (s < 10 ? '0' : '') + s;
+  localStorage.setItem('dss-medical-game', JSON.stringify(gameData));
+  document.getElementById('gm-log').innerHTML = '<div style="font-size:13px;color:var(--green-bright)">Game started! Medic has ' + state.timerSeconds + ' seconds.</div>';
+  pollMedicProgress();
 }
 
-function stopTimer() {
-  clearInterval(timerInt);
-  $('timer-bar').classList.remove('on');
-}
-
-function killPatient(reason) {
-  alive = false;
-  stopTimer();
-  activeConsequences.forEach(cq => { if (cq.timerInt) clearInterval(cq.timerInt); });
-  shockConseq.forEach(cq => { if (cq.timerInt) clearInterval(cq.timerInt); });
-  $('main').style.display = 'none';
-  $('picker-wrap').style.display = 'none';
-  $('patient-reg').style.display = 'none';
-  $('death-screen').style.display = 'block';
-  $('death-txt').textContent = reason;
-}
-
-function addPeaceHerb() {
-  if (!alive) return;
-  peaceHerbCount++;
-  updatePeaceHerbUI();
-  if (peaceHerbCount >= 3) killPatient('Third dose of Peace Herb administered. The patient did not wake up.');
-}
-
-function updatePeaceHerbUI() {
-  const d1 = $('ph1'), d2 = $('ph2'), d3 = $('ph3'), warn = $('ph-warn');
-  d1.className = 'ph-dot' + (peaceHerbCount >= 1 ? ' used' : '');
-  d2.className = 'ph-dot' + (peaceHerbCount >= 2 ? ' used' : '');
-  d3.className = 'ph-dot' + (peaceHerbCount >= 3 ? ' fatal' : '');
-
-  if (peaceHerbCount === 0)      { warn.textContent = '0 / 2 doses given'; warn.className = 'ph-warn'; }
-  else if (peaceHerbCount === 1) { warn.textContent = '1 / 2 — one dose remaining'; warn.className = 'ph-warn'; }
-  else if (peaceHerbCount === 2) { warn.textContent = '2 / 2 — MAXIMUM REACHED. Next dose = death.'; warn.className = 'ph-warn danger'; }
-  else                           { warn.textContent = '3rd dose given — PATIENT DECEASED'; warn.className = 'ph-warn danger'; }
-}
-
-function startConsequenceTimer(cq) {
-  if (!cq.dt || cq.dt === 0) return;
-  cq.secsLeft = cq.dt * 60;
-  cq.timerInt = setInterval(() => {
-    if (!alive) { clearInterval(cq.timerInt); return; }
-    cq.secsLeft--;
-    const el = document.getElementById('cqtimer-' + cq.id);
-    if (el) {
-      const m = Math.floor(cq.secsLeft / 60), s = cq.secsLeft % 60;
-      el.textContent = '⚠ UNTREATED — death in ' + m + 'm ' + (s < 10 ? '0' : '') + s + 's';
+function listenForGameStart() {
+  const checkInterval = setInterval(() => {
+    const data = localStorage.getItem('dss-medical-game');
+    if (data) {
+      const gameData = JSON.parse(data);
+      state.assignedInjuries = gameData.injuries;
+      state.timerSeconds = gameData.timer;
+      state.gameCode = gameData.code;
+      clearInterval(checkInterval);
+      startMedicGame();
     }
-    if (cq.secsLeft <= 0) {
-      clearInterval(cq.timerInt);
-      if (alive) killPatient('Untreated complication became fatal: ' + cq.text);
+  }, 500);
+}
+
+function startMedicGame() {
+  document.getElementById('medic-wait').classList.remove('active');
+  document.getElementById('medic-screen').classList.add('active');
+  state.gameActive = true;
+  state.timerRemaining = state.timerSeconds;
+  state.currentInjuryIdx = 0;
+  state.currentStepIdx = 0;
+  state.peaceHerbUsed = 0;
+  state.patientRES = 300;
+  initMedicBody();
+  initInventory();
+  startTimer();
+  renderMedicView();
+}
+
+function initMedicBody() {
+  state.assignedInjuries.forEach(inj => {
+    document.querySelectorAll(`#medic-body .body-part[data-part="${inj.part}"]`).forEach(el => {
+      el.classList.add('injured');
+    });
+  });
+  document.querySelectorAll('#medic-body .body-part').forEach(el => {
+    el.addEventListener('click', () => {
+      const part = el.dataset.part;
+      const injIdx = state.assignedInjuries.findIndex(i => i.part === part && !i.treated);
+      if (injIdx >= 0) {
+        state.currentInjuryIdx = injIdx;
+        state.currentStepIdx = 0;
+        renderMedicView();
+      }
+    });
+  });
+}
+
+function initInventory() {
+  const equipGrid = document.getElementById('equip-grid');
+  const herbsGrid = document.getElementById('herbs-grid');
+  equipGrid.innerHTML = '';
+  herbsGrid.innerHTML = '';
+  EQUIPMENT.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'inv-item';
+    div.id = 'inv-' + item.id;
+    div.textContent = item.name;
+    div.title = item.desc;
+    div.onclick = () => selectItem(item.id, item.name, item.desc);
+    equipGrid.appendChild(div);
+  });
+  HERBS.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'inv-item';
+    div.id = 'inv-' + item.id;
+    div.textContent = item.name;
+    div.title = item.desc;
+    div.onclick = () => selectItem(item.id, item.name, item.desc);
+    herbsGrid.appendChild(div);
+  });
+}
+
+function selectItem(id, name, desc) {
+  document.querySelectorAll('.inv-item').forEach(el => el.classList.remove('selected'));
+  state.selectedItem = id;
+  const el = document.getElementById('inv-' + id);
+  if (el) el.classList.add('selected');
+  document.getElementById('selected-item-info').innerHTML = `<span style="color:var(--gold);font-style:normal">${name}</span><br><span style="font-size:12px">${desc}</span>`;
+  document.getElementById('apply-btn').disabled = false;
+}
+
+function startTimer() {
+  updateTimerDisplay();
+  state.timerInterval = setInterval(() => {
+    state.timerRemaining--;
+    updateTimerDisplay();
+    if (state.timerRemaining <= 0) {
+      clearInterval(state.timerInterval);
+      endGame(false, 'Time ran out — patient died');
     }
   }, 1000);
 }
 
-function buildConsequenceHTML(cq) {
-  const lbl = cq.isOld
-    ? '<div class="cq-label old-lbl">⚠ ONGOING — NOT YET FIXED</div>'
-    : '<div class="cq-label">⚠ ACTIVE CONSEQUENCE</div>';
-  const penHtml = cq.pen > 0 ? `<div class="cq-penalty">−${cq.pen} RES applied</div>` : '';
-  const timerHtml = cq.dt && cq.dt > 0 ? `<div class="cq-death-timer" id="cqtimer-${cq.id}">⚠ UNTREATED — death in ${Math.floor(cq.dt)}m 00s</div>` : '';
-  const escalateHtml = cq.pivot ? `<button class="escalate-btn" onclick="escalateTo('${cq.pivot}')">⚠ Escalate → ${DB[cq.pivot] ? DB[cq.pivot].title : cq.pivot}</button>` : '';
-  const shockHtml = cq.triggerShock ? `<button class="escalate-btn" onclick="triggerShockTab()">⚠ Patient entered SHOCK — Open Shock Tab</button>` : '';
-
-  return `<div class="cq-top"><div class="cq-left">
-    ${lbl}
-    <div class="cq-text">${cq.text}</div>
-    ${penHtml}${timerHtml}
-    <div class="cq-fix">Fix: ${cq.fix}</div>
-    ${escalateHtml}${shockHtml}
-  </div>
-  <button class="fix-btn" onclick="clearConsequence(${cq.id},false)">✓ FIXED</button></div>`;
-}
-
-function renderConsequences() {
-  const box = $('consequences');
-  box.innerHTML = '';
-  if (!activeConsequences.length) { box.classList.remove('has-items'); return; }
-  box.classList.add('has-items');
-  activeConsequences.forEach(cq => {
-    const d = document.createElement('div');
-    d.className = 'consequence-item' + (cq.isOld ? ' is-old' : '');
-    d.id = 'cq-' + cq.id;
-    d.innerHTML = buildConsequenceHTML(cq);
-    box.appendChild(d);
-  });
-}
-
-function clearConsequence(id, isShock) {
-  const arr = isShock ? shockConseq : activeConsequences;
-  const cq = arr.find(c => c.id === id);
-  if (cq && cq.timerInt) clearInterval(cq.timerInt);
-
-  if (isShock) {
-    shockConseq = shockConseq.filter(c => c.id !== id);
-    renderShockConsequences();
-    if (shockDone && !shockConseq.length) $('shock-next-wrap').style.display = 'block';
+function updateTimerDisplay() {
+  const el = document.getElementById('medic-timer');
+  const m = Math.floor(state.timerRemaining / 60);
+  const s = state.timerRemaining % 60;
+  el.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+  if (state.timerRemaining <= 30) {
+    el.classList.remove('safe');
+    el.style.color = '';
   } else {
-    activeConsequences = activeConsequences.filter(c => c.id !== id);
-    renderConsequences();
-    if (stepDone && !activeConsequences.length) { $('step-ok').style.display = 'none'; showNextBtn(); }
+    el.classList.add('safe');
   }
 }
 
-function showNextBtn() {
-  $('next-wrap').style.display = 'block';
-  $('next-btn').textContent = (stepIdx + 1 >= C.steps.length) ? 'Complete Treatment →' : 'Next Step →';
+function renderMedicView() {
+  const injury = state.assignedInjuries[state.currentInjuryIdx];
+  if (!injury) return;
+  const data = INJURIES[injury.injId];
+  document.getElementById('current-injury-title').innerHTML = `
+    ${data.name} — ${BODY_PARTS[injury.part].name}
+    <span style="font-size:9px;letter-spacing:2px;color:var(--blood-bright);margin-left:10px">MARCH: ${data.march}</span>
+    ${data.category === 'advanced' ? '<span style="font-size:9px;letter-spacing:2px;color:var(--critical);margin-left:10px">ADVANCED</span>' : ''}
+  `;
+  if (data.steps.some(s => s.item === 'peace-herb')) {
+    document.getElementById('medic-peace').style.display = 'flex';
+    updatePeaceHerb();
+  }
+  renderSteps(data);
 }
 
-function updateProgress() {
-  $('prog-fill').style.width = ((stepIdx / C.steps.length) * 100) + '%';
-  $('step-count').textContent = stepIdx + ' / ' + C.steps.length;
-}
-
-function escalateTo(newKey) {
-  if (!DB[newKey]) return;
-  stopTimer();
-  activeConsequences.forEach(cq => { if (cq.timerInt) clearInterval(cq.timerInt); });
-  activeConsequences = [];
-  consecId = 0;
-  stepDone = false;
-  C = DB[newKey];
-  caseKey = newKey;
-  stepIdx = 0;
-  $('case-name').textContent = C.title;
-  $('case-march-tag').textContent = C.march;
-  $('sit-txt').textContent = C.intro;
-  setVitals(C.vitals.pulse, C.vitals.breath, C.vitals.skin);
-  if (C.timer) startTimer(C.timer.secs, C.timer.reason);
-  renderStep();
-}
-
-function triggerShockTab() {
-  if (shockActive) return;
-  shockActive = true;
-  shockC = DB['shock'];
-  shockStep = 0;
-  shockConseq = [];
-  shockDone = false;
-  shockConId = 1000;
-  $('case-subtabs').classList.add('on');
-  switchSubtab('shock', $('subtab-shock'));
-}
-
-function switchSubtab(tab, el) {
-  activeSubtab = tab;
-  document.querySelectorAll('.case-subtab').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  $('main-treatment-panel').style.display = tab === 'main' ? 'block' : 'none';
-  $('shock-treatment-panel').style.display = tab === 'shock' ? 'block' : 'none';
-  if (tab === 'shock' && shockActive) renderShockStep();
-}
-
-function renderShockStep() {
-  if (!shockC || !alive) return;
-  shockDone = false;
-  $('shock-next-wrap').style.display = 'none';
-  $('shock-step-ok').style.display = 'none';
-  shockConseq.forEach(cq => cq.isOld = true);
-  renderShockConsequences();
-  $('shock-prog-fill').style.width = ((shockStep / shockC.steps.length) * 100) + '%';
-  $('shock-step-count').textContent = shockStep + ' / ' + shockC.steps.length;
-
-  const step = shockC.steps[shockStep];
-  $('shock-sit-txt').textContent = step.sit;
-  const list = $('shock-act-list');
-  list.innerHTML = '';
-  step.actions.forEach((a, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'act-btn ' + (a.ok ? 'is-correct' : 'is-wrong');
-    btn.innerHTML = `<div class="act-icon">${a.ok ? '✓' : '·'}</div><div class="act-text">${a.t}</div>`;
-    btn.onclick = () => { if (!btn.classList.contains('used-correct')) doShockAction(btn, a); };
-    list.appendChild(btn);
-  });
-}
-
-function doShockAction(btn, action) {
-  if (!alive) return;
-
-  if (action.ok) {
-    btn.classList.add('flash-correct', 'used-correct');
-    btn.querySelector('.act-icon').textContent = '✓';
-    btn.onclick = null;
-    document.querySelectorAll('#shock-act-list .act-btn').forEach(b => {
-      if (b !== btn) { b.style.opacity = '.3'; b.style.pointerEvents = 'none'; }
-    });
-    $('shock-sit-txt').textContent = action.fb;
-    shockDone = true;
-
-    if (!shockConseq.length) {
-      $('shock-next-wrap').style.display = 'block';
-      $('shock-next-btn').textContent = (shockStep + 1 >= shockC.steps.length) ? 'Shock Resolved →' : 'Next Step →';
-    } else {
-      $('shock-step-ok').textContent = '✓ Correct — fix consequences to continue.';
-      $('shock-step-ok').style.display = 'block';
+function renderSteps(data) {
+  const container = document.getElementById('treatment-steps');
+  container.innerHTML = '';
+  data.steps.forEach((step, idx) => {
+    const div = document.createElement('div');
+    div.className = 'step-box';
+    if (idx < state.currentStepIdx) div.classList.add('done');
+    else if (idx === state.currentStepIdx) div.classList.add('current');
+    const actionLabel = step.item ? `<span style="font-size:10px;color:var(--gold);font-family:'Cinzel',serif;letter-spacing:1px"> [Apply: ${getItemName(step.item)}${step.altItem ? ' or ' + getItemName(step.altItem) : ''}]</span>` : '<span style="font-size:10px;color:var(--blue);font-family:\'Cinzel\',serif;letter-spacing:1px"> [Examine]</span>';
+    div.innerHTML = `
+      <div class="step-num">Step ${idx + 1} of ${data.steps.length}</div>
+      <div class="step-text">${step.text}${idx === state.currentStepIdx ? actionLabel : ''}</div>
+    `;
+    if (idx === state.currentStepIdx && !step.item) {
+      const examBtn = document.createElement('button');
+      examBtn.className = 'btn';
+      examBtn.style.cssText = 'margin-top:8px;font-size:8px;padding:6px 14px';
+      examBtn.textContent = 'Perform Examination';
+      examBtn.onclick = () => completeStep();
+      div.appendChild(examBtn);
     }
-  } else {
-    btn.classList.add('flash-wrong');
-    setTimeout(() => btn.classList.remove('flash-wrong'), 700);
-    if (action.pen > 0) setRes(res - action.pen);
-    if (!alive) return;
-
-    const id = shockConId++;
-    const cq = { id, text: action.cq, fix: action.fix, pen: action.pen || 0, dt: action.dt || 0, timerInt: null, secsLeft: 0, isOld: false };
-    shockConseq.push(cq);
-    renderShockConsequences();
-    startConsequenceTimer(cq);
-  }
-}
-
-function renderShockConsequences() {
-  const box = $('shock-consequences');
-  box.innerHTML = '';
-  if (!shockConseq.length) { box.classList.remove('has-items'); return; }
-  box.classList.add('has-items');
-  shockConseq.forEach(cq => {
-    const d = document.createElement('div');
-    d.className = 'consequence-item' + (cq.isOld ? ' is-old' : '');
-    d.innerHTML = buildConsequenceHTML(cq).replace(`clearConsequence(${cq.id},false)`, `clearConsequence(${cq.id},true)`);
-    box.appendChild(d);
+    container.appendChild(div);
   });
 }
 
-function advanceShock() {
-  shockStep++;
-  if (shockStep >= shockC.steps.length) {
-    shockActive = false;
-    $('case-subtabs').classList.remove('on');
-    switchSubtab('main', $('subtab-main'));
-    alert('Shock resolved. Return to main treatment.');
+function getItemName(id) {
+  const eq = EQUIPMENT.find(e => e.id === id);
+  if (eq) return eq.name;
+  const herb = HERBS.find(h => h.id === id);
+  if (herb) return herb.name;
+  return id;
+}
+
+function applyItem() {
+  if (!state.selectedItem || !state.gameActive) return;
+  const injury = state.assignedInjuries[state.currentInjuryIdx];
+  if (!injury) return;
+  const data = INJURIES[injury.injId];
+  const step = data.steps[state.currentStepIdx];
+  if (!step) return;
+  if (!step.item) {
+    showWrongItem();
     return;
   }
-  $('shock-next-wrap').style.display = 'none';
-  shockConseq = [];
-  renderShockStep();
-}
-
-function openReg(key) {
-  pendingKey = key;
-  $('reg-case-lbl').textContent = DB[key].title;
-  $('reg-patient').value = '';
-  $('reg-user').value = '';
-  $('reg-lore').value = '';
-  $('picker-wrap').style.display = 'none';
-  $('patient-reg').style.display = 'block';
-}
-
-function cancelReg() {
-  $('patient-reg').style.display = 'none';
-  $('picker-wrap').style.display = 'block';
-}
-
-function confirmCase() {
-  curPatient = $('reg-patient').value.trim() || '—';
-  curMedicUser = $('reg-user').value.trim() || '—';
-  curMedicLore = $('reg-lore').value.trim() || '—';
-  $('patient-reg').style.display = 'none';
-  startCase(pendingKey);
-}
-
-function startCase(key) {
-  caseKey = key;
-  C = DB[key];
-  stepIdx = 0;
-  res = 300;
-  alive = true;
-  activeConsequences = [];
-  consecId = 0;
-  stepDone = false;
-  peaceHerbCount = 0;
-  shockActive = false;
-  shockC = null;
-  shockStep = 0;
-  shockConseq = [];
-  shockDone = false;
-  shockConId = 1000;
-  activeSubtab = 'main';
-
-  setRes(300);
-  updatePeaceHerbUI();
-
-  $('res-wrap').style.display = 'flex';
-  $('peace-tracker').classList.add('on');
-  $('picker-wrap').style.display = 'none';
-  $('patient-reg').style.display = 'none';
-  $('main').style.display = 'block';
-  $('back-btn').style.display = 'block';
-  $('death-screen').style.display = 'none';
-  $('done-screen').style.display = 'none';
-  $('case-subtabs').classList.remove('on');
-  $('main-treatment-panel').style.display = 'block';
-  $('shock-treatment-panel').style.display = 'none';
-
-  $('ps-patient').textContent = curPatient;
-  $('ps-medic-user').textContent = curMedicUser;
-  $('ps-medic-lore').textContent = curMedicLore;
-  $('patient-strip').style.display = 'flex';
-  $('case-name').textContent = C.title;
-  $('case-march-tag').textContent = C.march;
-  $('sit-txt').textContent = C.intro;
-  setVitals(C.vitals.pulse, C.vitals.breath, C.vitals.skin);
-  if (C.timer) startTimer(C.timer.secs, C.timer.reason);
-  renderStep();
-}
-
-function renderStep() {
-  if (!alive) return;
-  stepDone = false;
-  $('next-wrap').style.display = 'none';
-  $('step-ok').style.display = 'none';
-  activeConsequences.forEach(cq => cq.isOld = true);
-  renderConsequences();
-  updateProgress();
-
-  const step = C.steps[stepIdx];
-  $('sit-txt').textContent = step.sit;
-  const list = $('act-list');
-  list.innerHTML = '';
-  step.actions.forEach(a => {
-    const btn = document.createElement('button');
-    btn.className = 'act-btn ' + (a.ok ? 'is-correct' : 'is-wrong');
-    btn.innerHTML = `<div class="act-icon">${a.ok ? '✓' : '·'}</div><div class="act-text">${a.t}</div>`;
-    btn.onclick = () => { if (!btn.classList.contains('used-correct')) doAction(btn, a); };
-    list.appendChild(btn);
-  });
-}
-
-function doAction(btn, action) {
-  if (!alive) return;
-
-  if (action.ok) {
-    btn.classList.add('flash-correct', 'used-correct');
-    btn.querySelector('.act-icon').textContent = '✓';
-    btn.onclick = null;
-    document.querySelectorAll('#act-list .act-btn').forEach(b => {
-      if (b !== btn) { b.style.opacity = '.3'; b.style.pointerEvents = 'none'; }
-    });
-    $('sit-txt').textContent = action.fb;
-    stepDone = true;
-
-    if (!activeConsequences.length) {
-      showNextBtn();
-    } else {
-      $('step-ok').textContent = '✓ Correct action — fix active consequences above to continue.';
-      $('step-ok').style.display = 'block';
+  const isCorrect = state.selectedItem === step.item || (step.altItem && state.selectedItem === step.altItem);
+  if (isCorrect) {
+    if (state.selectedItem === 'peace-herb') {
+      state.peaceHerbUsed++;
+      if (state.peaceHerbUsed >= 3) {
+        endGame(false, 'Third dose of Peace Herb given — patient died');
+        return;
+      }
+      updatePeaceHerb();
     }
+    const el = document.getElementById('inv-' + state.selectedItem);
+    if (el) {
+      el.classList.remove('selected');
+      el.classList.add('used');
+      setTimeout(() => el.classList.remove('used'), 800);
+    }
+    state.correctSteps++;
+    completeStep();
   } else {
-    btn.classList.add('flash-wrong');
-    setTimeout(() => btn.classList.remove('flash-wrong'), 700);
-    if (action.pen > 0) setRes(res - action.pen);
-    if (!alive) return;
+    showWrongItem();
+    state.wrongAttempts++;
+    state.patientRES -= 25;
+    addConsequence(`Wrong item applied: ${getItemName(state.selectedItem)}. Needed: ${getItemName(step.item)}`, -25);
+    if (state.patientRES <= 0) {
+      endGame(false, 'Too many mistakes — patient died from complications');
+    }
+    updateVitals();
+  }
+  state.selectedItem = null;
+  document.querySelectorAll('.inv-item').forEach(el => el.classList.remove('selected'));
+  document.getElementById('selected-item-info').innerHTML = '<span style="font-style:italic">Nothing selected</span>';
+  document.getElementById('apply-btn').disabled = true;
+}
 
-    const id = consecId++;
-    const cq = {
-      id, text: action.cq, fix: action.fix,
-      pen: action.pen || 0, dt: action.dt || 0,
-      pivot: action.pivot || null, triggerShock: action.triggerShock || false,
-      timerInt: null, secsLeft: 0, isOld: false
-    };
-    activeConsequences.push(cq);
-    renderConsequences();
-    startConsequenceTimer(cq);
+function showWrongItem() {
+  const el = state.selectedItem ? document.getElementById('inv-' + state.selectedItem) : null;
+  if (el) {
+    el.classList.add('wrong');
+    setTimeout(() => el.classList.remove('wrong'), 500);
   }
 }
 
-function advance() {
-  stepIdx++;
-  if (stepIdx >= C.steps.length) { completeCase(); return; }
-  $('next-wrap').style.display = 'none';
-  activeConsequences = [];
-  renderStep();
-}
-
-function completeCase() {
-  stopTimer();
-  activeConsequences.forEach(cq => { if (cq.timerInt) clearInterval(cq.timerInt); });
-  shockConseq.forEach(cq => { if (cq.timerInt) clearInterval(cq.timerInt); });
-  $('peace-tracker').classList.remove('on');
-  $('patient-strip').style.display = 'none';
-  $('main').style.display = 'none';
-  $('done-screen').style.display = 'block';
-  $('done-score').textContent = res + ' / 300';
-
-  const grade = res >= 270 ? 'EXEMPLARY — No critical errors'
-              : res >= 200 ? 'COMPETENT — Minor errors made'
-              : res >= 100 ? 'MARGINAL — Significant errors'
-              :              'FAILING — Patient barely survived';
-  $('done-grade').textContent = grade;
-}
-
-function exitMid() {
-  if (!C) return;
-  stopTimer();
-  activeConsequences.forEach(cq => { if (cq.timerInt) clearInterval(cq.timerInt); });
-  shockConseq.forEach(cq => { if (cq.timerInt) clearInterval(cq.timerInt); });
-  addLogEntry('exited');
-  $('peace-tracker').classList.remove('on');
-  $('patient-strip').style.display = 'none';
-  $('main').style.display = 'none';
-  $('res-wrap').style.display = 'none';
-  $('picker-wrap').style.display = 'block';
-  $('back-btn').style.display = 'none';
-}
-
-function saveLog(outcome) { addLogEntry(outcome); }
-
-function addLogEntry(outcome) {
-  if (!C) return;
-  const now = new Date();
-  patientLog.unshift({
-    id: Date.now(),
-    date: now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: '2-digit' }) + ' ' + now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
-    patient: curPatient, medicUser: curMedicUser, medicLore: curMedicLore,
-    caseTitle: C.title, caseKey,
-    res, outcome, critical: C.critical || false
-  });
-  persistLog();
-  renderLog();
-}
-
-function goBack() {
-  stopTimer();
-  alive = true;
-  C = null;
-  caseKey = '';
-  stepIdx = 0;
-  res = 300;
-  activeConsequences.forEach(cq => { if (cq.timerInt) clearInterval(cq.timerInt); });
-  shockConseq.forEach(cq => { if (cq.timerInt) clearInterval(cq.timerInt); });
-  activeConsequences = [];
-  consecId = 0;
-  stepDone = false;
-  peaceHerbCount = 0;
-  shockActive = false;
-  setRes(300);
-  $('res-wrap').style.display = 'none';
-  $('peace-tracker').classList.remove('on');
-  $('patient-strip').style.display = 'none';
-  $('main').style.display = 'none';
-  $('picker-wrap').style.display = 'block';
-  $('back-btn').style.display = 'none';
-  $('death-screen').style.display = 'none';
-  $('done-screen').style.display = 'none';
-  $('patient-reg').style.display = 'none';
-  $('case-subtabs').classList.remove('on');
-}
-
-function showTab(tab, el) {
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  $('cases-view').style.display = tab === 'cases' ? 'block' : 'none';
-  $('log-view').style.display = tab === 'log' ? 'block' : 'none';
-  if (tab === 'log') renderLog();
-}
-
-function renderLog() {
-  const search = ($('log-search').value || '').toLowerCase();
-  const filter = $('log-filter').value;
-
-  let filtered = patientLog.filter(e => {
-    const matchesSearch = !search || [e.caseTitle, e.patient, e.medicUser, e.medicLore].some(v => (v || '').toLowerCase().includes(search));
-    return matchesSearch && (!filter || e.outcome === filter);
-  });
-
-  $('ls-total').textContent = patientLog.length;
-  $('ls-rec').textContent = patientLog.filter(e => e.outcome === 'recovered').length;
-  $('ls-dead').textContent = patientLog.filter(e => e.outcome === 'deceased').length;
-  $('ls-exit').textContent = patientLog.filter(e => e.outcome === 'exited').length;
-
-  const completed = patientLog.filter(e => e.outcome !== 'exited');
-  $('ls-avg').textContent = completed.length ? Math.round(completed.reduce((a, e) => a + e.res, 0) / completed.length) : '—';
-
-  if (!filtered.length) {
-    $('log-empty').style.display = 'block';
-    $('log-tbl').style.display = 'none';
-    return;
+function completeStep() {
+  const injury = state.assignedInjuries[state.currentInjuryIdx];
+  const data = INJURIES[injury.injId];
+  state.currentStepIdx++;
+  state.totalSteps++;
+  if (state.currentStepIdx >= data.steps.length) {
+    injury.treated = true;
+    state.completedInjuries.push(injury);
+    document.querySelectorAll(`#medic-body .body-part[data-part="${injury.part}"]`).forEach(el => {
+      el.classList.remove('injured');
+      el.classList.add('healed');
+    });
+    saveMedicProgress(injury);
+    const nextIdx = state.assignedInjuries.findIndex(i => !i.treated);
+    if (nextIdx < 0) {
+      endGame(true, 'All injuries treated successfully!');
+      return;
+    }
+    state.currentInjuryIdx = nextIdx;
+    state.currentStepIdx = 0;
   }
-
-  $('log-empty').style.display = 'none';
-  $('log-tbl').style.display = 'table';
-  const tbody = $('log-tbody');
-  tbody.innerHTML = '';
-
-  filtered.forEach((e, i) => {
-    const outcomeClass = e.outcome === 'recovered' ? 'log-ok' : e.outcome === 'deceased' ? 'log-dead' : 'log-exit';
-    const outcomeLabel = e.outcome === 'recovered' ? 'RECOVERED' : e.outcome === 'deceased' ? 'DECEASED' : 'EXITED MID';
-    const resColor = e.outcome === 'exited' ? 'var(--warn)' : e.res >= 200 ? 'var(--green-bright)' : e.res >= 100 ? 'var(--gold)' : 'var(--critical)';
-    const critBadge = e.critical ? '<span class="log-crit">CRIT</span>' : '';
-
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td style="color:var(--text-muted);font-family:'Cinzel',serif;font-size:10px">${i + 1}</td>
-      <td style="color:var(--text-muted);font-size:12px;white-space:nowrap">${e.date}</td>
-      <td><strong style="color:var(--text)">${e.patient || '—'}</strong></td>
-      <td style="color:var(--text-dim)">${e.medicUser || '—'}</td>
-      <td style="color:var(--text-dim);font-style:italic">${e.medicLore || '—'}</td>
-      <td>${e.caseTitle}${critBadge}</td>
-      <td style="font-family:'Cinzel',serif;font-size:12px;color:${resColor}">${e.outcome === 'exited' ? '—' : e.res + '/300'}</td>
-      <td class="${outcomeClass}">${outcomeLabel}</td>
-      <td><button class="log-del" onclick="deleteEntry(${e.id})" title="Delete">✕</button></td>`;
-    tbody.appendChild(tr);
-  });
+  renderMedicView();
 }
 
-function deleteEntry(id) {
-  patientLog = patientLog.filter(e => e.id !== id);
-  persistLog();
-  renderLog();
-}
-
-function clearAllLog() {
-  if (!patientLog.length) return;
-  if (confirm('Delete all log entries? This cannot be undone.')) {
-    patientLog = [];
-    persistLog();
-    renderLog();
+function updatePeaceHerb() {
+  for (let i = 1; i <= 3; i++) {
+    const dot = document.getElementById('ph' + i);
+    if (!dot) continue;
+    dot.className = 'ph-dot';
+    if (i <= state.peaceHerbUsed) dot.classList.add('used');
+    if (i === 3 && state.peaceHerbUsed >= 2) dot.classList.add('fatal');
   }
 }
 
-persistLog();
+function addConsequence(text, penalty) {
+  state.consequences.push({text, penalty});
+  const area = document.getElementById('consequences-area');
+  const div = document.createElement('div');
+  div.className = 'consequence';
+  div.innerHTML = `${text}<span class="pen">${penalty} RES</span>`;
+  area.appendChild(div);
+}
+
+function updateVitals() {
+  const ratio = state.patientRES / 300;
+  const pulseDot = document.getElementById('v-pulse-dot');
+  const pulseText = document.getElementById('v-pulse');
+  const breathDot = document.getElementById('v-breath-dot');
+  const breathText = document.getElementById('v-breath');
+  const skinDot = document.getElementById('v-skin-dot');
+  const skinText = document.getElementById('v-skin');
+  if (ratio > 0.6) {
+    pulseDot.className = 'vdot ok'; pulseText.textContent = 'Pulse: Stable';
+    breathDot.className = 'vdot ok'; breathText.textContent = 'Breath: Normal';
+    skinDot.className = 'vdot ok'; skinText.textContent = 'Skin: Warm';
+  } else if (ratio > 0.3) {
+    pulseDot.className = 'vdot bad'; pulseText.textContent = 'Pulse: Fast/Weak';
+    breathDot.className = 'vdot bad'; breathText.textContent = 'Breath: Shallow';
+    skinDot.className = 'vdot bad'; skinText.textContent = 'Skin: Pale';
+  } else {
+    pulseDot.className = 'vdot crit'; pulseText.textContent = 'Pulse: Critical';
+    breathDot.className = 'vdot crit'; breathText.textContent = 'Breath: Gasping';
+    skinDot.className = 'vdot crit'; skinText.textContent = 'Skin: Cold/Blue';
+  }
+}
+
+function saveMedicProgress(injury) {
+  const data = INJURIES[injury.injId];
+  const progress = {
+    treated: state.completedInjuries.length,
+    total: state.assignedInjuries.length,
+    lastInjury: data.name,
+    damage: data.damage,
+    res: state.patientRES
+  };
+  localStorage.setItem('dss-medic-progress', JSON.stringify(progress));
+}
+
+function pollMedicProgress() {
+  const pollInterval = setInterval(() => {
+    const data = localStorage.getItem('dss-medic-progress');
+    if (data) {
+      const progress = JSON.parse(data);
+      const logEl = document.getElementById('gm-log');
+      logEl.innerHTML = `
+        <div style="font-size:13px;color:var(--text);margin-bottom:4px">Treated: ${progress.treated}/${progress.total} injuries</div>
+        <div style="font-size:13px;color:var(--text-dim)">Last: ${progress.lastInjury}</div>
+        <div style="font-size:13px;color:var(--text-dim)">Patient RES: ${progress.res}/300</div>
+      `;
+      if (progress.damage) {
+        state.gmHP = Math.max(0, state.gmHP - progress.damage);
+        document.getElementById('gm-hp-text').textContent = state.gmHP + ' / ' + state.gmMaxHP;
+        document.getElementById('gm-hp-fill').style.width = (state.gmHP / state.gmMaxHP * 100) + '%';
+        localStorage.removeItem('dss-medic-progress');
+      }
+    }
+    const result = localStorage.getItem('dss-game-result');
+    if (result) {
+      clearInterval(pollInterval);
+      const res = JSON.parse(result);
+      const logEl = document.getElementById('gm-log');
+      if (res.success) {
+        state.gmHP = Math.max(0, state.gmHP - 50);
+        document.getElementById('gm-hp-text').textContent = state.gmHP + ' / ' + state.gmMaxHP;
+        document.getElementById('gm-hp-fill').style.width = (state.gmHP / state.gmMaxHP * 100) + '%';
+        logEl.innerHTML += `<div style="font-size:15px;color:var(--green-bright);margin-top:12px;font-weight:600">Operation SUCCESS — Patient survived. You take damage!</div>`;
+      } else {
+        logEl.innerHTML += `<div style="font-size:15px;color:var(--critical);margin-top:12px;font-weight:600">Operation FAILED — ${res.reason}. You win!</div>`;
+      }
+      logEl.innerHTML += `<div style="margin-top:12px"><button class="btn" onclick="resetGame()">New Game</button></div>`;
+    }
+  }, 1000);
+}
+
+function endGame(success, reason) {
+  if (!state.gameActive) return;
+  state.gameActive = false;
+  if (state.timerInterval) clearInterval(state.timerInterval);
+  localStorage.setItem('dss-game-result', JSON.stringify({success, reason}));
+  saveToLog(success, reason);
+  document.getElementById('medic-screen').classList.remove('active');
+  document.getElementById('result-screen').classList.add('active');
+  const box = document.getElementById('result-box');
+  const timeUsed = state.timerSeconds - state.timerRemaining;
+  const accuracy = state.totalSteps > 0 ? Math.round(state.correctSteps / state.totalSteps * 100) : 0;
+  box.innerHTML = `
+    <div class="result-icon">${success ? '&#9764;' : '&#9760;'}</div>
+    <div class="result-title ${success ? 'success' : 'failure'}">${success ? 'Patient Saved' : 'Patient Lost'}</div>
+    <div style="font-size:16px;color:var(--text-dim);margin-bottom:20px;font-style:italic">${reason}</div>
+    <div class="result-stats">
+      <div class="stat-box"><div class="stat-val">${state.completedInjuries.length}/${state.assignedInjuries.length}</div><div class="stat-lbl">Injuries Treated</div></div>
+      <div class="stat-box"><div class="stat-val">${state.patientRES}</div><div class="stat-lbl">Patient RES</div></div>
+      <div class="stat-box"><div class="stat-val">${accuracy}%</div><div class="stat-lbl">Accuracy</div></div>
+      <div class="stat-box"><div class="stat-val">${timeUsed}s</div><div class="stat-lbl">Time Used</div></div>
+      <div class="stat-box"><div class="stat-val">${state.wrongAttempts}</div><div class="stat-lbl">Wrong Items</div></div>
+    </div>
+    <div style="margin-top:24px">
+      <button class="btn" onclick="resetGame()">New Game</button>
+    </div>
+  `;
+}
+
+function saveToLog(success, reason) {
+  const logs = JSON.parse(localStorage.getItem('dss-med-logs') || '[]');
+  logs.push({
+    date: new Date().toISOString(),
+    injuries: state.assignedInjuries.map(i => INJURIES[i.injId].name),
+    success,
+    reason,
+    res: state.patientRES,
+    time: state.timerSeconds - state.timerRemaining,
+    accuracy: state.totalSteps > 0 ? Math.round(state.correctSteps / state.totalSteps * 100) : 0
+  });
+  localStorage.setItem('dss-med-logs', JSON.stringify(logs));
+}
+
+function resetGame() {
+  localStorage.removeItem('dss-medical-game');
+  localStorage.removeItem('dss-medic-progress');
+  localStorage.removeItem('dss-game-result');
+  backToLobby();
+}
 </script>
 </body>
 </html>
