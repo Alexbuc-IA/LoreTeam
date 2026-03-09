@@ -215,12 +215,52 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
 @keyframes shockPulse{0%,100%{border-color:var(--critical);background:rgba(192,57,43,0.1)}50%{border-color:#ff6666;background:rgba(192,57,43,0.2)}}
 .shock-text{font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;color:var(--critical);text-transform:uppercase}
 
+/* Apply Progress Bar */
+.apply-bar-container{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2000;background:rgba(0,0,0,0.92);border:2px solid var(--gold);border-radius:10px;padding:24px 40px;min-width:320px;text-align:center;box-shadow:0 0 40px rgba(0,0,0,0.8)}
+.apply-bar-title{font-family:'Cinzel',serif;font-size:12px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:6px}
+.apply-bar-item{font-size:16px;color:var(--text);margin-bottom:14px}
+.apply-bar-track{height:8px;background:#1a1a1d;border-radius:4px;overflow:hidden;border:1px solid var(--border)}
+.apply-bar-fill{height:100%;width:0;border-radius:4px;background:linear-gradient(90deg,var(--green),var(--green-bright));transition:width linear}
+.apply-bar-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1999}
+
+/* Treatment Categories Grid */
+.treatment-categories{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px}
+.cat-btn{background:var(--raised);border:1px solid var(--border);color:var(--text-dim);font-family:'Cinzel',serif;font-size:10px;letter-spacing:1.5px;padding:12px 8px;cursor:pointer;transition:all .2s;text-align:center;border-radius:4px;text-transform:uppercase}
+.cat-btn:hover{border-color:var(--gold-dim);color:var(--gold);background:var(--gold-faint)}
+.cat-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,0.12);box-shadow:0 0 8px rgba(201,168,76,0.15)}
+.cat-btn .cat-icon{font-size:18px;display:block;margin-bottom:4px}
+
+/* Patient Status Bar (game-like) */
+.game-status-bar{display:flex;align-items:center;gap:12px;background:var(--fog);border:1px solid var(--border);border-radius:6px;padding:10px 16px;margin-bottom:10px}
+.status-label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--text-muted);text-transform:uppercase;white-space:nowrap}
+.status-value{font-size:13px;color:var(--text)}
+.health-bar-mini{flex:1;height:6px;background:#1a0000;border-radius:3px;overflow:hidden}
+.health-bar-mini .fill-red{height:100%;background:linear-gradient(90deg,#7a0000,#c0392b);border-radius:3px;transition:width .4s}
+.health-bar-mini .fill-green{height:100%;background:linear-gradient(90deg,#2d7a2d,#5cb85c);border-radius:3px;transition:width .4s}
+
+/* Lore Team Live Feed */
+.lt-live-feed{max-height:400px;overflow-y:auto}
+.lt-feed-entry{padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;color:var(--text)}
+.lt-feed-entry:last-child{border-bottom:none}
+.lt-feed-entry .feed-time{font-family:'Cinzel',serif;font-size:8px;color:var(--text-muted);letter-spacing:1px;margin-right:6px}
+.lt-feed-entry .feed-action{color:var(--text)}
+.lt-feed-entry .feed-item{color:var(--gold);font-weight:600}
+.lt-feed-entry .feed-exam{color:var(--blue);font-style:italic}
+.lt-feed-entry .feed-error{color:var(--critical)}
+.lt-feed-entry .feed-success{color:var(--green-bright)}
+.lt-current-step{background:rgba(201,168,76,0.08);border:1px solid var(--border-gold);border-radius:6px;padding:10px 14px;margin-bottom:8px}
+.lt-current-step .step-label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:4px}
+.lt-current-step .step-injury{font-size:14px;color:var(--text);font-weight:600}
+.lt-current-step .step-progress{font-size:12px;color:var(--text-dim);margin-top:4px}
+.lt-current-step .step-detail{font-size:12px;color:var(--gold);margin-top:6px;font-style:italic}
+
 /* Responsive */
 @media(max-width:900px){
   .gm-layout{grid-template-columns:1fr}
   .kits-container{grid-template-columns:1fr}
   .medic-top-bar{grid-template-columns:1fr}
   .role-cards{flex-direction:column;align-items:center}
+  .treatment-categories{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -239,6 +279,14 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
 
   <!-- ACTION TOAST -->
   <div class="action-toast" id="action-toast"></div>
+
+  <!-- APPLY PROGRESS BAR OVERLAY -->
+  <div id="apply-overlay" class="apply-bar-overlay" style="display:none"></div>
+  <div id="apply-bar" class="apply-bar-container" style="display:none">
+    <div class="apply-bar-title">Applying</div>
+    <div class="apply-bar-item" id="apply-bar-item"></div>
+    <div class="apply-bar-track"><div class="apply-bar-fill" id="apply-bar-fill"></div></div>
+  </div>
 
   <!-- ROLE SELECT -->
   <div id="role-select" class="screen active">
@@ -327,6 +375,19 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
             </svg>
           </div>
         </div>
+        <!-- Live Medic Monitoring -->
+        <div class="panel">
+          <div class="panel-title">Medic Live Feed</div>
+          <div class="lt-current-step" id="lt-current-step" style="display:none">
+            <div class="step-label">Currently Treating</div>
+            <div class="step-injury" id="lt-step-injury">—</div>
+            <div class="step-progress" id="lt-step-progress">Step 0/0</div>
+            <div class="step-detail" id="lt-step-detail"></div>
+          </div>
+          <div class="lt-live-feed" id="lt-live-feed">
+            <div style="font-size:13px;color:var(--text-muted);font-style:italic">Waiting for medic actions...</div>
+          </div>
+        </div>
         <div class="panel">
           <div class="panel-title">Operation Log</div>
           <div id="gm-log">
@@ -371,19 +432,34 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
   <div id="medic-screen" class="screen">
     <div id="medic-timer" class="safe">3:00</div>
 
-    <!-- Patient Status - Descriptive Only -->
-    <div class="patient-status" id="patient-status">
-      <div class="patient-status-header">
-        <div>
-          <span style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;color:var(--gold);text-transform:uppercase">Patient: </span>
-          <span style="font-family:'Cinzel',serif;font-size:12px;color:var(--text)" id="patient-name-display">Unknown</span>
-        </div>
-        <div class="patient-condition condition-stable" id="patient-condition">Stable</div>
+    <!-- Game-like Status Bar -->
+    <div class="game-status-bar">
+      <div>
+        <span style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;color:var(--gold);text-transform:uppercase">Patient: </span>
+        <span style="font-size:13px;color:var(--text)" id="patient-name-display">Unknown</span>
       </div>
+      <div style="display:flex;align-items:center;gap:6px;flex:1">
+        <span style="font-size:14px">&#128167;</span>
+        <div class="health-bar-mini"><div class="fill-red" id="health-fill-red" style="width:100%"></div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;flex:1">
+        <span style="font-size:14px">+</span>
+        <div class="health-bar-mini"><div class="fill-green" id="health-fill-green" style="width:100%"></div></div>
+      </div>
+      <div style="text-align:right;min-width:120px">
+        <div id="status-text-mini" style="font-size:11px;color:var(--text-dim)">Healthy</div>
+        <div id="status-text-conscious" style="font-size:11px;color:var(--text-dim)">Conscious</div>
+        <div id="status-text-pain" style="font-size:11px;color:var(--text-dim)">No pain</div>
+      </div>
+      <div class="patient-condition condition-stable" id="patient-condition" style="margin-left:8px">Stable</div>
+    </div>
+
+    <!-- Patient Status - Descriptive -->
+    <div class="patient-status" id="patient-status">
       <div class="patient-desc" id="patient-desc">The patient appears stable. Breathing is even, skin is warm and has color.</div>
     </div>
 
-    <!-- Vitals - hidden until checked -->
+    <!-- Vitals - hidden until checked (10 seconds) -->
     <button class="check-vitals-btn" id="check-vitals-btn" onclick="checkVitals()">&#9829; Check Vitals</button>
     <div class="vitals-bar" id="medic-vitals" style="display:none">
       <div class="vital"><span class="vdot ok" id="v-pulse-dot"></span><span class="vtxt" id="v-pulse">Pulse: ---</span></div>
@@ -431,8 +507,22 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
         <div id="body-part-label" style="font-family:'Cinzel',serif;font-size:12px;color:var(--text-dim);margin-top:4px"></div>
       </div>
 
-      <!-- Treatment Panel (center) - NO step descriptions -->
+      <!-- Treatment Panel (center) -->
       <div style="min-width:340px">
+        <!-- Treatment Categories (like screenshot) -->
+        <div class="panel">
+          <div class="panel-title">Procedure Categories</div>
+          <div class="treatment-categories">
+            <button class="cat-btn" onclick="showCategory('airway')"><span class="cat-icon">&#127739;</span>Airway</button>
+            <button class="cat-btn" onclick="showCategory('breathing')"><span class="cat-icon">&#127744;</span>Breathing</button>
+            <button class="cat-btn" onclick="showCategory('circulation')"><span class="cat-icon">&#10084;</span>Circulation</button>
+            <button class="cat-btn" onclick="showCategory('medicine')"><span class="cat-icon">&#128138;</span>Medicine and Splint</button>
+            <button class="cat-btn" onclick="showCategory('resuscitation')"><span class="cat-icon">&#9889;</span>Resuscitation</button>
+            <button class="cat-btn" onclick="showCategory('surgery')"><span class="cat-icon">&#128298;</span>Surgery</button>
+          </div>
+          <div id="category-info" style="font-size:12px;color:var(--text-dim);font-style:italic;padding:4px 0"></div>
+        </div>
+
         <div class="panel" id="current-injury-panel">
           <div class="panel-title" id="current-injury-title">Inspect a body part to begin</div>
           <div id="treatment-area">
@@ -1169,11 +1259,14 @@ function startMedicGame() {
 
   document.getElementById('patient-name-display').textContent = state.patientName;
 
+  liveFeedEntries = [];
   initMedicBody();
   initInventory();
   startTimer();
   updatePatientStatus();
+  updateGameStatusBars();
   startArterialCascade();
+  addLiveFeedEntry('info', 'Operation started — Timer: ' + state.timerSeconds + 's');
 
   // DO NOT mark injured parts — medic must inspect blind
 }
@@ -1309,6 +1402,7 @@ function completeExamination(injIdx) {
     '<button class="btn success" style="margin-top:12px" onclick="beginTreatment(' + injIdx + ')">Begin Treatment</button>' +
     '</div>';
 
+  addLiveFeedEntry('success', 'DISCOVERED: ' + displayName + ' on ' + BODY_PARTS[injury.part].name);
   showToast('Injury discovered on ' + BODY_PARTS[injury.part].name, 'info');
   updatePatientStatus();
 }
@@ -1372,6 +1466,8 @@ function clickItem(id) {
     state.wrongAttempts++;
     state.patientRES -= 15;
     addConsequence('The patient reacts badly to the treatment.');
+    addLiveFeedEntry('error', 'WRONG: Used ' + getItemName(id) + ' when examination was needed');
+    updateGameStatusBars();
     if (state.patientRES <= 0) {
       endGame(false, 'The patient could not survive the treatment errors');
     }
@@ -1397,14 +1493,29 @@ function clickItem(id) {
       setTimeout(function() { el.classList.remove('used'); }, 800);
     }
     state.correctSteps++;
-    showToast('Good.', 'success');
-    completeStep();
+    var itemName = getItemName(id);
+    addLiveFeedEntry('apply', 'Applied ' + itemName);
+
+    // Update current step info for Lore Team
+    var steps = getStepsForInjury(injury);
+    var data = INJURIES[injury.injId];
+    updateLiveStepInfo(data.name, state.currentStepIdx, steps.length, step.text);
+
+    // Show apply progress bar then complete
+    showApplyBar(itemName, 1500, function() {
+      showToast('Good.', 'success');
+      completeStep();
+      updateGameStatusBars();
+    });
+    return; // completeStep called in callback
   } else {
     showWrongItem(id);
     state.wrongAttempts++;
     state.patientRES -= 25;
     addConsequence('Wrong treatment applied. The patient\'s condition worsens.');
+    addLiveFeedEntry('error', 'WRONG: Applied ' + getItemName(id) + ' incorrectly');
     showToast('The patient reacts badly.', 'error');
+    updateGameStatusBars();
     if (state.patientRES <= 0) {
       endGame(false, 'The patient could not survive the treatment errors');
     }
@@ -1435,6 +1546,8 @@ function performExamination() {
     state.wrongAttempts++;
     state.patientRES -= 15;
     addConsequence('Examination performed when treatment was needed.');
+    addLiveFeedEntry('error', 'WRONG: Examined when an item was needed');
+    updateGameStatusBars();
     if (state.patientRES <= 0) {
       endGame(false, 'The patient could not survive the treatment errors');
     }
@@ -1445,8 +1558,15 @@ function performExamination() {
 
   // Correct — this step is an examination step
   state.correctSteps++;
+  addLiveFeedEntry('exam', 'Examined: ' + step.text);
+
+  var steps2 = getStepsForInjury(injury);
+  var data2 = INJURIES[injury.injId];
+  updateLiveStepInfo(data2.name, state.currentStepIdx, steps2.length, step.text);
+
   showToast('Good.', 'success');
   completeStep();
+  updateGameStatusBars();
 }
 
 function getStepsForInjury(injury) {
@@ -1542,6 +1662,7 @@ function completeStep() {
     saveMedicProgress(injury);
 
     var data = INJURIES[injury.injId];
+    addLiveFeedEntry('success', 'TREATED: ' + data.name + ' on ' + BODY_PARTS[injury.part].name);
     showToast('Treatment complete.', 'success');
 
     // Check if this was an arterial injury — stop cascade for it
@@ -1687,6 +1808,7 @@ function updatePatientStatus() {
   if (vitalsBar && vitalsBar.style.display !== 'none') {
     updateVitals();
   }
+  updateGameStatusBars();
 }
 
 function checkVitals() {
@@ -1694,12 +1816,13 @@ function checkVitals() {
   var vitalsBar = document.getElementById('medic-vitals');
   vitalsBar.style.display = 'flex';
   updateVitals();
+  addLiveFeedEntry('exam', 'Checked patient vitals');
   showToast('Checking vitals...', 'info');
-  // Hide vitals after 8 seconds so medic must check again
+  // Hide vitals after 10 seconds so medic must check again
   if (state.vitalsTimeout) clearTimeout(state.vitalsTimeout);
   state.vitalsTimeout = setTimeout(function() {
     vitalsBar.style.display = 'none';
-  }, 8000);
+  }, 10000);
 }
 
 function updateVitals() {
@@ -1880,9 +2003,212 @@ function resetGame() {
     localStorage.removeItem(sessionKey('progress'));
     localStorage.removeItem(sessionKey('result'));
     localStorage.removeItem(sessionKey('medic-info'));
+    localStorage.removeItem(sessionKey('livefeed'));
+    localStorage.removeItem(sessionKey('currentstep'));
   }
   backToLobby();
 }
+
+// ===================== APPLY PROGRESS BAR =====================
+function showApplyBar(itemName, duration, callback) {
+  var overlay = document.getElementById('apply-overlay');
+  var bar = document.getElementById('apply-bar');
+  var fill = document.getElementById('apply-bar-fill');
+  var itemLabel = document.getElementById('apply-bar-item');
+
+  itemLabel.textContent = itemName;
+  fill.style.transition = 'none';
+  fill.style.width = '0%';
+  overlay.style.display = 'block';
+  bar.style.display = 'block';
+
+  // Force reflow
+  fill.offsetWidth;
+
+  fill.style.transition = 'width ' + (duration / 1000) + 's linear';
+  fill.style.width = '100%';
+
+  setTimeout(function() {
+    overlay.style.display = 'none';
+    bar.style.display = 'none';
+    fill.style.transition = 'none';
+    fill.style.width = '0%';
+    if (callback) callback();
+  }, duration);
+}
+
+// ===================== TREATMENT CATEGORIES =====================
+var CATEGORIES = {
+  airway: {
+    name: 'Airway',
+    desc: 'Manage the patient\'s airway. Insert endotracheal tube if needed. Ensure the patient can breathe.',
+    actions: ['Check airway is clear', 'Tilt head / lift chin', 'Insert endotracheal tube if blocked', 'Confirm air passage']
+  },
+  breathing: {
+    name: 'Breathing',
+    desc: 'Assess and support breathing. Attach O2 support, check chest rise, listen to both lungs.',
+    actions: ['Listen to both lungs', 'Watch chest rise', 'Attach O2 support if available', 'Monitor breathing rate']
+  },
+  circulation: {
+    name: 'Circulation',
+    desc: 'Check blood flow and pulse. Apply tourniquet for arterial bleeding. Manage shock.',
+    actions: ['Check pulse strength and rate', 'Apply tourniquet if arterial bleed', 'Check skin color and temperature', 'Monitor for shock signs']
+  },
+  medicine: {
+    name: 'Medicine and Splint',
+    desc: 'Apply medicines, herbs, teas, splints, and bandages. Manage pain and stabilize fractures.',
+    actions: ['Give pain relief (Mugwort/Puchuve)', 'Apply splint to fracture', 'Sling arm injuries', 'Apply Loquat Leaf for infection']
+  },
+  resuscitation: {
+    name: 'Resuscitation',
+    desc: 'Emergency revival. Chest compressions, then defibrillator if needed. Last resort measures.',
+    actions: ['Begin chest compressions', 'Check for pulse return', 'Use defibrillator if no pulse', 'Continue CPR cycle']
+  },
+  surgery: {
+    name: 'Surgery',
+    desc: 'Surgical procedures: scalpel incision, suction, suture, catheter insertion. Requires Peace Herb sedation.',
+    actions: ['Sedate with Peace Herb', 'Scalpel incision', 'Suction and clean', 'Suture with 5-0 Prolene', 'Catheter + balloon insertion', 'Final closure']
+  }
+};
+
+function showCategory(cat) {
+  var info = CATEGORIES[cat];
+  if (!info) return;
+
+  // Highlight active category button
+  document.querySelectorAll('.cat-btn').forEach(function(btn) { btn.classList.remove('active'); });
+  event.currentTarget.classList.add('active');
+
+  var html = '<div style="font-size:13px;color:var(--text);margin-bottom:6px"><strong>' + info.name + '</strong></div>' +
+    '<div style="font-size:12px;color:var(--text-dim);margin-bottom:8px">' + info.desc + '</div>' +
+    '<div style="font-size:11px;color:var(--text-muted)">';
+  info.actions.forEach(function(a, i) {
+    html += '<div style="padding:2px 0">' + (i + 1) + '. ' + a + '</div>';
+  });
+  html += '</div>';
+  document.getElementById('category-info').innerHTML = html;
+}
+
+// ===================== LIVE FEED SYSTEM =====================
+var liveFeedEntries = [];
+
+function addLiveFeedEntry(type, text) {
+  var now = new Date();
+  var time = now.getMinutes().toString().padStart(2, '0') + ':' + now.getSeconds().toString().padStart(2, '0');
+  var entry = {type: type, text: text, time: time};
+  liveFeedEntries.push(entry);
+
+  // Save to localStorage for Lore Team to see
+  if (state.gameCode) {
+    localStorage.setItem(sessionKey('livefeed'), JSON.stringify(liveFeedEntries));
+  }
+}
+
+function updateLiveStepInfo(injuryName, stepIdx, totalSteps, stepText) {
+  if (state.gameCode) {
+    localStorage.setItem(sessionKey('currentstep'), JSON.stringify({
+      injury: injuryName,
+      step: stepIdx,
+      total: totalSteps,
+      detail: stepText,
+      timestamp: new Date().toISOString()
+    }));
+  }
+}
+
+function renderLTLiveFeed(entries) {
+  var feed = document.getElementById('lt-live-feed');
+  if (!feed) return;
+  if (!entries || entries.length === 0) {
+    feed.innerHTML = '<div style="font-size:13px;color:var(--text-muted);font-style:italic">Waiting for medic actions...</div>';
+    return;
+  }
+  var html = '';
+  // Show last 30 entries
+  var recent = entries.slice(-30);
+  recent.forEach(function(e) {
+    var cls = 'feed-action';
+    if (e.type === 'apply') cls = 'feed-item';
+    else if (e.type === 'exam') cls = 'feed-exam';
+    else if (e.type === 'error') cls = 'feed-error';
+    else if (e.type === 'success') cls = 'feed-success';
+    html += '<div class="lt-feed-entry"><span class="feed-time">' + e.time + '</span><span class="' + cls + '">' + e.text + '</span></div>';
+  });
+  feed.innerHTML = html;
+  feed.scrollTop = feed.scrollHeight;
+}
+
+function renderLTCurrentStep(stepData) {
+  var el = document.getElementById('lt-current-step');
+  if (!el) return;
+  if (!stepData) {
+    el.style.display = 'none';
+    return;
+  }
+  el.style.display = 'block';
+  document.getElementById('lt-step-injury').textContent = stepData.injury || '—';
+  document.getElementById('lt-step-progress').textContent = 'Step ' + (stepData.step + 1) + ' / ' + stepData.total;
+  document.getElementById('lt-step-detail').textContent = stepData.detail || '';
+}
+
+// ===================== GAME STATUS BARS =====================
+function updateGameStatusBars() {
+  var ratio = state.patientRES / 300;
+  var redFill = document.getElementById('health-fill-red');
+  var greenFill = document.getElementById('health-fill-green');
+  var statusText = document.getElementById('status-text-mini');
+  var consciousText = document.getElementById('status-text-conscious');
+  var painText = document.getElementById('status-text-pain');
+
+  if (redFill) redFill.style.width = Math.max(0, ratio * 100) + '%';
+  if (greenFill) greenFill.style.width = Math.max(0, ratio * 100) + '%';
+
+  if (ratio > 0.8) {
+    if (statusText) statusText.textContent = 'Healthy';
+    if (consciousText) consciousText.textContent = 'Conscious';
+    if (painText) painText.textContent = 'No pain';
+  } else if (ratio > 0.6) {
+    if (statusText) statusText.textContent = 'In Pain';
+    if (consciousText) consciousText.textContent = 'Conscious';
+    if (painText) painText.textContent = 'Moderate pain';
+  } else if (ratio > 0.4) {
+    if (statusText) statusText.textContent = 'Deteriorating';
+    if (consciousText) consciousText.textContent = 'Fading';
+    if (painText) painText.textContent = 'Severe pain';
+  } else if (ratio > 0.2) {
+    if (statusText) statusText.textContent = 'Critical';
+    if (consciousText) consciousText.textContent = 'Barely';
+    if (painText) painText.textContent = 'Shock';
+  } else {
+    if (statusText) statusText.textContent = 'Dying';
+    if (consciousText) consciousText.textContent = 'No';
+    if (painText) painText.textContent = 'Unresponsive';
+  }
+}
+
+// ===================== ENHANCED POLLING (LORE TEAM) =====================
+var originalPollMedicProgress = pollMedicProgress;
+pollMedicProgress = function() {
+  originalPollMedicProgress();
+  // Additional polling for live feed
+  var feedPoll = setInterval(function() {
+    if (!state.gameActive && !state.gameCode) { clearInterval(feedPoll); return; }
+    var feedData = localStorage.getItem(sessionKey('livefeed'));
+    if (feedData) {
+      try { renderLTLiveFeed(JSON.parse(feedData)); } catch(e) {}
+    }
+    var stepData = localStorage.getItem(sessionKey('currentstep'));
+    if (stepData) {
+      try { renderLTCurrentStep(JSON.parse(stepData)); } catch(e) {}
+    }
+    var result = localStorage.getItem(sessionKey('result'));
+    if (result) {
+      clearInterval(feedPoll);
+      var el = document.getElementById('lt-current-step');
+      if (el) el.style.display = 'none';
+    }
+  }, 500);
+};
 </script>
 </body>
 </html>
