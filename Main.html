@@ -52,15 +52,22 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
 /* Body SVG */
 .body-container{display:flex;justify-content:center;align-items:center;padding:20px}
 .body-svg{width:220px;height:440px}
-.body-part{fill:#d0d0d0;stroke:#999;stroke-width:1.5;cursor:pointer;transition:all .2s}
-.body-part:hover{fill:#e8e8e8;stroke:var(--gold);stroke-width:2}
+.body-part{fill:#e8e8e8;stroke:#bbb;stroke-width:1.5;cursor:pointer;transition:all .2s}
+.body-part:hover{fill:#fff;stroke:var(--gold);stroke-width:2}
 .body-part.selected{fill:var(--gold);fill-opacity:.3;stroke:var(--gold);stroke-width:2.5}
-.body-part.injured{fill:var(--blood-bright);fill-opacity:.4;stroke:var(--blood-bright);stroke-width:2.5;animation:injPulse 1.5s infinite}
+.body-part.injured{fill:var(--blood-bright);fill-opacity:.5;stroke:var(--blood-bright);stroke-width:2.5;animation:injPulse 1.5s infinite}
 .body-part.healed{fill:var(--green-bright);fill-opacity:.3;stroke:var(--green-bright);stroke-width:2}
 .body-part.examining{fill:var(--gold);fill-opacity:.5;stroke:var(--gold);stroke-width:3;animation:examPulse 1s infinite}
-.body-part.checked{fill:#888;fill-opacity:.2;stroke:#777;stroke-width:1.5}
-@keyframes injPulse{0%,100%{fill-opacity:.4}50%{fill-opacity:.7}}
+.body-part.checked{fill:#e8e8e8;stroke:#bbb;stroke-width:1.5}
+@keyframes injPulse{0%,100%{fill-opacity:.5}50%{fill-opacity:.8}}
 @keyframes examPulse{0%,100%{fill-opacity:.3;stroke-width:2.5}50%{fill-opacity:.6;stroke-width:3.5}}
+
+/* Exam actions grid */
+.exam-actions-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+.exam-action-btn{background:linear-gradient(135deg,rgba(46,107,158,0.12),rgba(46,107,158,0.04));border:1px solid rgba(46,107,158,0.4);color:#6db3e8;font-family:'Cinzel',serif;font-size:9px;letter-spacing:1.5px;padding:10px 8px;cursor:pointer;transition:all .2s;text-transform:uppercase;border-radius:4px;text-align:center;line-height:1.4}
+.exam-action-btn:hover{background:linear-gradient(135deg,rgba(46,107,158,0.25),rgba(46,107,158,0.1));box-shadow:0 0 10px rgba(46,107,158,0.2);transform:translateY(-1px)}
+.check-vitals-btn{background:linear-gradient(135deg,rgba(61,139,61,0.12),rgba(61,139,61,0.04));border:1px solid var(--green-border);color:var(--green-bright);font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;padding:8px 16px;cursor:pointer;transition:all .2s;text-transform:uppercase;border-radius:4px;margin-bottom:8px}
+.check-vitals-btn:hover{background:var(--green-faint);box-shadow:0 0 8px rgba(92,184,92,0.2)}
 
 /* Lore Team (GM) */
 .gm-layout{display:grid;grid-template-columns:280px 1fr;gap:16px}
@@ -376,12 +383,13 @@ header{display:flex;align-items:center;justify-content:space-between;padding:24p
       <div class="patient-desc" id="patient-desc">The patient appears stable. Breathing is even, skin is warm and has color.</div>
     </div>
 
-    <!-- Vitals bar -->
-    <div class="vitals-bar" id="medic-vitals">
-      <div class="vital"><span class="vdot ok" id="v-pulse-dot"></span><span class="vtxt" id="v-pulse">Pulse: Stable</span></div>
-      <div class="vital"><span class="vdot ok" id="v-breath-dot"></span><span class="vtxt" id="v-breath">Breath: Normal</span></div>
-      <div class="vital"><span class="vdot ok" id="v-skin-dot"></span><span class="vtxt" id="v-skin">Skin: Warm</span></div>
-      <div class="vital"><span class="vdot ok" id="v-consc-dot"></span><span class="vtxt" id="v-consc">Conscious: Yes</span></div>
+    <!-- Vitals - hidden until checked -->
+    <button class="check-vitals-btn" id="check-vitals-btn" onclick="checkVitals()">&#9829; Check Vitals</button>
+    <div class="vitals-bar" id="medic-vitals" style="display:none">
+      <div class="vital"><span class="vdot ok" id="v-pulse-dot"></span><span class="vtxt" id="v-pulse">Pulse: ---</span></div>
+      <div class="vital"><span class="vdot ok" id="v-breath-dot"></span><span class="vtxt" id="v-breath">Breath: ---</span></div>
+      <div class="vital"><span class="vdot ok" id="v-skin-dot"></span><span class="vtxt" id="v-skin">Skin: ---</span></div>
+      <div class="vital"><span class="vdot ok" id="v-consc-dot"></span><span class="vtxt" id="v-consc">Conscious: ---</span></div>
     </div>
 
     <!-- Shock/Arterial warning area -->
@@ -501,118 +509,182 @@ const HERBS = [
 const BODY_PARTS = {
   'head':{name:'Head',injuries:['concussion']},
   'neck':{name:'Neck',injuries:['arterial-neck']},
-  'chest':{name:'Chest',injuries:['broken-ribs','collapsed-lung']},
-  'left-arm':{name:'Left Arm',injuries:['broken-arm-stable','broken-arm-open','broken-arm-comminuted','deep-lac-arm','arterial-arm']},
-  'right-arm':{name:'Right Arm',injuries:['broken-arm-stable','broken-arm-open','broken-arm-comminuted','deep-lac-arm','arterial-arm']},
-  'left-leg':{name:'Left Leg',injuries:['broken-leg-stable','broken-leg-open','broken-leg-comminuted','deep-lac-leg','arterial-leg']},
-  'right-leg':{name:'Right Leg',injuries:['broken-leg-stable','broken-leg-open','broken-leg-comminuted','deep-lac-leg','arterial-leg']},
+  'chest':{name:'Chest',injuries:['broken-ribs','collapsed-lung','shock']},
+  'left-arm':{name:'Left Arm',injuries:['broken-arm-stable','broken-arm-open','broken-arm-comminuted','deep-lac-arm','arterial-arm','infection']},
+  'right-arm':{name:'Right Arm',injuries:['broken-arm-stable','broken-arm-open','broken-arm-comminuted','deep-lac-arm','arterial-arm','infection']},
+  'left-leg':{name:'Left Leg',injuries:['broken-leg-stable','broken-leg-open','broken-leg-comminuted','deep-lac-leg','arterial-leg','infection']},
+  'right-leg':{name:'Right Leg',injuries:['broken-leg-stable','broken-leg-open','broken-leg-comminuted','deep-lac-leg','arterial-leg','infection']},
   'left-eye':{name:'Left Eye',injuries:['blind-eye-surface','blind-eye-puncture']},
   'right-eye':{name:'Right Eye',injuries:['blind-eye-surface','blind-eye-puncture']}
+};
+
+const EXAM_ACTIONS = {
+  'head':[
+    {label:'Check Pupils',desc:'Look at both pupils for size and response to light'},
+    {label:'Feel for Bumps',desc:'Run your hands over the skull, feel for swelling or depressions'},
+    {label:'Ask Questions',desc:'Ask their name, where they are, what happened'},
+    {label:'Check for Blood',desc:'Look behind the ears and around the nose for bleeding'}
+  ],
+  'neck':[
+    {label:'Check for Bleeding',desc:'Look closely for any blood — especially spurting'},
+    {label:'Feel for Swelling',desc:'Gently feel along the neck for swelling or deformity'},
+    {label:'Check Pulse',desc:'Feel the pulse at the side of the neck'}
+  ],
+  'chest':[
+    {label:'Feel Along Ribs',desc:'Press gently along each rib — note where it hurts worst and if you feel grinding'},
+    {label:'Listen to Breathing',desc:'Put your ear to both sides of the chest — listen for breath sounds'},
+    {label:'Watch Chest Rise',desc:'Watch if both sides of the chest move equally when breathing'},
+    {label:'Check for Wounds',desc:'Look for any open wounds, bruising, or swelling'}
+  ],
+  'left-arm':[
+    {label:'Check for Swelling',desc:'Compare both arms — look for swelling or deformity'},
+    {label:'Feel for Breaks',desc:'Run your hands along the arm — feel for grinding, abnormal bends, or pain'},
+    {label:'Test Grip',desc:'Have them squeeze your hand — test strength'},
+    {label:'Check Fingers',desc:'Look at finger color and temperature — warm and pink is good, cold and blue is bad'}
+  ],
+  'right-arm':[
+    {label:'Check for Swelling',desc:'Compare both arms — look for swelling or deformity'},
+    {label:'Feel for Breaks',desc:'Run your hands along the arm — feel for grinding, abnormal bends, or pain'},
+    {label:'Test Grip',desc:'Have them squeeze your hand — test strength'},
+    {label:'Check Fingers',desc:'Look at finger color and temperature — warm and pink is good, cold and blue is bad'}
+  ],
+  'left-leg':[
+    {label:'Check for Swelling',desc:'Compare both legs — look for swelling or deformity'},
+    {label:'Feel for Breaks',desc:'Run your hands along the leg — feel for grinding or abnormal bends'},
+    {label:'Check Foot Pulse',desc:'Feel the pulse at the top of the foot and check temperature'},
+    {label:'Test Toe Sensation',desc:'Ask if they can feel their toes — wiggle them'}
+  ],
+  'right-leg':[
+    {label:'Check for Swelling',desc:'Compare both legs — look for swelling or deformity'},
+    {label:'Feel for Breaks',desc:'Run your hands along the leg — feel for grinding or abnormal bends'},
+    {label:'Check Foot Pulse',desc:'Feel the pulse at the top of the foot and check temperature'},
+    {label:'Test Toe Sensation',desc:'Ask if they can feel their toes — wiggle them'}
+  ],
+  'left-eye':[
+    {label:'Check if Eye is Firm',desc:'Gently feel around the eye — is it firm and intact or soft and leaking?'},
+    {label:'Test Light Response',desc:'Move a light across their vision — can they follow it?'},
+    {label:'Look for Cuts',desc:'Examine the surface of the eye closely for cuts or puncture wounds'}
+  ],
+  'right-eye':[
+    {label:'Check if Eye is Firm',desc:'Gently feel around the eye — is it firm and intact or soft and leaking?'},
+    {label:'Test Light Response',desc:'Move a light across their vision — can they follow it?'},
+    {label:'Look for Cuts',desc:'Examine the surface of the eye closely for cuts or puncture wounds'}
+  ]
 };
 
 const INJURIES = {
   'broken-ribs':{
     name:'Broken Ribs',march:'R',category:'basic',damage:40,canBeArterial:false,
-    examHint:'Patient winces when you press along the ribcage. You feel a give where ribs should be solid.',
+    examHint:'Patient winces when you press along the ribcage. You feel grinding where ribs should be solid — that is the break.',
     steps:[
-      {text:'Feel along the ribs to locate the break',item:null,action:'examine'},
+      {text:'Wash your hands',item:null,action:'examine'},
+      {text:'Run MARCH — check respiration first',item:null,action:'examine'},
+      {text:'Feel along the ribs — find where it hurts worst and where you feel grinding',item:null,action:'examine'},
       {text:'Sit the patient upright',item:'pillows',action:'apply'},
-      {text:'Give pain relief tea',item:'mugwort',altItem:'puchuve',action:'apply'},
-      {text:'Give them something to hold against their chest',item:'pillows',action:'apply'},
-      {text:'Make them do deep breaths to prevent pneumonia',item:null,action:'examine'},
-      {text:'Place thin flat wood over the segment and secure with cloth',item:'splint',action:'apply'},
-      {text:'Wrap firm but not tight',item:'bandages',action:'apply'},
-      {text:'Monitor for worsening breathing or blue lips',item:null,action:'examine'}
+      {text:'Give mugwort or puchuve tea for pain',item:'mugwort',altItem:'puchuve',action:'apply'},
+      {text:'Hand patient cloth to hold against their chest',item:'pillows',action:'apply'},
+      {text:'Place flat wood splint over the break site',item:'splint',action:'apply'},
+      {text:'Secure with cloth — firm, not tight',item:'bandages',action:'apply'},
+      {text:'Instruct deep breaths — this prevents pneumonia',item:null,action:'examine'},
+      {text:'Monitor — blue lips or worse breathing means escalate immediately',item:null,action:'examine'}
     ]
   },
   'broken-arm-stable':{
     name:'Broken Arm (Stable)',march:'C',category:'basic',damage:35,canBeArterial:false,
     examHint:'The arm looks swollen and slightly deformed compared to the other. Patient cannot grip well.',
     steps:[
-      {text:'Check the arm',item:null,action:'examine'},
-      {text:'Test grip',item:null,action:'examine'},
-      {text:'Check fingers for warmth and color',item:null,action:'examine'},
-      {text:'Give pain relief tea',item:'puchuve',action:'apply'},
-      {text:'Set the bone if misaligned',item:null,action:'examine'},
-      {text:'Splint from shoulder down past fingers',item:'splint',action:'apply'},
-      {text:'Sling it against their body',item:'sling',action:'apply'},
-      {text:'Check finger color and warmth after',item:null,action:'examine'},
-      {text:'Apply cold treatment for swelling',item:'cold-stones',action:'apply'}
+      {text:'Wash your hands',item:null,action:'examine'},
+      {text:'Run MARCH — check circulation first',item:null,action:'examine'},
+      {text:'Compare both arms — check for swelling',item:null,action:'examine'},
+      {text:'Grip test — have them squeeze your hand',item:null,action:'examine'},
+      {text:'Check fingers — warm and pink is good, cold and blue is bad',item:null,action:'examine'},
+      {text:'Give puchuve tea — wait for effect',item:'puchuve',action:'apply'},
+      {text:'Set bone if out of place — do not force',item:null,action:'examine'},
+      {text:'Splint from shoulder past fingers',item:'splint',action:'apply'},
+      {text:'Sling arm against body',item:'sling',action:'apply'},
+      {text:'Cold stones for swelling',item:'cold-stones',action:'apply'}
     ]
   },
   'broken-arm-open':{
     name:'Broken Arm (Open)',march:'C',category:'basic',damage:55,canBeArterial:false,
     examHint:'Bone is visibly protruding through the skin of the arm. Blood is seeping around the wound.',
     steps:[
-      {text:'Assess the wound',item:null,action:'examine'},
-      {text:'Check if blood is arterial',item:null,action:'examine'},
-      {text:'Sedate the patient',item:'peace-herb',action:'apply'},
-      {text:'Irrigate the wound',item:'clean-water',action:'apply'},
-      {text:'Guide bone back under skin',item:null,action:'examine'},
-      {text:'Close the wound',item:'bandages',action:'apply'},
-      {text:'Splint with wood on both sides',item:'splint',action:'apply'},
-      {text:'Sling the arm',item:'sling',action:'apply'},
-      {text:'Apply infection prevention',item:'loquat',action:'apply'}
+      {text:'Wash your hands',item:null,action:'examine'},
+      {text:'Check for arterial bleed — spurting means tourniquet and get a surgeon',item:null,action:'examine'},
+      {text:'Give peace herb — wait for sedation',item:'peace-herb',action:'apply'},
+      {text:'Irrigate with clean water — remove all debris',item:'clean-water',action:'apply'},
+      {text:'Guide bone back under skin — one piece only — if it resists, stop',item:null,action:'examine'},
+      {text:'Bandage wound closed',item:'bandages',action:'apply'},
+      {text:'Splint both sides — tie away from wound',item:'splint',action:'apply'},
+      {text:'Sling arm',item:'sling',action:'apply'},
+      {text:'Loquat leaf compress over bandage',item:'loquat',action:'apply'}
     ]
   },
   'broken-arm-comminuted':{
     name:'Broken Arm (Comminuted)',march:'C',category:'advanced',damage:80,canBeArterial:false,
     examHint:'The arm is severely deformed with multiple bumps under the skin. The bone is shattered into fragments.',
     steps:[
-      {text:'Sedate the patient',item:'peace-herb',action:'apply'},
-      {text:'Hold limb motionless',item:null,action:'examine'},
-      {text:'Irrigate heavily',item:'clean-water',action:'apply'},
-      {text:'Pack wound to control bleeding',item:'mugwort',action:'apply'},
-      {text:'Identify all fragments',item:null,action:'examine'},
-      {text:'Remove loose fragments',item:'forceps',action:'apply'},
-      {text:'Align and stabilize bone sections',item:'metal-rods',action:'apply'},
-      {text:'Close wound and splint',item:'splint',action:'apply'},
-      {text:'Apply infection prevention',item:'loquat',action:'apply'},
-      {text:'Give blood recovery tea',item:'toki',action:'apply'}
+      {text:'Wash your hands',item:null,action:'examine'},
+      {text:'Give peace herb — wait for full sedation',item:'peace-herb',action:'apply'},
+      {text:'Give second dose of peace herb',item:'peace-herb',action:'apply'},
+      {text:'Assistant holds limb completely still',item:null,action:'examine'},
+      {text:'Irrigate open wound first — remove all debris',item:'clean-water',action:'apply'},
+      {text:'Pack mugwort around wound',item:'mugwort',action:'apply'},
+      {text:'Remove only fully loose fragments with forceps',item:'forceps',action:'apply'},
+      {text:'Align major bone sections — insert metal rods',item:'metal-rods',action:'apply'},
+      {text:'Bandage wound closed',item:'bandages',action:'apply'},
+      {text:'Splint both sides — tie away from wound',item:'splint',action:'apply'},
+      {text:'Loquat leaf compress',item:'loquat',action:'apply'},
+      {text:'Give toki tea when conscious',item:'toki',action:'apply'}
     ]
   },
   'broken-leg-stable':{
     name:'Broken Leg (Stable)',march:'C',category:'basic',damage:35,canBeArterial:false,
     examHint:'The leg is swollen and bent at an unnatural angle. Patient cries out when you touch it.',
     steps:[
-      {text:'Check the leg',item:null,action:'examine'},
-      {text:'Check foot pulse',item:null,action:'examine'},
-      {text:'Test sensation in toes',item:null,action:'examine'},
-      {text:'Give pain relief tea',item:'puchuve',action:'apply'},
-      {text:'Set the bone if misaligned',item:null,action:'examine'},
-      {text:'Splint or cast the leg',item:'splint',action:'apply'},
+      {text:'Wash your hands',item:null,action:'examine'},
+      {text:'Run MARCH — check circulation first',item:null,action:'examine'},
+      {text:'Compare both legs — check for swelling',item:null,action:'examine'},
+      {text:'Check foot pulse and temperature',item:null,action:'examine'},
+      {text:'Ask if they can feel their toes',item:null,action:'examine'},
+      {text:'Give puchuve tea — wait for effect',item:'puchuve',action:'apply'},
+      {text:'Set bone if badly bent — do not force',item:null,action:'examine'},
+      {text:'Rigid splint or bamboo cast — firm not tight',item:'splint',action:'apply'},
       {text:'Check foot pulse after wrapping',item:null,action:'examine'},
-      {text:'Apply cold treatment',item:'cold-stones',action:'apply'}
+      {text:'Cold stones for swelling',item:'cold-stones',action:'apply'}
     ]
   },
   'broken-leg-open':{
     name:'Broken Leg (Open)',march:'C',category:'basic',damage:55,canBeArterial:false,
     examHint:'White bone juts out from the leg wound. Blood pools beneath. The patient is screaming.',
     steps:[
-      {text:'Assess the wound',item:null,action:'examine'},
-      {text:'Check if blood is arterial',item:null,action:'examine'},
-      {text:'Sedate the patient',item:'peace-herb',action:'apply'},
-      {text:'Irrigate the wound',item:'clean-water',action:'apply'},
-      {text:'Guide bone back under skin',item:null,action:'examine'},
-      {text:'Close the wound',item:'bandages',action:'apply'},
-      {text:'Splint with wood on both sides',item:'splint',action:'apply'},
-      {text:'Apply infection prevention',item:'loquat',action:'apply'}
+      {text:'Wash your hands',item:null,action:'examine'},
+      {text:'Check for arterial bleed — spurting means tourniquet and get a surgeon',item:null,action:'examine'},
+      {text:'Give peace herb — wait for sedation',item:'peace-herb',action:'apply'},
+      {text:'Irrigate with clean water — remove all debris',item:'clean-water',action:'apply'},
+      {text:'Guide bone back under skin — one piece only — if it resists, stop',item:null,action:'examine'},
+      {text:'Bandage wound closed',item:'bandages',action:'apply'},
+      {text:'Splint both sides — tie away from wound',item:'splint',action:'apply'},
+      {text:'Loquat leaf compress over bandage',item:'loquat',action:'apply'},
+      {text:'Give toki tea when conscious',item:'toki',action:'apply'}
     ]
   },
   'broken-leg-comminuted':{
     name:'Broken Leg (Comminuted)',march:'C',category:'advanced',damage:80,canBeArterial:false,
     examHint:'The leg is mangled — multiple fragments shifting under the skin. A complex fracture requiring advanced surgery.',
     steps:[
-      {text:'Sedate the patient',item:'peace-herb',action:'apply'},
-      {text:'Hold limb motionless',item:null,action:'examine'},
-      {text:'Irrigate heavily',item:'clean-water',action:'apply'},
-      {text:'Pack wound to control bleeding',item:'mugwort',action:'apply'},
-      {text:'Identify all fragments',item:null,action:'examine'},
-      {text:'Remove loose fragments',item:'forceps',action:'apply'},
-      {text:'Align and stabilize bone sections',item:'metal-rods',action:'apply'},
-      {text:'Close wound and splint',item:'splint',action:'apply'},
-      {text:'Apply infection prevention',item:'loquat',action:'apply'},
-      {text:'Give blood recovery tea',item:'toki',action:'apply'}
+      {text:'Wash your hands',item:null,action:'examine'},
+      {text:'Give peace herb — wait for full sedation',item:'peace-herb',action:'apply'},
+      {text:'Give second dose of peace herb',item:'peace-herb',action:'apply'},
+      {text:'Assistant holds limb completely still',item:null,action:'examine'},
+      {text:'Irrigate open wound first — remove all debris',item:'clean-water',action:'apply'},
+      {text:'Pack mugwort around wound',item:'mugwort',action:'apply'},
+      {text:'Remove only fully loose fragments with forceps',item:'forceps',action:'apply'},
+      {text:'Align major bone sections — insert metal rods',item:'metal-rods',action:'apply'},
+      {text:'Bandage wound closed',item:'bandages',action:'apply'},
+      {text:'Splint both sides — tie away from wound',item:'splint',action:'apply'},
+      {text:'Loquat leaf compress — elevate leg',item:'loquat',action:'apply'},
+      {text:'Give toki tea when conscious',item:'toki',action:'apply'}
     ]
   },
   'deep-lac-arm':{
@@ -620,31 +692,30 @@ const INJURIES = {
     examHint:'A deep gash runs across the arm. Dark blood flows steadily — venous bleeding, not arterial.',
     examHintArterial:'A deep gash runs across the arm. Bright red blood SPURTS rhythmically with each heartbeat. Arterial.',
     steps:[
-      {text:'Check if blood is arterial',item:null,action:'examine'},
-      {text:'Apply firm direct pressure',item:'bandages',action:'apply'},
-      {text:'Elevate the arm above the heart',item:'pillows',action:'apply'},
-      {text:'Irrigate wound',item:'clean-water',action:'apply'},
-      {text:'Pack wound to slow bleeding',item:'mugwort',action:'apply'},
-      {text:'Close the wound',item:'sutures',action:'apply'},
-      {text:'Apply infection prevention',item:'loquat',action:'apply'},
-      {text:'Bandage firm not tight',item:'bandages',action:'apply'},
-      {text:'Check finger warmth and color',item:null,action:'examine'},
-      {text:'Give blood recovery tea',item:'toki',action:'apply'},
-      {text:'Monitor for shock',item:null,action:'examine'}
+      {text:'Wash your hands',item:null,action:'examine'},
+      {text:'Check for arterial bleed — spurting means tourniquet and get a surgeon',item:null,action:'examine'},
+      {text:'Apply firm direct pressure — do not lift',item:'bandages',action:'apply'},
+      {text:'Elevate arm above the heart',item:'pillows',action:'apply'},
+      {text:'Add cloth on top if soaking through — do not remove first layer',item:'bandages',action:'apply'},
+      {text:'Irrigate with saline when bleeding slows',item:'clean-water',action:'apply'},
+      {text:'Pack mugwort if muscle is visible',item:'mugwort',action:'apply'},
+      {text:'Suture wound closed — center outward',item:'sutures',action:'apply'},
+      {text:'Loquat leaf compress over wound',item:'loquat',action:'apply'},
+      {text:'Bandage — check finger color after',item:'bandages',action:'apply'},
+      {text:'Give toki tea if blood was lost',item:'toki',action:'apply'}
     ],
     stepsArterial:[
-      {text:'Stop the spurting immediately',item:'tourniquet',action:'apply'},
-      {text:'Sedate the patient',item:'peace-herb',action:'apply'},
-      {text:'Sterilize tools',item:'clean-water',action:'apply'},
-      {text:'Identify the damaged vessel',item:null,action:'examine'},
-      {text:'Clamp above the wound',item:'clamps',action:'apply'},
-      {text:'Clamp below the damaged section',item:'clamps',action:'apply'},
-      {text:'Remove the tourniquet',item:'tourniquet',action:'apply'},
-      {text:'Sew the artery closed',item:'sutures',action:'apply'},
-      {text:'Release lower clamp first',item:'clamps',action:'apply'},
-      {text:'Release upper clamp',item:'clamps',action:'apply'},
-      {text:'Close outer wound and bandage',item:'bandages',action:'apply'},
-      {text:'Give recovery tea',item:'toki',action:'apply'}
+      {text:'Wash your hands',item:null,action:'examine'},
+      {text:'Check for arterial bleed — spurting means tourniquet and get a surgeon',item:null,action:'examine'},
+      {text:'Apply firm direct pressure — do not lift',item:'bandages',action:'apply'},
+      {text:'Elevate arm above the heart',item:'pillows',action:'apply'},
+      {text:'Add cloth on top if soaking through — do not remove first layer',item:'bandages',action:'apply'},
+      {text:'Irrigate heavily with saline when bleeding slows',item:'clean-water',action:'apply'},
+      {text:'Pack mugwort if muscle visible — open fracture protocol if bone visible',item:'mugwort',action:'apply'},
+      {text:'Suture with fine thread — center outward, small even stitches',item:'sutures',action:'apply'},
+      {text:'Loquat leaf compress over closed wound',item:'loquat',action:'apply'},
+      {text:'Bandage — capillary refill check',item:'bandages',action:'apply'},
+      {text:'Give toki tea if blood was lost',item:'toki',action:'apply'}
     ]
   },
   'deep-lac-leg':{
@@ -652,40 +723,40 @@ const INJURIES = {
     examHint:'A long, deep cut across the thigh. Blood soaks through clothing rapidly.',
     examHintArterial:'A long, deep cut across the thigh. Bright red blood PULSES out with each heartbeat. Arterial.',
     steps:[
-      {text:'Check if blood is arterial',item:null,action:'examine'},
-      {text:'Apply firm direct pressure',item:'bandages',action:'apply'},
-      {text:'Lay patient down, elevate leg',item:'pillows',action:'apply'},
-      {text:'Irrigate wound',item:'clean-water',action:'apply'},
-      {text:'Pack wound to slow bleeding',item:'mugwort',action:'apply'},
-      {text:'Close the wound',item:'sutures',action:'apply'},
-      {text:'Apply infection prevention',item:'loquat',action:'apply'},
-      {text:'Bandage firm not tight',item:'bandages',action:'apply'},
-      {text:'Check foot pulse and warmth',item:null,action:'examine'},
-      {text:'Give blood recovery tea',item:'toki',action:'apply'},
-      {text:'Monitor for shock',item:null,action:'examine'}
+      {text:'Wash your hands',item:null,action:'examine'},
+      {text:'Check for arterial bleed — spurting means tourniquet and get a surgeon',item:null,action:'examine'},
+      {text:'Apply firm direct pressure — do not lift',item:'bandages',action:'apply'},
+      {text:'Lay patient down — elevate leg',item:'pillows',action:'apply'},
+      {text:'Add cloth on top if soaking through — do not remove first layer',item:'bandages',action:'apply'},
+      {text:'Irrigate with saline when bleeding slows',item:'clean-water',action:'apply'},
+      {text:'Pack mugwort if muscle is visible',item:'mugwort',action:'apply'},
+      {text:'Suture wound closed — center outward',item:'sutures',action:'apply'},
+      {text:'Loquat leaf compress over wound',item:'loquat',action:'apply'},
+      {text:'Bandage — check foot pulse after',item:'bandages',action:'apply'},
+      {text:'Give toki tea if blood was lost',item:'toki',action:'apply'}
     ],
     stepsArterial:[
-      {text:'Stop the spurting immediately',item:'tourniquet',action:'apply'},
-      {text:'Sedate the patient',item:'peace-herb',action:'apply'},
-      {text:'Sterilize tools',item:'clean-water',action:'apply'},
-      {text:'Identify the damaged vessel',item:null,action:'examine'},
-      {text:'Clamp above the wound',item:'clamps',action:'apply'},
-      {text:'Clamp below the damaged section',item:'clamps',action:'apply'},
-      {text:'Remove the tourniquet',item:'tourniquet',action:'apply'},
-      {text:'Sew the artery closed',item:'sutures',action:'apply'},
-      {text:'Release lower clamp first',item:'clamps',action:'apply'},
-      {text:'Release upper clamp',item:'clamps',action:'apply'},
-      {text:'Close outer wound and bandage',item:'bandages',action:'apply'},
-      {text:'Give recovery tea',item:'toki',action:'apply'}
+      {text:'Wash your hands',item:null,action:'examine'},
+      {text:'Check for arterial bleed — spurting means tourniquet and get a surgeon',item:null,action:'examine'},
+      {text:'Apply firm direct pressure — do not lift',item:'bandages',action:'apply'},
+      {text:'Lay patient down — elevate leg immediately',item:'pillows',action:'apply'},
+      {text:'Add cloth on top if soaking through — do not remove first layer',item:'bandages',action:'apply'},
+      {text:'Irrigate heavily with saline when bleeding slows',item:'clean-water',action:'apply'},
+      {text:'Pack mugwort if muscle visible — open fracture protocol if bone visible',item:'mugwort',action:'apply'},
+      {text:'Suture with fine thread — center outward, small even stitches',item:'sutures',action:'apply'},
+      {text:'Loquat leaf compress over closed wound',item:'loquat',action:'apply'},
+      {text:'Bandage — foot pulse check',item:'bandages',action:'apply'},
+      {text:'Give toki tea if blood was lost',item:'toki',action:'apply'}
     ]
   },
   'arterial-arm':{
     name:'Arterial Bleeding (Arm)',march:'M',category:'advanced',damage:90,canBeArterial:false,isArterial:true,
     examHint:'Bright red blood SPURTS rhythmically from the arm with each heartbeat. Arterial. Life-threatening.',
     steps:[
-      {text:'Stop the spurting immediately',item:'tourniquet',action:'apply'},
-      {text:'Sedate the patient',item:'peace-herb',action:'apply'},
-      {text:'Sterilize tools',item:'clean-water',action:'apply'},
+      {text:'Wash your hands',item:null,action:'examine'},
+      {text:'Stop the spurting immediately — apply tourniquet',item:'tourniquet',action:'apply'},
+      {text:'Give peace herb — wait for sedation',item:'peace-herb',action:'apply'},
+      {text:'Sterilize tools with clean water',item:'clean-water',action:'apply'},
       {text:'Identify the damaged vessel',item:null,action:'examine'},
       {text:'Clamp above the wound',item:'clamps',action:'apply'},
       {text:'Clamp below the damaged section',item:'clamps',action:'apply'},
@@ -694,16 +765,17 @@ const INJURIES = {
       {text:'Release lower clamp first',item:'clamps',action:'apply'},
       {text:'Release upper clamp',item:'clamps',action:'apply'},
       {text:'Close outer wound and bandage',item:'bandages',action:'apply'},
-      {text:'Give recovery tea',item:'toki',action:'apply'}
+      {text:'Give toki tea for recovery',item:'toki',action:'apply'}
     ]
   },
   'arterial-leg':{
     name:'Arterial Bleeding (Leg)',march:'M',category:'advanced',damage:90,canBeArterial:false,isArterial:true,
     examHint:'A fountain of bright red blood pulses from the leg wound. Arterial damage — seconds matter.',
     steps:[
-      {text:'Stop the spurting immediately',item:'tourniquet',action:'apply'},
-      {text:'Sedate the patient',item:'peace-herb',action:'apply'},
-      {text:'Sterilize tools',item:'clean-water',action:'apply'},
+      {text:'Wash your hands',item:null,action:'examine'},
+      {text:'Stop the spurting immediately — apply tourniquet',item:'tourniquet',action:'apply'},
+      {text:'Give peace herb — wait for sedation',item:'peace-herb',action:'apply'},
+      {text:'Sterilize tools with clean water',item:'clean-water',action:'apply'},
       {text:'Identify the damaged vessel',item:null,action:'examine'},
       {text:'Clamp above the wound',item:'clamps',action:'apply'},
       {text:'Clamp below the damaged section',item:'clamps',action:'apply'},
@@ -712,16 +784,17 @@ const INJURIES = {
       {text:'Release lower clamp first',item:'clamps',action:'apply'},
       {text:'Release upper clamp',item:'clamps',action:'apply'},
       {text:'Close outer wound and bandage',item:'bandages',action:'apply'},
-      {text:'Give recovery tea',item:'toki',action:'apply'}
+      {text:'Give toki tea for recovery',item:'toki',action:'apply'}
     ]
   },
   'arterial-neck':{
     name:'Arterial Bleeding (Neck)',march:'M',category:'advanced',damage:120,canBeArterial:false,isArterial:true,
     examHint:'Blood sprays from the neck in rapid pulses. The patient is losing consciousness fast. Critical.',
     steps:[
-      {text:'Apply immediate firm direct pressure',item:'bandages',action:'apply'},
+      {text:'Wash your hands',item:null,action:'examine'},
+      {text:'Apply immediate firm direct pressure with bandages',item:'bandages',action:'apply'},
       {text:'Sedate immediately while maintaining pressure',item:'peace-herb',action:'apply'},
-      {text:'Sterilize tools',item:'clean-water',action:'apply'},
+      {text:'Sterilize tools with clean water',item:'clean-water',action:'apply'},
       {text:'Identify damaged vessel',item:null,action:'examine'},
       {text:'Clamp above damaged section',item:'clamps',action:'apply'},
       {text:'Clamp below damaged section',item:'clamps',action:'apply'},
@@ -729,65 +802,103 @@ const INJURIES = {
       {text:'Release lower clamp first',item:'clamps',action:'apply'},
       {text:'Release upper clamp',item:'clamps',action:'apply'},
       {text:'Close wound with light bandage',item:'bandages',action:'apply'},
-      {text:'Keep patient flat, give recovery tea when conscious',item:'toki',action:'apply'},
-      {text:'Monitor breathing',item:null,action:'examine'}
+      {text:'Keep patient flat — give toki tea when conscious',item:'toki',action:'apply'},
+      {text:'Monitor breathing closely',item:null,action:'examine'}
     ]
   },
   'collapsed-lung':{
     name:'Collapsed Lung',march:'R',category:'advanced',damage:100,canBeArterial:false,
     examHint:'One side of the chest barely moves. Listening closely, breath sounds are absent on the left. Trachea shifting.',
     steps:[
-      {text:'Listen to both sides of chest',item:null,action:'examine'},
+      {text:'Wash your hands',item:null,action:'examine'},
+      {text:'Listen to both sides of chest — identify affected side',item:null,action:'examine'},
       {text:'Needle decompression on affected side',item:'hollow-needle',action:'apply'},
       {text:'Keep patient upright',item:'pillows',action:'apply'},
-      {text:'Sedate the patient',item:'peace-herb',action:'apply'},
+      {text:'Give peace herb — wait for sedation',item:'peace-herb',action:'apply'},
       {text:'Insert chest tube',item:'chest-tube',action:'apply'},
-      {text:'Check for air bubbles',item:null,action:'examine'},
-      {text:'Monitor tube',item:null,action:'examine'},
-      {text:'Confirm lung re-expanded, seal tube site',item:'bandages',action:'apply'},
-      {text:'Give lung recovery tea',item:'dream-root',action:'apply'},
-      {text:'Monitor breathing after tube removal',item:null,action:'examine'}
+      {text:'Check for air bubbles — confirm tube is working',item:null,action:'examine'},
+      {text:'Monitor tube for drainage',item:null,action:'examine'},
+      {text:'Confirm lung re-expanded — seal tube site',item:'bandages',action:'apply'},
+      {text:'Give dream root tea for lung recovery',item:'dream-root',action:'apply'},
+      {text:'Monitor breathing after — watch for recollapse',item:null,action:'examine'}
     ]
   },
   'blind-eye-surface':{
     name:'Blind Eye (Surface Cut)',march:'H',category:'advanced',damage:45,canBeArterial:false,
     examHint:'The eye is bloodshot with a visible cut on the surface. The eye is firm — still intact inside.',
     steps:[
+      {text:'Wash your hands',item:null,action:'examine'},
       {text:'Check if eye is firm and intact',item:null,action:'examine'},
       {text:'Assess if patient can see light',item:null,action:'examine'},
       {text:'Place patient flat on back',item:'pillows',action:'apply'},
       {text:'Apply tiny stitches on outer layer only',item:'sutures',action:'apply'},
       {text:'Cover with dry soft cloth',item:'bandages',action:'apply'},
       {text:'Elevate head slightly',item:'pillows',action:'apply'},
-      {text:'Give inflammation reduction tea',item:'chrysanthemum',action:'apply'},
-      {text:'Monitor for worsening',item:null,action:'examine'}
+      {text:'Give chrysanthemum tea to reduce inflammation',item:'chrysanthemum',action:'apply'},
+      {text:'Monitor for worsening — any change means escalate',item:null,action:'examine'}
     ]
   },
   'blind-eye-puncture':{
     name:'Blind Eye (Puncture)',march:'H',category:'advanced',damage:60,canBeArterial:false,
     examHint:'The eye is soft and leaking fluid. A puncture wound. Do NOT stitch — it will force fluid out.',
     steps:[
+      {text:'Wash your hands',item:null,action:'examine'},
       {text:'Check if eye is soft and leaking',item:null,action:'examine'},
       {text:'Confirm it is a puncture not a cut',item:null,action:'examine'},
-      {text:'Do NOT apply liquid or flush',item:null,action:'examine'},
+      {text:'Do NOT apply liquid or flush — acknowledge this',item:null,action:'examine'},
       {text:'Cover with dry rigid shield',item:'bandages',action:'apply'},
-      {text:'Elevate head, keep patient still',item:'pillows',action:'apply'},
-      {text:'Give inflammation reduction tea',item:'chrysanthemum',action:'apply'},
-      {text:'Close monitoring',item:null,action:'examine'}
+      {text:'Elevate head — keep patient completely still',item:'pillows',action:'apply'},
+      {text:'Give chrysanthemum tea to reduce inflammation',item:'chrysanthemum',action:'apply'},
+      {text:'Close monitoring — any change means escalate',item:null,action:'examine'}
     ]
   },
   'concussion':{
     name:'Concussion',march:'H',category:'basic',damage:30,canBeArterial:false,
     examHint:'Patient is confused, nauseous. One pupil is slightly larger than the other. Probable head trauma.',
     steps:[
-      {text:'Check pupil response',item:null,action:'examine'},
-      {text:'Ask basic questions',item:null,action:'examine'},
-      {text:'Check for nausea and confusion',item:null,action:'examine'},
+      {text:'Wash your hands',item:null,action:'examine'},
+      {text:'Check pupil response — compare both eyes',item:null,action:'examine'},
+      {text:'Ask basic questions — name, location, what happened',item:null,action:'examine'},
+      {text:'Check for nausea, confusion, and dizziness',item:null,action:'examine'},
       {text:'Lay patient down with head elevated',item:'pillows',action:'apply'},
-      {text:'Apply cold treatment to head',item:'cold-stones',action:'apply'},
-      {text:'Give pain relief tea',item:'mugwort',action:'apply'},
-      {text:'Keep them awake',item:null,action:'examine'},
-      {text:'Monitor for worsening',item:null,action:'examine'}
+      {text:'Apply cold stones to head for swelling',item:'cold-stones',action:'apply'},
+      {text:'Give mugwort tea for pain',item:'mugwort',action:'apply'},
+      {text:'Keep them awake — do not let them sleep',item:null,action:'examine'},
+      {text:'Monitor for worsening — vomiting or seizure means escalate',item:null,action:'examine'}
+    ]
+  },
+  'infection':{
+    name:'Infection',march:'H',category:'basic',damage:45,canBeArterial:false,
+    examHint:'The wound is red, swollen, and hot to the touch. Pus is seeping from the edges. The skin around it is angry and inflamed.',
+    steps:[
+      {text:'Wash your hands',item:null,action:'examine'},
+      {text:'Check wound — look for redness, swelling, heat, and pus',item:null,action:'examine'},
+      {text:'Check for fever — touch the forehead',item:null,action:'examine'},
+      {text:'Check for red lines spreading toward the heart',item:null,action:'examine'},
+      {text:'Red lines means urgent — ten minutes to act or amputate',item:null,action:'examine'},
+      {text:'Remove existing bandage',item:null,action:'examine'},
+      {text:'Irrigate wound with clean water — remove all pus',item:'clean-water',action:'apply'},
+      {text:'Loquat leaf compress — first application',item:'loquat',action:'apply'},
+      {text:'Loquat leaf compress — second application',item:'loquat',action:'apply'},
+      {text:'Loquat leaf compress — third application',item:'loquat',action:'apply'},
+      {text:'Give chrysanthemum tea if fever is present',item:'chrysanthemum',action:'apply'},
+      {text:'Rebandage with clean cloth only',item:'bandages',action:'apply'}
+    ]
+  },
+  'shock':{
+    name:'Shock',march:'H',category:'basic',damage:50,canBeArterial:false,
+    examHint:'The patient is pale, cold, and sweating. Their skin is clammy. Breathing is fast and shallow. They look terrified.',
+    steps:[
+      {text:'Wash your hands',item:null,action:'examine'},
+      {text:'Identify shock — pale cold skin, sweating, fast breathing',item:null,action:'examine'},
+      {text:'Check for blue lips and fingernails',item:null,action:'examine'},
+      {text:'Lay patient flat',item:null,action:'examine'},
+      {text:'Raise legs with cloth under ankles',item:'pillows',action:'apply'},
+      {text:'Keep patient warm with blankets',item:'bandages',action:'apply'},
+      {text:'Yuzu tea with honey — warm, small sips, conscious only',item:'yuzu',action:'apply'},
+      {text:'Do not give liquid if unconscious — acknowledge this',item:null,action:'examine'},
+      {text:'Treat main injury at same time — do not delay',item:null,action:'examine'},
+      {text:'Monitor pulse and skin color every five minutes',item:null,action:'examine'}
     ]
   }
 };
@@ -822,11 +933,12 @@ var state = {
   arterialDrain: null,
   examinedParts: {},
   discoveredInjuries: {},
-  examiningPart: null
+  examiningPart: null,
+  vitalsTimeout: null
 };
 
 function getDefaultState() {
-  return {role:null,gameCode:null,sessionPassword:'',patientName:'Unknown',medicName:'Unknown',gmHP:300,gmMaxHP:300,assignedInjuries:[],selectedPart:null,timerSeconds:180,timerRemaining:0,timerInterval:null,currentInjuryIdx:-1,currentStepIdx:0,selectedItem:null,peaceHerbUsed:0,patientRES:300,consequences:[],completedInjuries:[],wrongAttempts:0,totalSteps:0,correctSteps:0,gameActive:false,shockActive:false,arterialTimer:null,arterialDrain:null,examinedParts:{},discoveredInjuries:{},examiningPart:null};
+  return {role:null,gameCode:null,sessionPassword:'',patientName:'Unknown',medicName:'Unknown',gmHP:300,gmMaxHP:300,assignedInjuries:[],selectedPart:null,timerSeconds:180,timerRemaining:0,timerInterval:null,currentInjuryIdx:-1,currentStepIdx:0,selectedItem:null,peaceHerbUsed:0,patientRES:300,consequences:[],completedInjuries:[],wrongAttempts:0,totalSteps:0,correctSteps:0,gameActive:false,shockActive:false,arterialTimer:null,arterialDrain:null,examinedParts:{},discoveredInjuries:{},examiningPart:null,vitalsTimeout:null};
 }
 
 // ===================== UTILITIES =====================
@@ -866,6 +978,7 @@ function selectRole(role) {
 function backToLobby() {
   if (state.timerInterval) clearInterval(state.timerInterval);
   if (state.arterialDrain) clearInterval(state.arterialDrain);
+  if (state.vitalsTimeout) clearTimeout(state.vitalsTimeout);
   var code = state.gameCode;
   state = getDefaultState();
   document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
@@ -1088,47 +1201,79 @@ function handleBodyPartClick(part) {
   var untreated = injIndices.filter(function(idx) { return !state.assignedInjuries[idx].treated; });
 
   if (unexamined.length > 0) {
-    startExamination(part, unexamined[0]);
+    showExamActions(part, unexamined[0]);
   } else if (untreated.length > 0) {
     state.currentInjuryIdx = untreated[0];
     state.currentStepIdx = state.currentStepIdx || 0;
     renderMedicView();
   } else if (injIndices.length > 0) {
-    // All injuries here treated
     showToast(BODY_PARTS[part].name + ' — all injuries treated', 'success');
-    markPartChecked(part);
+    resetPartColor(part);
   } else {
-    // No injuries here at all
     showToast('You inspect the ' + BODY_PARTS[part].name.toLowerCase() + ' — no injuries found.', 'info');
-    markPartChecked(part);
+    resetPartColor(part);
   }
   state.examinedParts[part] = true;
 }
 
-function markPartChecked(part) {
+function resetPartColor(part) {
   document.querySelectorAll('#medic-body .body-part[data-part="' + part + '"]').forEach(function(el) {
-    if (!el.classList.contains('healed')) {
-      el.classList.add('checked');
+    if (!el.classList.contains('healed') && !el.classList.contains('injured')) {
+      el.classList.remove('checked', 'examining', 'selected');
     }
   });
 }
 
-function startExamination(part, injIdx) {
-  state.examiningPart = part;
-  var injury = state.assignedInjuries[injIdx];
-  var data = INJURIES[injury.injId];
+function markPartInjured(part) {
+  document.querySelectorAll('#medic-body .body-part[data-part="' + part + '"]').forEach(function(el) {
+    el.classList.remove('checked', 'examining', 'selected');
+    el.classList.add('injured');
+  });
+}
 
+function showExamActions(part, injIdx) {
+  state.examiningPart = part;
+
+  // Briefly highlight the part being examined
   document.querySelectorAll('#medic-body .body-part').forEach(function(el) { el.classList.remove('examining'); });
   document.querySelectorAll('#medic-body .body-part[data-part="' + part + '"]').forEach(function(el) {
     el.classList.add('examining');
   });
 
+  var actions = EXAM_ACTIONS[part] || [{label:'Examine',desc:'Carefully examine this area'}];
   var examArea = document.getElementById('exam-area');
-  examArea.innerHTML = '<div class="exam-overlay">' +
+  var html = '<div class="exam-overlay">' +
     '<div class="exam-title"><span style="font-size:16px">&#128269;</span> Examining ' + BODY_PARTS[part].name + '</div>' +
-    '<div class="exam-desc">You carefully inspect the ' + BODY_PARTS[part].name.toLowerCase() + '...</div>' +
-    '<button class="exam-btn" onclick="completeExamination(' + injIdx + ')">Perform Examination</button>' +
-    '</div>';
+    '<div class="exam-desc">Choose how to examine the ' + BODY_PARTS[part].name.toLowerCase() + ':</div>' +
+    '<div class="exam-actions-grid">';
+
+  actions.forEach(function(act, i) {
+    html += '<button class="exam-action-btn" onclick="performExamAction(\'' + part + '\',' + injIdx + ',' + i + ')" title="' + act.desc + '">' + act.label + '</button>';
+  });
+
+  html += '</div></div>';
+  examArea.innerHTML = html;
+}
+
+function performExamAction(part, injIdx, actionIdx) {
+  var actions = EXAM_ACTIONS[part] || [];
+  var action = actions[actionIdx];
+  var injury = state.assignedInjuries[injIdx];
+  var data = INJURIES[injury.injId];
+
+  // Show the action description as feedback
+  if (action) {
+    showToast(action.desc, 'info');
+  }
+
+  // After performing any examination action, reveal the injury
+  setTimeout(function() {
+    completeExamination(injIdx);
+  }, 800);
+}
+
+function startExamination(part, injIdx) {
+  showExamActions(part, injIdx);
 }
 
 function completeExamination(injIdx) {
@@ -1138,7 +1283,9 @@ function completeExamination(injIdx) {
   state.discoveredInjuries[injIdx] = true;
   state.examiningPart = null;
 
+  // Reset examining animation, mark the part as injured (red)
   document.querySelectorAll('#medic-body .body-part').forEach(function(el) { el.classList.remove('examining'); });
+  markPartInjured(injury.part);
 
   // Determine exam hint based on arterial flag
   var hint = data.examHint;
@@ -1535,7 +1682,24 @@ function updatePatientStatus() {
     desc.textContent = 'The patient is unresponsive. Heartbeat is faint. Death is imminent.';
   }
 
+  // Only update vitals display if it's currently visible
+  var vitalsBar = document.getElementById('medic-vitals');
+  if (vitalsBar && vitalsBar.style.display !== 'none') {
+    updateVitals();
+  }
+}
+
+function checkVitals() {
+  if (!state.gameActive) return;
+  var vitalsBar = document.getElementById('medic-vitals');
+  vitalsBar.style.display = 'flex';
   updateVitals();
+  showToast('Checking vitals...', 'info');
+  // Hide vitals after 8 seconds so medic must check again
+  if (state.vitalsTimeout) clearTimeout(state.vitalsTimeout);
+  state.vitalsTimeout = setTimeout(function() {
+    vitalsBar.style.display = 'none';
+  }, 8000);
 }
 
 function updateVitals() {
